@@ -84,8 +84,8 @@ dmypy.json
 .ruff_cache/
 
 # Project-specific: Lean / Mathlib build artifacts (Lean toolchain is external to this repo)
+# Note: repl/ itself is a git submodule and IS tracked; we only ignore its build artifacts below.
 mathlib4/
-repl/
 .lake/
 build/
 lakefile.olean
