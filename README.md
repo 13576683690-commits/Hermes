@@ -104,13 +104,13 @@ Accuracy (%) of different reasoning models under four inference strategies: zero
     <td><b>HERMES</b>@5 <i>+Majority</i></td>
     <td><ins>93.0</ins></td><td><ins>33.3</ins></td><td><ins>75.8</ins></td><td><ins>7.6</ins></td>
     <td><ins>97.0</ins></td><td><b>86.7</b></td><td><b>79.4</b></td><td><b>31.8</b></td>
-    <td><b>98.6</b></td><td><ins>76.7</ins></td><td><ins>85.2</ins></td><td><ins>35.1</ins></td>
+    <td><b>98.6</b></td><td><ins>76.7</ins></td><td><b>85.2</b></td><td><ins>35.1</ins></td>
   </tr>
   <tr>
     <td><b>HERMES</b>@5 <i>+Skywork</i></td>
     <td><b>94.6</b></td><td><b>43.3</b></td><td><b>77.4</b></td><td><b>10.0</b></td>
     <td><ins>97.0</ins></td><td><b>86.7</b></td><td><ins>79.2</ins></td><td><ins>31.3</ins></td>
-    <td>98.2</td><td><b>80.0</b></td><td><b>84.0</b></td><td><b>36.5</b></td>
+    <td>98.2</td><td><b>80.0</b></td><td><ins>84.0</ins></td><td><b>36.5</b></td>
   </tr>
 </table>
 
@@ -171,7 +171,7 @@ HERMES/
 - **OS:** Linux (the Lean 4 REPL bridge spawns subprocesses with `resource.RLIMIT_AS` and
   `killall`; macOS / Windows are not officially supported but may work for the Python side).
 - **Python:** 3.10+
-- **Lean 4 REPL + Mathlib:** the [`./mathlib4`](https://github.com/xinhjBrant/mathlib4) toolchain.
+- **Lean 4 REPL + Mathlib:** the [`./repl`](https://github.com/aziksh-ospanov/repl.git) toolchain.
 - An OpenAI-compatible LLM endpoint for the translator and prover — either:
   - a **hosted API** such as DeepSeek (`DEEPSEEK_API_KEY` env var) or OpenAI, or
   - a **local vLLM** server (e.g. `vllm serve <model> --host 0.0.0.0 --port 2000`).
@@ -185,21 +185,12 @@ Follow the [official Lean 4 install guide](https://leanprover.github.io/lean4/do
 
 ### 2. Set up the Lean 4 REPL + Mathlib
 
-Clone and build [`leanprover-community/repl`](https://github.com/leanprover-community/repl):
+Clone and build [`REPL`](https://github.com/aziksh-ospanov/repl.git):
 
 ```bash
-git clone https://github.com/leanprover-community/repl.git
+git clone https://github.com/aziksh-ospanov/repl.git
 cd repl
 lake build
-```
-
-Make sure a Mathlib4 cache is built in the workspace that `verifier.py` will run against
-(default `mathlib4/`):
-
-```bash
-git clone https://github.com/leanprover-community/mathlib4.git
-cd mathlib4
-lake exe cache get
 ```
 
 Quick sanity check that the Python layer can talk to Lean:
@@ -237,10 +228,10 @@ export DEEPSEEK_API_KEY="sk-..."
 python demo.py
 ```
 
-By default the demo asks the agent to "Prove that 2+2=5" — Hermes should report `**INCORRECT**`
+By default the demo asks the agent to "Prove that 2+2=4" — Hermes should report `**CORRECT**`
 and the agent should refuse / correct itself.
 
-To run on your own problem, edit the `problem = '...'` string at the bottom of `demo.py`.
+To run on your own problem, edit the `problem = '...'` string at the bottom of `demo.py`. Note that agent returns a conversation between an agent and Lean, make sure to customize your own wrappers to extract necessary outputs.
 
 ## Using Hermes in Your Own Agent
 
@@ -319,9 +310,7 @@ Lean-side settings (concurrency, per-call timeout, RSS limit) live in
 
 When you pass an `embedding_model` to `HermesReasoner`, every successfully verified step is
 summarized into a single claim and stored in a `langgraph` in-memory vector store. On
-subsequent calls, the top-k semantically related claims are injected into the
-"Given that..." block of the Lean problem statement, letting downstream proofs reuse earlier
-results.
+subsequent calls, the top-k semantically related claims are prepended to problem statement, letting downstream proofs reuse earlier results.
 
 ```python
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
@@ -344,41 +333,28 @@ reasoner = HermesReasoner(
 ## Troubleshooting
 
 - **`SCHEDULER FAILURE` printed and tool returns `VERIFICATION FAILURE`** — the
-  `Lean4ServerScheduler` was not passed in (or has already been closed). Make sure
-  `scheduler=` is set on `HermesReasoner` and that `scheduler.close()` runs in a
-  `finally` block *after* the agent finishes.
+  `Lean4ServerScheduler` was not passed in (or has already been closed). Make sure `scheduler=` is set on `HermesReasoner` and that `scheduler.close()` runs in a `finally` block *after* the agent finishes.
 - **`lake exe repl` errors / `FileNotFoundError`** — the Lean REPL workspace
-  (default `./mathlib4/`) is not present or hasn't run `lake exe cache get`. Adjust
-  `DEFAULT_LEAN_WORKSPACE` in `prover/lean/verifier.py` if your layout differs.
-- **DeepSeek "model not supported" / `n > 1` errors** — the DeepSeek hosted API only
-  supports `n=1`. The translator/prover wrappers detect `api.deepseek.com` and loop
-  internally; if you hit this against another endpoint, set `api_mode=True` in your config.
-- **`AuxiliaryLLM requires model_path` ValueError** — happens when the auxiliary-LLM
-  config (used for backtranslation / memory summarization) isn't resolvable. Either set
-  `auxiliary_llm_config=...` on `HermesReasoner` explicitly, or make sure your translator
-  config has a valid `model_path`.
+  (default `./repl/`) is not present. Adjust `DEFAULT_LEAN_WORKSPACE` in `prover/lean/verifier.py` if your layout differs.
+- **DeepSeek "model not supported" / `n > 1` errors** — the DeepSeek hosted API only supports `n=1`. The translator/prover wrappers detect `api.deepseek.com` and loop internally; if you hit this against another endpoint, set `api_mode=True` in your config.
+- **`AuxiliaryLLM requires model_path` ValueError** — happens when the auxiliary-LLM config (used for backtranslation / memory summarization) isn't resolvable. Either set `auxiliary_llm_config=...` on `HermesReasoner` explicitly, or make sure your translator config has a valid `model_path`.
 
 ## Acknowledgments
 
-- The `prover/` directory adapts code from
-  [Goedel-LM/Goedel-Prover-V2](https://github.com/Goedel-LM/Goedel-Prover-V2) for the
-  Lean 4 REPL bridge and worker scheduling.
-- Built on top of [Lean 4](https://leanprover.github.io/) and
-  [Mathlib4](https://github.com/leanprover-community/mathlib4).
-- Uses [LangChain](https://github.com/langchain-ai/langchain) and
-  [LangGraph](https://github.com/langchain-ai/langgraph) for agent orchestration.
+- This repo is built on top of [Lean 4](https://leanprover.github.io/), [REPL](https://github.com/leanprover-community/repl) and [Mathlib4](https://github.com/leanprover-community/mathlib4).
+- Uses [LangChain](https://github.com/langchain-ai/langchain) and [LangGraph](https://github.com/langchain-ai/langgraph) for agent orchestration.
 
 ## Bibtex Citation
 
 ```bibtex
 @misc{ospanov2025hermesefficientverifiablemathematical,
-      title={HERMES: Towards Efficient and Verifiable Mathematical Reasoning in LLMs},
+      title={HERMES: Towards Efficient and Verifiable Mathematical Reasoning in LLMs}, 
       author={Azim Ospanov and Zijin Feng and Jiacheng Sun and Haoli Bai and Xin Shen and Farzan Farnia},
       year={2025},
       eprint={2511.18760},
       archivePrefix={arXiv},
       primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2511.18760},
+      url={https://arxiv.org/abs/2511.18760}, 
 }
 ```
 

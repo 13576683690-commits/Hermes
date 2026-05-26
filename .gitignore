@@ -109,6 +109,9 @@ tmp/
 *.tmp
 *.bak
 
+# Generated docs
+README.pdf
+
 # Secrets - do not commit
 *.key
 *.pem
