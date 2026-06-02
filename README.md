@@ -347,14 +347,11 @@ reasoner = HermesReasoner(
 ## Bibtex Citation
 
 ```bibtex
-@misc{ospanov2025hermesefficientverifiablemathematical,
+@inproceedings{ospanov2026hermesefficientverifiablemathematical,
       title={HERMES: Towards Efficient and Verifiable Mathematical Reasoning in LLMs}, 
       author={Azim Ospanov and Zijin Feng and Jiacheng Sun and Haoli Bai and Xin Shen and Farzan Farnia},
-      year={2025},
-      eprint={2511.18760},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2511.18760}, 
+      year={2026},
+      booktitle={Forty-third International Conference on Machine Learning}
 }
 ```
 
