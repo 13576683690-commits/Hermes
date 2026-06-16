@@ -205,6 +205,14 @@ def update_html_dashboard(new_archives):
             'const detailData = {',
             f'const detailData = {{\n            {detail_key_value},'
         )
+    
+        # 新增：每次更新时，自动将最新的更新时间写入右上角 Badge
+        now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        html_content = re.sub(
+            r'<span id="last-update-time">[^<]+</span>',
+            f'<span id="last-update-time">{now_str}</span>',
+            html_content
+        )
 
     # 保存重写后的文件
     write_file(path=html_path, content=html_content)
