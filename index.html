@@ -1,58 +1,12 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>进化档案馆</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0f111a; color: #a5b4fc; font-family: sans-serif; padding: 40px; }
-        .container { max-width: 900px; margin: auto; }
-        .hero { background: #181c2e; padding: 40px; border-radius: 20px; text-align: center; margin-bottom: 30px; border: 1px solid #2d3748; }
-        .title-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px; }
-        h1 { color: #e0e7ff; font-size: 2.2rem; margin: 0; }
-        .sub-text { color: #818cf8; margin-bottom: 20px; font-size: 1.1rem; }
-        .slogan { background: #2d3748; padding: 8px 20px; border-radius: 20px; display: inline-block; font-size: 0.9rem; color: #e0e7ff; }
-        .archive-card { background: #181c2e; padding: 25px 30px; border-radius: 16px; margin-bottom: 20px; cursor: pointer; border: 1px solid #2d3748; transition: border-color 0.2s; }
-        .archive-card:hover { border-color: #6366f1; }
-        .tag { background: #1e293b; color: #818cf8; padding: 6px 14px; border-radius: 14px; font-size: 0.8rem; margin-right: 10px; }
-        .copy-btn { background: #6366f1; color: white; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.7rem; border: none; margin-top: 10px; }
-        .copy-btn:hover { background: #818cf8; }
-    </style>
-</head>
-<body>
-    <div class="container" id="home-view">
-        <div class="hero">
-            <div class="title-container"><h1>进化档案馆</h1></div>
-            <p class="sub-text">Hermes 和 锅仔 的共同进化史</p>
-            <div class="slogan">每一条记录都是成长的证明</div>
-        </div>
-        <div id="archives-container"></div>
-    </div>
-
-    <script>
-        async function loadData() {
-            const response = await fetch('data.json');
-            const data = await response.json();
-            const container = document.getElementById('archives-container');
-            
-            data.archives.forEach(arch => {
-                const card = document.createElement('div');
-                card.className = 'archive-card';
-                card.innerHTML = `
-                    <h3 style="color:#e0e7ff; margin-bottom:10px;">${arch.title}</h3>
-                    <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:15px;">${arch.desc}</p>
-                    <div class="tag-list">${arch.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-                    <button class="copy-btn" onclick="copyCommand('${arch.command}')">复制指令: ${arch.command}</button>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function copyCommand(cmd) {
-            navigator.clipboard.writeText(cmd).then(() => alert('指令已复制！'));
-        }
-
-        loadData();
-    </script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evolution Dashboard</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
