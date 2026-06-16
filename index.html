@@ -1,12 +1,100 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Evolution Dashboard</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进化档案馆</title>
+    <!-- 引入 Tailwind CSS CDN，保持美观的样式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#05070d] text-[#e2e8f0] p-6 sm:p-12 min-h-screen font-sans">
+    <div class="max-w-4xl mx-auto">
+        <!-- 头部标题区 -->
+        <header class="border-b border-white/10 pb-6 mb-8">
+            <h1 class="text-4xl font-bold text-white tracking-tight">Evolution Dashboard</h1>
+            <p class="text-teal-400 mt-2 font-medium">Hermes 和 锅仔 的共同进化史</p>
+        </header>
+
+        <!-- 统计面板 -->
+        <section class="grid grid-cols-3 gap-4 mb-8 text-center">
+            <div class="bg-white/[0.04] border border-white/10 p-4 rounded-xl">
+                <p class="text-3xl font-bold text-white">1</p>
+                <p class="text-xs text-slate-400 uppercase mt-1">Archives</p>
+            </div>
+            <div class="bg-white/[0.04] border border-white/10 p-4 rounded-xl">
+                <p class="text-3xl font-bold text-white">4</p>
+                <p class="text-xs text-slate-400 uppercase mt-1">Points</p>
+            </div>
+            <div class="bg-white/[0.04] border border-white/10 p-4 rounded-xl">
+                <p class="text-3xl font-bold text-white">1</p>
+                <p class="text-xs text-slate-400 uppercase mt-1">Skills</p>
+            </div>
+        </section>
+
+        <!-- 主内容区：档案列表 -->
+        <div id="content" class="grid gap-6">
+            <!-- 档案卡片将在这里动态生成 -->
+            <div class="text-slate-500">正在同步进化记录...</div>
+        </div>
+    </div>
+
+    <script>
+        // 本地数据源 (与 data.json 保持格式一致，彻底避开本地文件读取跨域限制)
+        const data = {
+            "archives": [
+                {
+                    "id": "arch_001",
+                    "date": "2026-06-14",
+                    "title": "自进化档案馆：从零到一的架构构建",
+                    "desc": "基于设计规范，从零搭建了具备三层视图的自进化看板，确立归档本体论。并在同一对话周期内，完成了自动化更新机制的实测与防重复/合并逻辑的验证。",
+                    "tags": ["SPA架构", "视觉重构", "自动化"],
+                    "command": "hermes archive"
+                }
+            ]
+        };
+
+        const container = document.getElementById('content');
+        
+        // 渲染卡片函数
+        container.innerHTML = data.archives.map(arch => `
+            <div class="bg-slate-950/70 border border-white/10 rounded-2xl p-6 shadow-2xl backdrop-blur transition hover:border-teal-500/50">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-sm font-semibold text-teal-400">${arch.date}</p>
+                        <h2 class="text-2xl font-bold text-white mt-1">${arch.title}</h2>
+                    </div>
+                </div>
+                <p class="text-slate-300 leading-relaxed text-sm">${arch.desc}</p>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    ${arch.tags.map(t => `<span class="bg-white/[0.06] border border-white/10 text-slate-300 px-3 py-1 rounded-full text-xs font-medium">${t}</span>`).join('')}
+                </div>
+                <div class="mt-6 flex flex-col gap-3">
+                    <button onclick="copyCommand('${arch.command}', this)" class="w-full sm:w-auto inline-flex items-center justify-center bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold px-4 py-2.5 rounded-lg text-sm transition focus:ring-2 focus:ring-teal-500">
+                        复制指令
+                    </button>
+                    <code class="block overflow-x-auto rounded-md border border-white/10 bg-black/30 px-3 py-2 text-xs text-slate-300">
+                        ${arch.command}
+                    </code>
+                </div>
+            </div>
+        `).join('');
+
+        // 剪贴板复制逻辑
+        function copyCommand(cmd, btn) {
+            navigator.clipboard.writeText(cmd).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = "已复制！";
+                btn.classList.remove('bg-teal-600');
+                btn.classList.add('bg-green-600', 'text-white');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('bg-green-600', 'text-white');
+                    btn.classList.add('bg-teal-600');
+                }, 1500);
+            }).catch(() => {
+                alert("复制失败，请手动选择复制。");
+            });
+        }
+    </script>
+</body>
 </html>
