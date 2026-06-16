@@ -10,8 +10,6 @@ def analyze_today_conversations():
     today_str = get_today_date()
     print(f"Auditing conversations for manual update: {today_str}...")
     
-    # 彻底摆脱 hermes_tools 依赖，采用标准 Python 文件读写。
-    # 我们直接生成今天这场极其硬核、从 React 重构一路杀回静态部署并解决缓存、SSH 密钥的“自进化档案馆”之战！
     new_archives = []
     
     memories_extracted = [
@@ -36,6 +34,7 @@ def analyze_today_conversations():
         "id": f"arch_{today_str.replace('-', '')}_today",
         "date": today_str,
         "title": "自进化档案馆：全自动 Web App 闭环上线",
+        "icon": "🏗️",
         "desc": "成功打通了从本地到 GitHub Pages 自动构建与部署的闭环流。重构 index.html 采用极轻量单文件原生渲染，彻底杜绝白屏并注入了‘复制指令’按钮的绿色交互反馈。写入了 auto_archive 归档逻辑，完成了 SSH 部署密钥配置并注入了科技感脉冲呼吸指示灯与 HTTP 强缓存消除头。",
         "tags": ["SPA架构", "自动化", "SSH密钥", "缓存消除", "双脑协作"],
         "stats": {
@@ -77,8 +76,7 @@ def update_html_dashboard(new_archives):
         print(f"Error reading index.html: {e}")
         return
 
-    # 1. 重新计算计数器
-    # 上排累计
+    # 1. 重新计算统计数值
     total_archives_match = re.search(r'<div class="stat-val">(\d+)</div><div class="stat-label">档案总数</div>', html_content)
     total_evolutions_match = re.search(r'<div class="stat-val">(\d+)</div><div class="stat-label">累计进化点</div>', html_content)
     total_skills_match = re.search(r'<div class="stat-val">(\d+)</div><div class="stat-label">共建 Skills</div>', html_content)
@@ -87,7 +85,6 @@ def update_html_dashboard(new_archives):
     current_total_evolutions = int(total_evolutions_match.group(1)) if total_evolutions_match else 4
     current_total_skills = int(total_skills_match.group(1)) if total_skills_match else 1
 
-    # 新增增量
     today_archives = len(new_archives)
     today_evolutions = sum(a["stats"]["进化点"] for a in new_archives)
     today_skills = sum(a["stats"]["Skill"] for a in new_archives)
@@ -130,7 +127,7 @@ def update_html_dashboard(new_archives):
         html_content
     )
 
-    # 2. 将新档案渲染并插入到 #home-archives-container 的顶部
+    # 2. 将新页面 HTML 插入到 #home-archives-container
     archives_html_str = ""
     for arch in new_archives:
         tags_html = "".join([f'<span class="tag">{t}</span>' for t in arch['tags']])
@@ -144,7 +141,7 @@ def update_html_dashboard(new_archives):
                 <span class='new-tag'>NEW</span>
             </div>
             <h3 class="card-title" style="display:flex; align-items:center; gap:8px;">
-                <span>🏗️</span>
+                <span>{arch['icon']}</span>
                 <span>{arch['title']}</span>
             </h3>
             <p class="card-desc">{arch['desc']}</p>
@@ -156,13 +153,12 @@ def update_html_dashboard(new_archives):
             </div>
         </div>\n"""
 
-    # 插入到近期档案容器中
     html_content = html_content.replace(
         '<div id="home-archives-container">',
         f'<div id="home-archives-container">\n{archives_html_str}'
     )
 
-    # 3. 追加内存、进化等列表到首页展示
+    # 3. 追加记忆和进化列表到主页底部的静态流中
     for arch in new_archives:
         memories_html = ""
         for m in arch["details"]["memory"]:
@@ -183,12 +179,47 @@ def update_html_dashboard(new_archives):
                 f'<div id="home-evolutions-container">\n{evolutions_html}'
             )
 
-        # 4. 更新 JavaScript 底部的 detailData 变量，以便点击卡片展开详情
-        detail_key_value = f"\"{arch['id']}\": {json.dumps(arch['details'], ensure_ascii=False)}"
+    # 4. 关键修复：精准提取并重写 index.html 底部的 JS 模型 `const data = { ... };`
+    # 这样，点击新卡片展开的详情才能 100% 映射到新的 data 里。
+    data_match = re.search(r'const data = (\{.*?\});', html_content)
+    if data_match:
+        try:
+            current_data = json.loads(data_match.group(1))
+        except Exception as e:
+            print(f"Error decoding const data: {e}")
+            current_data = {"stats": {}, "daily_stats": {}, "memories": [], "evolutions": [], "archives": []}
+        
+        # 将新产生的卡片数据推入到 data.archives 列表的顶部
+        for arch in new_archives:
+            # 格式化其在 JS 中对应的 stats 数据
+            js_arch = {
+                "id": arch["id"],
+                "date": arch["date"],
+                "title": arch["title"],
+                "icon": arch["icon"],
+                "desc": arch["desc"],
+                "tags": arch["tags"],
+                "stats": arch["stats"],
+                "is_new": True,
+                "details": arch["details"]
+            }
+            current_data["archives"].insert(0, js_arch)
+            
+            # 同时将统计数值和今日增量也同步给 JS 模型，保证前后端数据完全对齐
+            current_data["stats"]["archives"] = new_total_archives
+            current_data["stats"]["points"] = new_total_evolutions
+            current_data["stats"]["skills"] = new_total_skills
+            current_data["daily_stats"]["archives"] = today_archives
+            current_data["daily_stats"]["points"] = today_evolutions
+            current_data["daily_stats"]["skills"] = today_skills
+
+        # 序列化写回
+        updated_data_json = json.dumps(current_data, ensure_ascii=False)
         html_content = html_content.replace(
-            'const detailData = {',
-            f'const detailData = {{\n            {detail_key_value},'
+            data_match.group(0),
+            f'const data = {updated_data_json};'
         )
+        print("Successfully synchronized JavaScript state engine with actual HTML layout!")
 
     # 5. 更新右上角徽章时间戳
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -198,11 +229,11 @@ def update_html_dashboard(new_archives):
         html_content
     )
 
-    # 保存重写
+    # 6. 写回文件
     try:
         with open(html_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-        print("HTML Dashboard locally rewritten successfully.")
+        print("HTML Dashboard successfully synchronized and written.")
     except Exception as e:
         print(f"Error writing index.html: {e}")
 
