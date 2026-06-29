@@ -1,0 +1,72 @@
+{
+  "archives": [
+    {
+      "id": "arch_001",
+      "date": "2026-06-14",
+      "title": "自进化档案馆：从零到一的架构构建",
+      "desc": "基于设计规范，从零搭建了具备三层视图的自进化看板，确立归档本体论。",
+      "tags": ["SPA架构", "视觉重构", "本体论", "增量原则"],
+      "details": {
+        "skill": [{ "title": "进化看板架构", "content": "实现三层视图路由切换与数据/视图分离架构。", "icon": "🏗️" }],
+        "evolution": [{ "title": "自动化归档", "content": "建立基于 Cronjob 的每日定时更新机制。", "icon": "📈" }],
+        "memory": [{ "title": "归档本体论", "content": "定义 Skill、记忆点、进化点、探索节点四维归档标准。", "icon": "🧠" }],
+        "node": [{ "title": "架构锁定", "content": "完成看板核心模块锁定。", "icon": "📍" }]
+      },
+      "stats": { "skill": 1, "memory": 4, "evolution": 4, "node": 5 },
+      "command": "hermes archive --session-id current"
+    },
+    {
+      "id": "arch_20260616_01",
+      "date": "2026-06-16",
+      "title": "确立 Hermes-锅仔协作宪法",
+      "desc": "确立了‘大脑+手’工作模式，固化五大执行准则，实现 Agent 与决策逻辑的深度对齐。",
+      "tags": ["体系构建", "协作准则"],
+      "stats": { "skill": 0, "memory": 1, "evolution": 1, "node": 1 },
+      "command": "hermes persona --view-constitution",
+      "details": {
+        "memory": [{ "title": "协作宪法", "content": "五大准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。"}],
+        "evolution": [{ "title": "架构对齐", "content": "确立了代理的自主运营者与思想合伙人定位。"}],
+        "node": [{ "title": "准则迭代", "content": "从身份定义到权限边界的闭环构建。"}]
+      }
+    },
+    {
+      "id": "arch_20260616_02",
+      "date": "2026-06-16",
+      "title": "项目制元内核架构升级",
+      "desc": "完成工作区的物理模块化重构，建立了 meta/workspace/global_utils/scripts 的标准化标准。",
+      "tags": ["工程治理", "架构重构"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 1 },
+      "command": "cd ~/Desktop/Codex-Hermes/ && ls -F",
+      "details": {
+        "skill": [{ "title": "工作区标准化", "content": "确立了内核+工作空间的孵化架构。"}],
+        "evolution": [{ "title": "路径健壮性", "content": "实现了自动化归档脚本与目录结构的解耦。"}],
+        "node": [{ "title": "物理空间审计", "content": "完成了从混乱目录到标准工作区的重塑。"}]
+      }
+    },
+    {
+      "id": "arch_20260616_03",
+      "date": "2026-06-16",
+      "title": "Codex 工程环境联动打通",
+      "desc": "修复 CLI 链路，联通电商插件与本地开发环境，实现了工程能力的 API 级调用。",
+      "tags": ["能力集成", "工程实践"],
+      "stats": { "skill": 1, "memory": 0, "evolution": 1, "node": 1 },
+      "command": "codex plugin list",
+      "details": {
+        "skill": [{ "title": "MCP 联动", "content": "成功打通 SellerSprite/Sorftime 等电商数据插件。"}],
+        "evolution": [{ "title": "工程接口集成", "content": "打通底层执行链路，实现调用标准化。"}],
+        "node": [{ "title": "环境校验", "content": "通过路径修正与插件校验，确认了工程环境的可用性。"}]
+      }
+    }
+  ],
+  "memories": [
+    { "content": "【核心定义】Skill：新增程序化工具；记忆点：事实性固化；进化点：能力量化提升；探索节点：分支子任务。" },
+    { "content": "五大协作准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。" }
+  ],
+  "evolutions": [
+    { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
+    { "content": "完成从单页到三层视图 SPA 架构的演进。" },
+    { "content": "确立内核与工作空间分离的项目制开发范式。" },
+    { "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。" }
+  ],
+  "stats": { "archives": 4, "points": 7, "skills": 3 }
+}
