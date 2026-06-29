@@ -44,8 +44,8 @@ export default function App() {
     <main className="min-h-screen text-slate-100">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
         <header className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-800/50 border border-white/5 shadow-2xl">
-            <span className="text-3xl">🤖</span>
+          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-800/50 border border-white/5 shadow-2xl overflow-hidden">
+            <img src="/进化档案头像.png" alt="Avatar" className="h-full w-full object-cover" />
           </div>
           <h1 className="text-5xl font-bold text-white tracking-tight">进化档案馆</h1>
           <p className="mt-4 text-slate-400">Hermes 和 锅仔 的共同进化史</p>
