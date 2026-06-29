@@ -7,9 +7,9 @@
       "desc": "基于设计规范，从零搭建了具备三层视图的自进化看板，确立归档本体论。",
       "tags": ["SPA架构", "视觉重构", "本体论", "增量原则"],
       "details": {
-        "skill": [{"title": "进化看板架构", "content": "实现三层视图路由切换与数据/视图分离架构。", "icon": "🏗️" }],
+        "skill": [{ "title": "进化看板架构", "content": "实现三层视图路由切换与数据/视图分离架构。", "icon": "🏗️" }],
         "evolution": [{ "title": "自动化归档", "content": "建立基于 Cronjob 的每日定时更新机制。", "icon": "📈" }],
-        "memory": [{"title": "归档本体论", "content": "定义 Skill、记忆点、进化点、探索节点四维归档标准。", "icon": "🧠" }],
+        "memory": [{ "title": "归档本体论", "content": "定义 Skill、记忆点、进化点、探索节点四维归档标准。", "icon": "🧠" }],
         "node": [{ "title": "架构锁定", "content": "完成看板核心模块锁定。", "icon": "📍" }]
       },
       "stats": { "skill": 1, "memory": 4, "evolution": 4, "node": 5 },
@@ -24,9 +24,9 @@
       "stats": { "skill": 0, "memory": 1, "evolution": 1, "node": 1 },
       "command": "hermes persona --view-constitution",
       "details": {
-        "memory": [{"title": "协作宪法", "content": "五大准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。"}],
-        "evolution": [{"title": "架构对齐", "content": "确立了代理的自主运营者与思想合伙人定位。"}],
-        "node": [{"title": "准则迭代", "content": "从身份定义到权限边界的闭环构建。"}]
+        "memory": [{ "title": "协作宪法", "content": "五大准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。"}],
+        "evolution": [{ "title": "架构对齐", "content": "确立了代理的自主运营者与思想合伙人定位。"}],
+        "node": [{ "title": "准则迭代", "content": "从身份定义到权限边界的闭环构建。"}]
       }
     },
     {
@@ -38,9 +38,9 @@
       "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 1 },
       "command": "cd ~/Desktop/Codex-Hermes/ && ls -F",
       "details": {
-        "skill": [{"title": "工作区标准化", "content": "确立了内核+工作空间的孵化架构。"}],
-        "evolution": [{"title": "路径健壮性", "content": "实现了自动化归档脚本与目录结构的解耦。"}],
-        "node": [{"title": "物理空间审计", "content": "完成了从混乱目录到标准工作区的重塑。"}]
+        "skill": [{ "title": "工作区标准化", "content": "确立了内核+工作空间的孵化架构。"}],
+        "evolution": [{ "title": "路径健壮性", "content": "实现了自动化归档脚本与目录结构的解耦。"}],
+        "node": [{ "title": "物理空间审计", "content": "完成了从混乱目录到标准工作区的重塑。"}]
       }
     },
     {
@@ -52,21 +52,41 @@
       "stats": { "skill": 1, "memory": 0, "evolution": 1, "node": 1 },
       "command": "codex plugin list",
       "details": {
-        "skill": [{"title": "MCP 联动", "content": "成功打通 SellerSprite/Sorftime 等电商数据插件。"}],
-        "evolution": [{"title": "工程接口集成", "content": "打通底层执行链路，实现调用标准化。"}],
-        "node": [{"title": "环境校验", "content": "通过路径修正与插件校验，确认了工程环境的可用性。"}]
+        "skill": [{ "title": "MCP 联动", "content": "成功打通 SellerSprite/Sorftime 等电商数据插件。"}],
+        "evolution": [{ "title": "工程接口集成", "content": "打通底层执行链路，实现调用标准化。"}],
+        "node": [{ "title": "环境校验", "content": "通过路径修正与插件校验，确认了工程环境的可用性。"}]
+      }
+    },
+    {
+      "id": "arch_20260629_01",
+      "date": "2026-06-29",
+      "title": "档案馆治理总纲与单文件架构重构",
+      "desc": "完成档案馆全链路运行总纲的最终确立，并将前端重构为抗脆弱的单文件静态部署模式。",
+      "tags": ["体系构建", "工程降级", "单文件部署"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 1 },
+      "command": "hermes archive --view-constitution",
+      "details": {
+        "skill": [{ "title": "单文件部署能力", "content": "掌握将 SPA 降级为单文件 HTML + Fetch 的稳定模式，100% 屏蔽 CDN 404 与构建链路崩溃。"}],
+        "evolution": [{ "title": "抗脆弱架构落地", "content": "即使在 node_modules 坏掉的极端情况下，依然能交付可运行的静态产品。"}],
+        "memory": [
+          { "title": "档案馆治理总纲", "content": "确立实质性门槛 (无实质进化不归档) 与去重合并原则 (同日合并增量)，拒绝注水档案。" },
+          { "title": "工程化风险准则", "content": "Web 资源严禁中文命名 (必须英文/拼音)，否则极易在 CI/CD 流程中引发 404。" }
+        ],
+        "node": [{ "title": "去工程化决策", "content": "在现代框架部署受阻时，降级为最简静态方案是更具责任心的工程选择。"}]
       }
     }
   ],
   "memories": [
     { "content": "【核心定义】Skill：新增程序化工具；记忆点：事实性固化；进化点：能力量化提升；探索节点：分支子任务。" },
-    { "content": "五大协作准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。" }
+    { "content": "五大协作准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。" },
+    { "content": "档案馆治理：实质进化门槛 + 1会话1档案 + 同日合并增量。无意义记录严禁入档。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
     { "content": "完成从单页到三层视图 SPA 架构的演进。" },
     { "content": "确立内核与工作空间分离的项目制开发范式。" },
-    { "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。" }
+    { "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。" },
+    { "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。" }
   ],
-  "stats": { "archives": 4, "points": 7, "skills": 3 }
+  "stats": { "archives": 5, "points": 8, "skills": 4 }
 }
