@@ -41,24 +41,19 @@ export default function App() {
   return (
     <main className="min-h-screen text-slate-100">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-5 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              <span className="text-xs text-emerald-500">SYSTEM ACTIVE: {new Date().toISOString().replace('T', ' ').substring(0, 16)}</span>
-            </div>
-            <p className="text-sm font-medium uppercase text-teal-300">
-              Hermes archive
-            </p>
-            <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">
-              Evolution Dashboard
-            </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-              A responsive control surface for archived sessions, memory points,
-              and evolution progress loaded from local JSON data.
-            </p>
+        <header className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-800/50 border border-white/5 shadow-2xl">
+            <span className="text-3xl">🤖</span>
           </div>
-          <StatsGrid stats={data.stats} />
+          <h1 className="text-5xl font-bold text-white tracking-tight">进化档案馆</h1>
+          <p className="mt-4 text-slate-400">Hermes 和 锅仔 的共同进化史</p>
+          <div className="mt-6 rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm text-slate-300">
+            每一条记录都是成长的证明
+          </div>
+          <div className="mt-8 flex items-center gap-2">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span className="text-xs text-emerald-400">SYSTEM ACTIVE: {new Date().toISOString().replace('T', ' ').substring(0, 16)}</span>
+          </div>
         </header>
 
         <ViewRouter views={views} defaultView="archives">
