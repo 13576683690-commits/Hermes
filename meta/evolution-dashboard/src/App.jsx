@@ -1,4 +1,4 @@
-import data from "../data.json";
+import data from "./data.json?t=" + Date.now();
 import ArchiveCard from "./components/ArchiveCard.jsx";
 import StatsGrid from "./components/StatsGrid.jsx";
 import ViewRouter from "./components/ViewRouter.jsx";
