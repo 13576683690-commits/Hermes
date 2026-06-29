@@ -43,6 +43,10 @@ export default function App() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
         <header className="flex flex-col gap-5 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              <span className="text-xs text-emerald-500">SYSTEM ACTIVE: {new Date().toISOString().replace('T', ' ').substring(0, 16)}</span>
+            </div>
             <p className="text-sm font-medium uppercase text-teal-300">
               Hermes archive
             </p>
