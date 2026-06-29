@@ -16,13 +16,12 @@ h1 { font-size: 36px; font-weight: 700; color: #fff; margin: 12px 0 8px 0; }
 .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; text-align: center; }
 .stat-num { font-size: 32px; font-weight: 700; color: #fff; }
 .stat-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-top: 8px; }
-.tabs { display: flex; gap: 8px; margin: 30px 0 20px 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0; }
-.tab { padding: 10px 20px; cursor: pointer; color: #94a3b8; font-size: 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs { display: flex; gap: 8px; margin: 30px 0 20px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.tab { padding: 10px 20px; cursor: pointer; color: #94a3b8; font-size: 14px; border-bottom: 2px solid transparent; }
 .tab.active { color: #5eead4; border-bottom-color: #5eead4; }
 .archive-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (max-width: 768px) { .archive-grid, .stats { grid-template-columns: 1fr; } }
-.archive-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; transition: all 0.2s; cursor: pointer; }
-.archive-card:hover { border-color: rgba(94, 234, 212, 0.3); background: rgba(255,255,255,0.05); }
+.archive-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; }
 .archive-date { color: #5eead4; font-size: 12px; font-family: monospace; }
 .archive-title { color: #fff; font-size: 18px; font-weight: 600; margin: 8px 0; }
 .archive-desc { color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
@@ -31,7 +30,7 @@ h1 { font-size: 36px; font-weight: 700; color: #fff; margin: 12px 0 8px 0; }
 .detail-section { margin-top: 16px; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,0.08); }
 .detail-row { display: flex; gap: 12px; margin-bottom: 10px; font-size: 13px; }
 .detail-icon { flex-shrink: 0; }
-.detail-label { color: #94a3b8; min-width: 70px; }
+.detail-label { color: #94a3b8; min-width: 70px; font-weight: 600; }
 .detail-content { color: #e5e7eb; }
 </style>
 </head>
@@ -55,25 +54,46 @@ h1 { font-size: 36px; font-weight: 700; color: #fff; margin: 12px 0 8px 0; }
 let currentTab = 'archives';
 let data = null;
 
+function pad(n) { return n < 10 ? '0' + n : n; }
+function getNow() {
+  const d = new Date();
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+document.querySelector('.status').textContent = '● SYSTEM ACTIVE: ' + getNow();
+
 fetch('data.json')
   .then(r => r.json())
   .then(d => {
     data = d;
+    // 计算今日增量
+    const today = new Date().toISOString().substring(0, 10);
+    const todayArchives = (data.archives || []).filter(a => a.date === today);
+    data.daily_archives = todayArchives.length;
+    data.daily_points = todayArchives.reduce((sum, a) => sum + (a.stats?.evolution || 0), 0);
+    data.daily_skills = todayArchives.reduce((sum, a) => sum + (a.stats?.skill || 0), 0);
     renderStats();
     renderContent();
   });
 
 function renderStats() {
-  const stats = data.stats || {};
+  const s = data.stats || {};
+  const da = data.daily_archives || 0;
+  const dp = data.daily_points || 0;
+  const ds = data.daily_skills || 0;
   document.getElementById('stats').innerHTML =
-    '<div class="stat-card"><div class="stat-num">' + (stats.archives || 0) + '</div><div class="stat-label">档案总数</div></div>' +
-    '<div class="stat-card"><div class="stat-num">' + (stats.points || 0) + '</div><div class="stat-label">累计进化点</div></div>' +
-    '<div class="stat-card"><div class="stat-num">' + (stats.skills || 0) + '</div><div class="stat-label">共建 Skills</div></div>';
+    '<div class="stat-card"><div class="stat-num">' + (s.archives || 0) + '</div><div class="stat-label">档案总数</div></div>' +
+    '<div class="stat-card"><div class="stat-num">' + (s.points || 0) + '</div><div class="stat-label">累计进化点</div></div>' +
+    '<div class="stat-card"><div class="stat-num">' + (s.skills || 0) + '</div><div class="stat-label">共建 Skills</div></div>' +
+    '<div class="stat-card"><div class="stat-num" style="color:#10b981;">+' + da + '</div><div class="stat-label">今日新增档案</div></div>' +
+    '<div class="stat-card"><div class="stat-num" style="color:#10b981;">+' + dp + '</div><div class="stat-label">今日进化点</div></div>' +
+    '<div class="stat-card"><div class="stat-num" style="color:#10b981;">+' + ds + '</div><div class="stat-label">今日共建 Skills</div></div>';
 }
 
 function renderContent() {
   if (currentTab === 'archives') {
-    const html = (data.archives || []).map(a => {
+    // 按日期降序排序
+    const sorted = (data.archives || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const html = sorted.map(a => {
       const tags = (a.tags || []).map(t => '<span class="tag">' + t + '</span>').join('');
       const details = a.details || {};
       const renderDetail = (key) => {
