@@ -1,4 +1,0 @@
-Answer the following math question, given in LaTeX format, clearly and concisely, and present the final answer as \(\boxed{x}\), where X is the fully simplified solution.
-
-Solve the following question: 
-<question>

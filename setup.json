@@ -1,4 +1,0 @@
-{
-  "translator": "configs/translators/deepseek_v4_flash.py",
-  "prover": "configs/provers/deepseek_v4_flash.py"
-}
