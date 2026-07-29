@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0f111a 0%, #111827 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(165, 180, 252, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 180, 252, 0.4);
+}
+
+/* Click-to-copy button */
+.copy-command {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.copy-command:hover {
+  background: rgba(165, 180, 252, 0.15) !important;
+}
+.copy-command:active {
+  transform: scale(0.97);
+}
+
+/* Card entrance animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.archive-card {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
