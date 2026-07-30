@@ -74,19 +74,45 @@
         ],
         "node": [{ "title": "去工程化决策", "content": "在现代框架部署受阻时，降级为最简静态方案是更具责任心的工程选择。"}]
       }
+    },
+    {
+      "id": "arch_20260729_01",
+      "date": "2026-07-29",
+      "title": "React SPA 重写 + GitHub Actions 云端部署",
+      "desc": "将档案馆从单文件 HTML 升级为 React 18 + Vite + Tailwind SPA，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖的跨设备自动化。",
+      "tags": ["架构升级", "云端部署", "React", "GitHub Actions"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "cd ~/evolution-dashboard && npm run build",
+      "details": {
+        "skill": [{ "title": "project-governance 治理框架", "content": "将通用型 Codex 项目设计提示词适配为 Hermes 文档驱动架构，创建为可复用 skill。四层结构：主控+执行+同步+知识，18 项治理文件模板。", "icon": "🏗️" }],
+        "evolution": [{ "title": "部署架构跨代升级", "content": "从单文件 HTML（数据烘焙）→ React SPA（数据渲染分离）+ GitHub Actions 自动构建部署。彻底消除单机依赖。", "icon": "📈" }],
+        "memory": [
+          { "title": "GitHub Pages 部署路径", "content": "Vite build → cp dist/* → git push main → Actions 自动部署。坑：git rm 导致 node_modules 误删需重装；gh-pages-temp 分支残留需清理。" },
+          { "title": "密钥管理铁律", "content": "SSH key 优先，Keychain PAT fallback。永不接受 plaintext credentials。用户曾泄露 PAT，此后一律走 Keychain/SSH。" }
+        ],
+        "node": [
+          { "title": "飞书长连接绑定", "content": "WebSocket 握手成功 ≠ 功能可用。验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。", "icon": "🔌" },
+          { "title": "治理框架落地", "content": "进化档案馆作为首个项目按 project-governance 框架补齐全套治理文档，覆盖度 30%→100%。", "icon": "📋" }
+        ]
+      }
     }
   ],
   "memories": [
     { "content": "【核心定义】Skill：新增程序化工具；记忆点：事实性固化；进化点：能力量化提升；探索节点：分支子任务。" },
     { "content": "五大协作准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。" },
-    { "content": "档案馆治理：实质进化门槛 + 1会话1档案 + 同日合并增量。无意义记录严禁入档。" }
+    { "content": "档案馆治理：实质进化门槛 + 1会话1档案 + 同日合并增量。无意义记录严禁入档。" },
+    { "content": "GitHub Pages 部署路径：Vite build → cp dist/* → git push main → Actions 自动部署。" },
+    { "content": "密钥管理：SSH key 优先，Keychain PAT fallback，永不接受 plaintext credentials。" },
+    { "content": "飞书绑定验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
     { "content": "完成从单页到三层视图 SPA 架构的演进。" },
     { "content": "确立内核与工作空间分离的项目制开发范式。" },
     { "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。" },
-    { "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。" }
+    { "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。" },
+    { "content": "从单文件 HTML 升级为 React 18 SPA + Vite + Tailwind，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖。" },
+    { "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。" }
   ],
-  "stats": { "archives": 5, "points": 8, "skills": 4 }
+  "stats": { "archives": 6, "points": 15, "skills": 5 }
 }
