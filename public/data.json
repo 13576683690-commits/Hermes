@@ -95,6 +95,23 @@
           { "title": "治理框架落地", "content": "进化档案馆作为首个项目按 project-governance 框架补齐全套治理文档，覆盖度 30%→100%。", "icon": "📋" }
         ]
       }
+    },
+    {
+      "id": "arch_20260730_01",
+      "date": "2026-07-30",
+      "title": "GitHub Pages 部署根因定位：Source 模式冲突",
+      "desc": "定位了 Actions 持续 startup_failure 的根因——GitHub Pages Source 设置为 'Deploy from branch' 而非 'GitHub Actions'，两种模式互斥。确立了系统化部署排查方法论。",
+      "tags": ["部署排障", "GitHub Pages", "Actions", "根因分析"],
+      "stats": { "skill": 0, "memory": 2, "evolution": 1, "node": 1 },
+      "command": "curl -s https://13576683690-commits.github.io/Hermes/data.json",
+      "details": {
+        "evolution": [{ "title": "部署排查方法论成型", "content": "建立了五步排查 ladder：①curl 确认线上实际内容（不靠浏览器）→ ②GitHub API 确认部署源和 Actions 状态 → ③确认 push 到了正确分支 → ④检查构建产物是否更新 → ⑤检查 Pages Source 模式。", "icon": "📈" }],
+        "memory": [
+          { "title": "Pages Source 模式互斥", "content": "'Deploy from branch' 与 'GitHub Actions' 两种 Pages Source 模式互斥。经典模式下带 deploy-pages action 的 workflow 会 startup_failure。无法通过 API 检查（需认证），只能用户去 Settings→Pages 确认。" },
+          { "title": "部署排查铁律", "content": "push 不生效时：第一步 curl 线上 data.json 确认实际内容（浏览器有缓存不可靠），第二步用 GitHub API 确认部署源分支和 Actions 状态。不靠猜测。" }
+        ],
+        "node": [{ "title": "多分支模型确认", "content": "通过 GitHub API (/actions/runs + /deployments) 确认：所有 pages build 的 head_branch 均为 main，gh-pages 不再触发部署。main = Pages 实际部署源。", "icon": "🔍" }]
+      }
     }
   ],
   "memories": [
@@ -103,7 +120,9 @@
     { "content": "档案馆治理：实质进化门槛 + 1会话1档案 + 同日合并增量。无意义记录严禁入档。" },
     { "content": "GitHub Pages 部署路径：Vite build → cp dist/* → git push main → Actions 自动部署。" },
     { "content": "密钥管理：SSH key 优先，Keychain PAT fallback，永不接受 plaintext credentials。" },
-    { "content": "飞书绑定验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。" }
+    { "content": "飞书绑定验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。" },
+    { "content": "GitHub Pages Source 模式互斥：'Deploy from branch' vs 'GitHub Actions'。deploy-pages action 在经典模式下 startup_failure。无法 API 检查，只能 Settings→Pages 确认。" },
+    { "content": "部署排查铁律：push 不生效时第一步 curl 线上 data.json（浏览器有缓存不可靠），第二步 GitHub API 确认部署源和 Actions 状态。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
@@ -112,7 +131,8 @@
     { "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。" },
     { "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。" },
     { "content": "从单文件 HTML 升级为 React 18 SPA + Vite + Tailwind，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖。" },
-    { "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。" }
+    { "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。" },
+    { "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。" }
   ],
-  "stats": { "archives": 6, "points": 15, "skills": 5 }
+  "stats": { "archives": 7, "points": 17, "skills": 5 }
 }
