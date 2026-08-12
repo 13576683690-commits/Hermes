@@ -1,6 +1,31 @@
 {
   "archives": [
     {
+      "id": "arch_20260811_01",
+      "date": "2026-08-11",
+      "title": "easyocr OCR 路径验证 + DOWINX 跨境电商周利润分析框架",
+      "desc": "验证了 easyocr（Python torch 生态）作为 GLM-5.2 无视觉能力时的 OCR 备选方案，成功识别飞书多维表格截图。基于识别结果，为 DOWINX 电竞椅品牌（亚马逊四站点）设计了四层金字塔周利润分析体系。",
+      "tags": ["OCR", "easyocr", "跨境电商", "利润分析", "DOWINX", "亚马逊"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "pip3 install easyocr && python3 -c \"import easyocr; reader = easyocr.Reader(['ch_sim','en'], gpu=False)\"",
+      "details": {
+        "skill": [
+          { "title": "easyocr Python OCR 能力", "content": "通过 easyocr（torch 2.8.0 + opencv-headless + scipy）实现 Python 生态的中英文 OCR。在 3346x804 飞书多维表格截图上成功识别出中文品牌名、站点名、日期等关键信息。比 Swift+Vision 重（需安装 ~2GB torch 依赖），但在无法直接调用 Swift 的场景下是可靠备选。", "icon": "🔍" }
+        ],
+        "evolution": [
+          { "title": "跨境电商周利润分析框架成型", "content": "为 DOWINX 品牌（亚马逊美/欧/日/加四站）设计了四层金字塔分析体系：①全局汇总（跨站对比、利润占比排名）→ ②站点深度拆解（收入端×成本端逐项）→ ③趋势&异常检测（周环比、成本项波动）→ ④决策建议（每站行动项+资源分配）。核心逻辑：从目标倒推，先看利润差额再定位流量/转化问题。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "DOWINX 品牌业务信息", "content": "DOWINX = 锅仔运营的电竞椅品牌，亚马逊跨境电商，覆盖美国/欧洲/日本/加拿大四大站点。周维度利润报表存储在飞书多维表格「分站点可售链接/月度财务报表」中。企业主体：杭州木棉网络科技有限公司。" },
+          { "title": "easyocr vs Swift+Vision OCR 路径选择", "content": "GLM-5.2 无视觉能力时，OCR 有两条验证可用路径：①Swift+Vision（8/4 验证，零依赖，需写 swift 脚本）②easyocr（8/11 验证，Python 生态，需 torch ~2GB）。Memory 之前标注「勿试 easyocr」过于保守——easyocr 实际可用，只是依赖重。在 feishu 会话中无法直接跑 swift 时，easyocr 是合理 fallback。" }
+        ],
+        "node": [
+          { "title": "OCR 探索阶梯", "content": "逐级排查：vision_analyze(GLM 400) → pytesseract(tesseract binary 缺失) → numpy+PIL 图像结构分析(安装 numpy 成功但无文字识别) → easyocr(安装 torch+opencv，OCR 成功)。关键教训：先试 Swift+Vision（已有 skill），避免安装重依赖。", "icon": "🔧" },
+          { "title": "周利润分析体系规划", "content": "基于飞书多维表格识别到的四站利润数据，设计了从全局汇总到单站拆解到趋势追踪到行动建议的完整分析闭环。待用户确认报表内字段后可落地为具体分析模板。", "icon": "📊" }
+        ]
+      }
+    },
+    {
       "id": "arch_20260804_01",
       "date": "2026-08-04",
       "title": "亚马逊链接诊断框架 + macOS Vision OCR 能力突破",
@@ -174,7 +199,8 @@
     { "content": "部署排查铁律：push 不生效时第一步 curl 线上 data.json（浏览器有缓存不可靠），第二步 GitHub API 确认部署源和 Actions 状态。" },
     { "content": "Cloudflare Pages 部署铁律：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（522 = 暂时未就绪，非失败）。加静态资源必须手动 cp 到 dist/ 再 deploy。" },
     { "content": "飞书 Bot 权限隔离：Bot 能看到多维表格结构但读不到记录（fields 返回空 {}）= Bot 未被添加为该表协作者，需手动在飞书里授权。" },
-    { "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。" }
+    { "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。" },
+    { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
@@ -186,7 +212,8 @@
     { "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。" },
     { "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。" },
     { "content": "GitHub Pages → Cloudflare Pages 跨平台迁移，部署从依赖 CI workflow 简化为 wrangler CLI 一条命令直传。同时打通飞书 Bitable API，实现多维表格结构化读取。" },
-    { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" }
+    { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" },
+    { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" }
   ],
-  "stats": { "archives": 9, "points": 24, "skills": 7 }
+  "stats": { "archives": 10, "points": 26, "skills": 8 }
 }
