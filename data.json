@@ -1,6 +1,31 @@
 {
   "archives": [
     {
+      "id": "arch_20260812_01",
+      "date": "2026-08-12",
+      "title": "DOWINX 周利润三层下钻分析框架 + lark-cli 数据打通",
+      "desc": "基于飞书思维导图框架与美国站真实数据（2026-07-27至08-02），建立了 DOWINX 电竞椅品牌周利润三层下钻分析体系（项目整体→SPU→SKU）。通过 lark-cli 打通飞书 Sheets API，实现 59 列 6 个工作表的结构化数据读取，并用真实数据完成首轮完整分析演示。",
+      "tags": ["DOWINX", "周利润分析", "lark-cli", "飞书表格", "三层下钻", "跨境电商", "数据分析"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "npx lark-cli sheets +cells-get --spreadsheet-token FgNgsqS3Shp1Pstqvk7cQlOonD7 --sheet-id \"0rlojD\" --range \"A1:BH1\"",
+      "details": {
+        "skill": [
+          { "title": "lark-cli Sheets API 数据读取", "content": "通过 lark-cli（@larksuite/cli v1.0.79）的 `sheets +cells-get` 命令读取飞书电子表格数据。关键参数：--spreadsheet-token, --sheet-id, --range。发现 lark-cli --jq 过滤不支持复杂结构（cells 为嵌套数组），需用 `--format json` + Python 解析。成功读取 DOWINX 美国站周利润报表的 SPU维度原表（59列×200行）、SKU维度原表（51列×754行）等 5 个工作表。spreadsheet_token=FgNgsqS3Shp1Pstqvk7cQlOonD7。", "icon": "🔌" }
+        ],
+        "evolution": [
+          { "title": "DOWINX 周利润三层下钻分析框架成型", "content": "从用户飞书思维导图 + 口述规则中提炼出完整分析框架：①项目整体层（业绩指标：销售额=总销售额-促销折扣，利润率标准：非Deal周≥8%/Deal周≥5%；各项费用扫描：逐项占比 vs 预警线）→ ②SPU层（同一套规则定位问题产品，偏差分析 vs 整体均值）→ ③SKU层（客单价是否符合定价 + FBA仓储费超范围定位）。用美国站真实数据完整演示：利润率1.27%严重不达标，LS-66D58J是最大隐患（销量最高498但亏损¥36,095，采购成本46.58%+海外仓运费21.49%）。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "DOWINX 周利润分析规则体系", "content": "销售额=总销售额-促销折扣。利润率达标线：非Deal周≥8%，Deal周≥5%（Deal周判定方式待补充）。费用预警阈值：退款率标准3%/高额5%/异常>5%；推广占比10%标准/10-13%控制/>13%有问题/>20%出方案；亚马逊其他费用>3%预警/>5%调整活动；FBA仓储费>2%；FBM仓储费固定2%；海外仓其他费>2%。分析流程：先看整体健康→拆SPU→下钻SKU。每周还需做环比（上周对比，变化率>20%才重点分析）。" },
+          { "title": "飞书思维导图 + lark-cli 数据源", "content": "DOWINX 分析框架来源于飞书思维导图（wiki node GyFrwPHrAiWL9jkOJncckonCnGd，私有网络 web_extract 被拦截，需用 lark-cli mindnotes 读取）。数据源为飞书电子表格，美国站 token=FgNgsqS3Shp1Pstqvk7cQlOonD7，包含5个工作表：SPU维度数据原表(0rlojD)、SKU维度数据原表(1IEfIN)、SKU维度周利润表(6rnVwv)、SPU维度周利润表(qEtY2g)、SPU维度周推广表(kolVWX)。各站独立分析，不做跨站合并。" }
+        ],
+        "node": [
+          { "title": "美国站首周数据分析演示", "content": "用美国站 2026-07-27至08-02 数据完整走了一遍三层下钻：整体利润率1.27%（远低于8%标准），3个SPU亏损（LS-66D58J最严重-12.62%，LS-66D50F -6.39%，LS-66D57A -1.44%），LS-66D58退款率4.71%接近5%高额线。整体费用：采购38.61%+海外仓运费14.65%+销售佣金15.39% 吃掉绝大部分利润。", "icon": "📊" },
+          { "title": "分析引擎待固化", "content": "框架和规则已确认，下一步是将三层下钻逻辑 + 费用预警阈值固化成 Python 分析引擎（输入飞书表格token自动输出诊断报告）。环比判断需要等第二周数据到位后启动。", "icon": "🔧" }
+        ]
+      }
+    },
+    {
       "id": "arch_20260811_01",
       "date": "2026-08-11",
       "title": "easyocr OCR 路径验证 + DOWINX 跨境电商周利润分析框架",
@@ -200,7 +225,8 @@
     { "content": "Cloudflare Pages 部署铁律：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（522 = 暂时未就绪，非失败）。加静态资源必须手动 cp 到 dist/ 再 deploy。" },
     { "content": "飞书 Bot 权限隔离：Bot 能看到多维表格结构但读不到记录（fields 返回空 {}）= Bot 未被添加为该表协作者，需手动在飞书里授权。" },
     { "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。" },
-    { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" }
+    { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" },
+    { "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%，FBM仓储固定2%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
@@ -213,7 +239,8 @@
     { "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。" },
     { "content": "GitHub Pages → Cloudflare Pages 跨平台迁移，部署从依赖 CI workflow 简化为 wrangler CLI 一条命令直传。同时打通飞书 Bitable API，实现多维表格结构化读取。" },
     { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" },
-    { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" }
+    { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" },
+    { "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。" }
   ],
-  "stats": { "archives": 10, "points": 26, "skills": 8 }
+  "stats": { "archives": 11, "points": 29, "skills": 9 }
 }
