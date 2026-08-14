@@ -1,6 +1,31 @@
 {
   "archives": [
     {
+      "id": "arch_20260813_01",
+      "date": "2026-08-13",
+      "title": "DOWINX 美国站 W2 环比分析 + 智谱 MCP 工具接入 + 三层下钻规则固化",
+      "desc": "用美国站 W2（08-03至08-09）数据完成了首次环比分析，从单周诊断升级为双周对比。同步完成 SPU 层费用扫描全梯队覆盖（亏损/未达标/达标三批）+ SKU 层下钻（定位到具体 SKU 的客单价偏差和异常费用项）。接入智谱 GLM Coding Plan 的 4 个 MCP 工具（zread/web_search/web_reader/zai_vision）。将用户 6 项规则修正同步到 skill。",
+      "tags": ["DOWINX", "环比分析", "SPU层", "SKU下钻", "智谱MCP", "规则固化", "数据分析"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "npx lark-cli sheets +cells-get --spreadsheet-token Nqa0sgXe6hNKM5tEYnCcOQBLnAh --sheet-id \"2pwSbk\" --range \"A3:AW33\" --format json",
+      "details": {
+        "skill": [
+          { "title": "智谱 GLM Coding Plan MCP 工具接入", "content": "接入智谱 BigModel 的 4 个 MCP 工具：①zread（HTTP，开源仓库文档/代码检索，3 个工具：search_doc/get_repo_structure/read_file）②web_search（HTTP，联网搜索）③web_reader（HTTP，网页读取）④zai_vision（stdio npx @z_ai/mcp-server，8 个视觉工具，GLM-4.6V）。均用 GLM_API_KEY 认证。配置写入 Hermes config.yaml，重启后新会话自动加载，工具名 mcp_{server}_{tool}。", "icon": "🔌" }
+        ],
+        "evolution": [
+          { "title": "DOWINX 周利润分析从单周诊断升级为双周环比体系", "content": "W2 分析实现了完整环比：整体层利润率从 1.27%→4.11%（+2.84pp），24 个 SPU 全部带 W1 环比对照。SPU 层按三梯队批量过：亏损 7 个 / 未达标 7 个 / 达标 10 个，每个 SPU 的费用项均挂 W1 值 + 环比变化率。发现 59A 由盈转亏（-338%），68E 利润率腰斩（10.3%→5.3%），58J 持续失血 ¥4.1万（成本结构问题）。SKU 下钻发现核心规律：所有亏损 SKU 的实际客单价均低于定价目标 10-18%，降价销售是利润流失的核心渠道。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "DOWINX 分析规则 6 项修正", "content": "用户明确修正：①利润率分母=总销售额-促销折扣（净销售额）；②整体层尾程运费需合并看待也需分开看比例（FBA发货费随 FBA 库存变化，海外仓运费按 SKU 单价固定）；③固定项（销售佣金/税费）不判定不展示；④整体层需增加环比列；⑤仓储费增加总仓储费占比维度（FBA+海外仓，标准线=两项预警线之和 4%），FBA仓储费优秀标准修正为<1%；⑥FBA库存赔偿是收入项，越多越好但需监控防止不可控收入虚增利润率掩盖真实问题。" },
+          { "title": "DOWINX 周报数据入口：飞书多维表格 MSKU 周利润报表", "content": "每周新数据更新在飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD)中，按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。W2 美国站 spreadsheet_token=Nqa0sgXe6hNKM5tEYnCcOQBLnAh，SPU维度周利润表 sheet_id=2pwSbk，SKU维度数据原表 sheet_id=4cNKPc。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb，sheet_id=gVlNxd（只覆盖 15 个 SPU，58J/59A 不在其中）。" }
+        ],
+        "node": [
+          { "title": "美国站 W2 完整分析（三层下钻 + 环比）", "content": "第一层：整体利润率 4.11%（W1: 1.27%，+2.84pp），仍远低于 8%。推广 10.8% 接近标准线，海外仓仓储 2.05% 微超。第二层：24 个 SPU 按梯队批量过——亏损 7 个（58J -¥41,588 持续失血、59A 由盈转亏 -338%、50F 亏损扩大、30 大幅改善 +32pp），未达标 7 个（68E 退款率翻 3 倍恶化、D33/D80B/D38/D55/D57D 改善中），达标 10 个（D89A/D55A/D33C/D57K 利润下滑但费用端基本健康）。第三层 SKU 下钻：亏损 SKU 共同特征是客单价低于定价目标 10-18%（降价销售），50F-01 广告 28%、59A-04 退款 21.36%、68E-02 广告 47% 为极端异常值。", "icon": "📊" },
+          { "title": "分析呈现风格迭代", "content": "用户反馈：飞书聊天中大表格占空间且混排文字难读，偏好纯文字精炼版（每个 SPU 一行紧凑描述）。后又调整为表格为主但补充内容塞进表格不拆散结构。最终确认：SPU 层用列表式文字描述（每个 SPU 一段），不用宽表格。亏损 SPU 必须给出标准性诊断（超预警线的项+差距、环比恶化>30%的项），不设行动优先级排名（不同 SPU = 不同运营负责人）。", "icon": "🎨" }
+        ]
+      }
+    },
+    {
       "id": "arch_20260812_01",
       "date": "2026-08-12",
       "title": "DOWINX 周利润三层下钻分析框架 + lark-cli 数据打通",
@@ -226,7 +251,9 @@
     { "content": "飞书 Bot 权限隔离：Bot 能看到多维表格结构但读不到记录（fields 返回空 {}）= Bot 未被添加为该表协作者，需手动在飞书里授权。" },
     { "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。" },
     { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" },
-    { "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%，FBM仓储固定2%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。" }
+    { "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%（优秀<1%），FBM仓储固定2%，总仓储费(FBA+海外仓)>4%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。" },
+    { "content": "DOWINX 周报数据入口：飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD) 按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb sheet_id=gVlNxd（只覆盖15个SPU，58J/59A 不在其中）。" },
+    { "content": "智谱 GLM Coding Plan 4个MCP已配入 Hermes config.yaml：zread(HTTP,开源仓库)/web_search(HTTP,联网搜索)/web_reader(HTTP,网页读取) + zai_vision(stdio npx @z_ai/mcp-server,8个视觉工具)。均用 GLM_API_KEY 认证。重启生效后工具名 mcp_{server}_{tool}。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
@@ -240,7 +267,8 @@
     { "content": "GitHub Pages → Cloudflare Pages 跨平台迁移，部署从依赖 CI workflow 简化为 wrangler CLI 一条命令直传。同时打通飞书 Bitable API，实现多维表格结构化读取。" },
     { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" },
     { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" },
-    { "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。" }
+    { "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。" },
+    { "content": "DOWINX 周利润分析升级为双周环比体系：W2 环比对照全 SPU 覆盖，三梯队批量扫描（亏损/未达标/达标），SKU 下钻定位核心病因（降价销售是利润流失核心渠道）。同步接入智谱 4 个 MCP 工具 + 固化用户 6 项规则修正。" }
   ],
-  "stats": { "archives": 11, "points": 29, "skills": 9 }
+  "stats": { "archives": 12, "points": 33, "skills": 10 }
 }

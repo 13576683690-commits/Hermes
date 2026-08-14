@@ -1,6 +1,105 @@
 {
   "archives": [
     {
+      "id": "arch_20260813_01",
+      "date": "2026-08-13",
+      "title": "DOWINX 美国站 W2 环比分析 + 智谱 MCP 工具接入 + 三层下钻规则固化",
+      "desc": "用美国站 W2（08-03至08-09）数据完成了首次环比分析，从单周诊断升级为双周对比。同步完成 SPU 层费用扫描全梯队覆盖（亏损/未达标/达标三批）+ SKU 层下钻（定位到具体 SKU 的客单价偏差和异常费用项）。接入智谱 GLM Coding Plan 的 4 个 MCP 工具（zread/web_search/web_reader/zai_vision）。将用户 6 项规则修正同步到 skill。",
+      "tags": ["DOWINX", "环比分析", "SPU层", "SKU下钻", "智谱MCP", "规则固化", "数据分析"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "npx lark-cli sheets +cells-get --spreadsheet-token Nqa0sgXe6hNKM5tEYnCcOQBLnAh --sheet-id \"2pwSbk\" --range \"A3:AW33\" --format json",
+      "details": {
+        "skill": [
+          { "title": "智谱 GLM Coding Plan MCP 工具接入", "content": "接入智谱 BigModel 的 4 个 MCP 工具：①zread（HTTP，开源仓库文档/代码检索，3 个工具：search_doc/get_repo_structure/read_file）②web_search（HTTP，联网搜索）③web_reader（HTTP，网页读取）④zai_vision（stdio npx @z_ai/mcp-server，8 个视觉工具，GLM-4.6V）。均用 GLM_API_KEY 认证。配置写入 Hermes config.yaml，重启后新会话自动加载，工具名 mcp_{server}_{tool}。", "icon": "🔌" }
+        ],
+        "evolution": [
+          { "title": "DOWINX 周利润分析从单周诊断升级为双周环比体系", "content": "W2 分析实现了完整环比：整体层利润率从 1.27%→4.11%（+2.84pp），24 个 SPU 全部带 W1 环比对照。SPU 层按三梯队批量过：亏损 7 个 / 未达标 7 个 / 达标 10 个，每个 SPU 的费用项均挂 W1 值 + 环比变化率。发现 59A 由盈转亏（-338%），68E 利润率腰斩（10.3%→5.3%），58J 持续失血 ¥4.1万（成本结构问题）。SKU 下钻发现核心规律：所有亏损 SKU 的实际客单价均低于定价目标 10-18%，降价销售是利润流失的核心渠道。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "DOWINX 分析规则 6 项修正", "content": "用户明确修正：①利润率分母=总销售额-促销折扣（净销售额）；②整体层尾程运费需合并看待也需分开看比例（FBA发货费随 FBA 库存变化，海外仓运费按 SKU 单价固定）；③固定项（销售佣金/税费）不判定不展示；④整体层需增加环比列；⑤仓储费增加总仓储费占比维度（FBA+海外仓，标准线=两项预警线之和 4%），FBA仓储费优秀标准修正为<1%；⑥FBA库存赔偿是收入项，越多越好但需监控防止不可控收入虚增利润率掩盖真实问题。" },
+          { "title": "DOWINX 周报数据入口：飞书多维表格 MSKU 周利润报表", "content": "每周新数据更新在飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD)中，按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。W2 美国站 spreadsheet_token=Nqa0sgXe6hNKM5tEYnCcOQBLnAh，SPU维度周利润表 sheet_id=2pwSbk，SKU维度数据原表 sheet_id=4cNKPc。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb，sheet_id=gVlNxd（只覆盖 15 个 SPU，58J/59A 不在其中）。" }
+        ],
+        "node": [
+          { "title": "美国站 W2 完整分析（三层下钻 + 环比）", "content": "第一层：整体利润率 4.11%（W1: 1.27%，+2.84pp），仍远低于 8%。推广 10.8% 接近标准线，海外仓仓储 2.05% 微超。第二层：24 个 SPU 按梯队批量过——亏损 7 个（58J -¥41,588 持续失血、59A 由盈转亏 -338%、50F 亏损扩大、30 大幅改善 +32pp），未达标 7 个（68E 退款率翻 3 倍恶化、D33/D80B/D38/D55/D57D 改善中），达标 10 个（D89A/D55A/D33C/D57K 利润下滑但费用端基本健康）。第三层 SKU 下钻：亏损 SKU 共同特征是客单价低于定价目标 10-18%（降价销售），50F-01 广告 28%、59A-04 退款 21.36%、68E-02 广告 47% 为极端异常值。", "icon": "📊" },
+          { "title": "分析呈现风格迭代", "content": "用户反馈：飞书聊天中大表格占空间且混排文字难读，偏好纯文字精炼版（每个 SPU 一行紧凑描述）。后又调整为表格为主但补充内容塞进表格不拆散结构。最终确认：SPU 层用列表式文字描述（每个 SPU 一段），不用宽表格。亏损 SPU 必须给出标准性诊断（超预警线的项+差距、环比恶化>30%的项），不设行动优先级排名（不同 SPU = 不同运营负责人）。", "icon": "🎨" }
+        ]
+      }
+    },
+    {
+      "id": "arch_20260812_01",
+      "date": "2026-08-12",
+      "title": "DOWINX 周利润三层下钻分析框架 + lark-cli 数据打通",
+      "desc": "基于飞书思维导图框架与美国站真实数据（2026-07-27至08-02），建立了 DOWINX 电竞椅品牌周利润三层下钻分析体系（项目整体→SPU→SKU）。通过 lark-cli 打通飞书 Sheets API，实现 59 列 6 个工作表的结构化数据读取，并用真实数据完成首轮完整分析演示。",
+      "tags": ["DOWINX", "周利润分析", "lark-cli", "飞书表格", "三层下钻", "跨境电商", "数据分析"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "npx lark-cli sheets +cells-get --spreadsheet-token FgNgsqS3Shp1Pstqvk7cQlOonD7 --sheet-id \"0rlojD\" --range \"A1:BH1\"",
+      "details": {
+        "skill": [
+          { "title": "lark-cli Sheets API 数据读取", "content": "通过 lark-cli（@larksuite/cli v1.0.79）的 `sheets +cells-get` 命令读取飞书电子表格数据。关键参数：--spreadsheet-token, --sheet-id, --range。发现 lark-cli --jq 过滤不支持复杂结构（cells 为嵌套数组），需用 `--format json` + Python 解析。成功读取 DOWINX 美国站周利润报表的 SPU维度原表（59列×200行）、SKU维度原表（51列×754行）等 5 个工作表。spreadsheet_token=FgNgsqS3Shp1Pstqvk7cQlOonD7。", "icon": "🔌" }
+        ],
+        "evolution": [
+          { "title": "DOWINX 周利润三层下钻分析框架成型", "content": "从用户飞书思维导图 + 口述规则中提炼出完整分析框架：①项目整体层（业绩指标：销售额=总销售额-促销折扣，利润率标准：非Deal周≥8%/Deal周≥5%；各项费用扫描：逐项占比 vs 预警线）→ ②SPU层（同一套规则定位问题产品，偏差分析 vs 整体均值）→ ③SKU层（客单价是否符合定价 + FBA仓储费超范围定位）。用美国站真实数据完整演示：利润率1.27%严重不达标，LS-66D58J是最大隐患（销量最高498但亏损¥36,095，采购成本46.58%+海外仓运费21.49%）。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "DOWINX 周利润分析规则体系", "content": "销售额=总销售额-促销折扣。利润率达标线：非Deal周≥8%，Deal周≥5%（Deal周判定方式待补充）。费用预警阈值：退款率标准3%/高额5%/异常>5%；推广占比10%标准/10-13%控制/>13%有问题/>20%出方案；亚马逊其他费用>3%预警/>5%调整活动；FBA仓储费>2%；FBM仓储费固定2%；海外仓其他费>2%。分析流程：先看整体健康→拆SPU→下钻SKU。每周还需做环比（上周对比，变化率>20%才重点分析）。" },
+          { "title": "飞书思维导图 + lark-cli 数据源", "content": "DOWINX 分析框架来源于飞书思维导图（wiki node GyFrwPHrAiWL9jkOJncckonCnGd，私有网络 web_extract 被拦截，需用 lark-cli mindnotes 读取）。数据源为飞书电子表格，美国站 token=FgNgsqS3Shp1Pstqvk7cQlOonD7，包含5个工作表：SPU维度数据原表(0rlojD)、SKU维度数据原表(1IEfIN)、SKU维度周利润表(6rnVwv)、SPU维度周利润表(qEtY2g)、SPU维度周推广表(kolVWX)。各站独立分析，不做跨站合并。" }
+        ],
+        "node": [
+          { "title": "美国站首周数据分析演示", "content": "用美国站 2026-07-27至08-02 数据完整走了一遍三层下钻：整体利润率1.27%（远低于8%标准），3个SPU亏损（LS-66D58J最严重-12.62%，LS-66D50F -6.39%，LS-66D57A -1.44%），LS-66D58退款率4.71%接近5%高额线。整体费用：采购38.61%+海外仓运费14.65%+销售佣金15.39% 吃掉绝大部分利润。", "icon": "📊" },
+          { "title": "分析引擎待固化", "content": "框架和规则已确认，下一步是将三层下钻逻辑 + 费用预警阈值固化成 Python 分析引擎（输入飞书表格token自动输出诊断报告）。环比判断需要等第二周数据到位后启动。", "icon": "🔧" }
+        ]
+      }
+    },
+    {
+      "id": "arch_20260811_01",
+      "date": "2026-08-11",
+      "title": "easyocr OCR 路径验证 + DOWINX 跨境电商周利润分析框架",
+      "desc": "验证了 easyocr（Python torch 生态）作为 GLM-5.2 无视觉能力时的 OCR 备选方案，成功识别飞书多维表格截图。基于识别结果，为 DOWINX 电竞椅品牌（亚马逊四站点）设计了四层金字塔周利润分析体系。",
+      "tags": ["OCR", "easyocr", "跨境电商", "利润分析", "DOWINX", "亚马逊"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "pip3 install easyocr && python3 -c \"import easyocr; reader = easyocr.Reader(['ch_sim','en'], gpu=False)\"",
+      "details": {
+        "skill": [
+          { "title": "easyocr Python OCR 能力", "content": "通过 easyocr（torch 2.8.0 + opencv-headless + scipy）实现 Python 生态的中英文 OCR。在 3346x804 飞书多维表格截图上成功识别出中文品牌名、站点名、日期等关键信息。比 Swift+Vision 重（需安装 ~2GB torch 依赖），但在无法直接调用 Swift 的场景下是可靠备选。", "icon": "🔍" }
+        ],
+        "evolution": [
+          { "title": "跨境电商周利润分析框架成型", "content": "为 DOWINX 品牌（亚马逊美/欧/日/加四站）设计了四层金字塔分析体系：①全局汇总（跨站对比、利润占比排名）→ ②站点深度拆解（收入端×成本端逐项）→ ③趋势&异常检测（周环比、成本项波动）→ ④决策建议（每站行动项+资源分配）。核心逻辑：从目标倒推，先看利润差额再定位流量/转化问题。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "DOWINX 品牌业务信息", "content": "DOWINX = 锅仔运营的电竞椅品牌，亚马逊跨境电商，覆盖美国/欧洲/日本/加拿大四大站点。周维度利润报表存储在飞书多维表格「分站点可售链接/月度财务报表」中。企业主体：杭州木棉网络科技有限公司。" },
+          { "title": "easyocr vs Swift+Vision OCR 路径选择", "content": "GLM-5.2 无视觉能力时，OCR 有两条验证可用路径：①Swift+Vision（8/4 验证，零依赖，需写 swift 脚本）②easyocr（8/11 验证，Python 生态，需 torch ~2GB）。Memory 之前标注「勿试 easyocr」过于保守——easyocr 实际可用，只是依赖重。在 feishu 会话中无法直接跑 swift 时，easyocr 是合理 fallback。" }
+        ],
+        "node": [
+          { "title": "OCR 探索阶梯", "content": "逐级排查：vision_analyze(GLM 400) → pytesseract(tesseract binary 缺失) → numpy+PIL 图像结构分析(安装 numpy 成功但无文字识别) → easyocr(安装 torch+opencv，OCR 成功)。关键教训：先试 Swift+Vision（已有 skill），避免安装重依赖。", "icon": "🔧" },
+          { "title": "周利润分析体系规划", "content": "基于飞书多维表格识别到的四站利润数据，设计了从全局汇总到单站拆解到趋势追踪到行动建议的完整分析闭环。待用户确认报表内字段后可落地为具体分析模板。", "icon": "📊" }
+        ]
+      }
+    },
+    {
+      "id": "arch_20260804_01",
+      "date": "2026-08-04",
+      "title": "亚马逊链接诊断框架 + macOS Vision OCR 能力突破",
+      "desc": "建立了从目标倒推的亚马逊旗舰店链接诊断体系（流量/转化/对标三层），并通过 Swift+Vision 框架实现了零依赖的本地 OCR 能力，绕过了 tesseract/pytesseract 安装壁垒。",
+      "tags": ["亚马逊运营", "诊断框架", "OCR", "macOS Vision", "目标倒推"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 2 },
+      "command": "swift /tmp/ocr.swift",
+      "details": {
+        "skill": [
+          { "title": "macOS Vision OCR 能力", "content": "通过 Swift 命令行脚本调用原生 Vision 框架（VNRecognizeTextRequest），实现零外部依赖的本地 OCR。支持 zh-Hans/zh-Hant/en-US 多语言识别，精度为 accurate 级别。绕过了 tesseract 需要 Homebrew（本机无 brew）、easyocr 需大量依赖的限制。已验证可从 2640x1134 截图提取完整中文框架结构图文字。", "icon": "🔍" }
+        ],
+        "evolution": [
+          { "title": "亚马逊链接诊断体系成型", "content": "建立了从目标倒推的诊断链：目标(销量+利润) → 目标差额 → 流量缺口 vs 转化缺口 → 具体原因(流量少/贵/波动，广告/自然转化) → 对标体系(品牌级 & 自身级标准) → 开源节流·降本增效。核心优势：先有目标锚点再倒推诊断，而非'什么都看一下'。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "Swift OCR fallback 模式", "content": "当 tesseract 不可用（无 Homebrew）、pytesseract/easyocr 缺依赖、pyobjc 未安装时，Swift + Vision 框架是 macOS 上最可靠的零依赖 OCR 方案。命令：swift /tmp/ocr.swift，需导入 Vision + Foundation，用 VNRecognizeTextRequest + VNImageRequestHandler。注意 GCD 异步需用 DispatchSemaphore 等待。" }
+        ],
+        "node": [
+          { "title": "图片 OCR 基础设施探索", "content": "逐级排查：tesseract(binary缺失) → pytesseract(无brew) → easyocr(无依赖) → pyobjc/Vision(无objc模块) → Swift命令行(成功)。最终方案是直接写 Swift 脚本调用 Vision 框架，用 DispatchSemaphore 解决异步等待。", "icon": "🔧" },
+          { "title": "诊断框架对标体系", "content": "框架强调品牌链接与自身链接的双层对标：品牌流量标准/转化标准 vs 自身流量标准/转化标准，作为判断'差在哪'的基准线。", "icon": "📊" }
+        ]
+      }
+    },
+    {
       "id": "arch_001",
       "date": "2026-06-14",
       "title": "自进化档案馆：从零到一的架构构建",
@@ -97,6 +196,31 @@
       }
     },
     {
+      "id": "arch_20260731_01",
+      "date": "2026-07-31",
+      "title": "Cloudflare Pages 迁移 + 飞书 Bitable API 集成",
+      "desc": "GitHub Pages 因 Source 模式互斥连续 startup_failure 无法修复（需用户手动改 Settings），果断迁移到 Cloudflare Pages 实现跨设备部署。同时打通飞书多维表格 Bitable API，实现企业数据结构化读取。",
+      "tags": ["平台迁移", "Cloudflare Pages", "飞书API", "Bitable", "Wrangler"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "command": "npx wrangler pages deploy dist --project-name evolution-dashboard --branch main",
+      "details": {
+        "skill": [
+          { "title": "飞书 Bitable API 集成", "content": "通过 lark_oapi Python SDK 实现飞书多维表格的认证、列表读取、字段定义解析和记录数据提取。支持 app_token 路由、table_id 定位、raw JSON 解析。已验证可读取「财务报表处理」多维表格（16 条记录、9 字段）。", "icon": "🔌" }
+        ],
+        "evolution": [
+          { "title": "部署平台跨代迁移", "content": "GitHub Pages（受 Source 模式互斥阻塞）→ Cloudflare Pages（wrangler CLI 直传 dist/，全球 CDN，无限带宽/请求）。彻底消除 GitHub Actions 依赖，部署从「依赖 CI workflow 正确触发」简化为「一条 wrangler 命令直传」。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "Cloudflare Pages 部署铁律", "content": "更新流程：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（部署后立刻 curl 可能返回 522 = 暂时未就绪，非失败）。加静态资源（如 avatar）必须手动 cp 到 dist/ 根目录再 deploy。wrangler login OAuth 有 ~60s 超时，首次注册慢导致超时→重跑即可。" },
+          { "title": "飞书 Bot 权限隔离", "content": "Bot 能看到多维表格结构（字段定义）但读不到记录内容（fields 返回空 {}）= Bot 未被添加为该多维表格的协作者。必须手动在飞书表格里「添加协作者」搜索机器人并授权。「财务报表处理」表 app_token=KOSBbEntlaWVKCsIYemc7TX7nRa。" }
+        ],
+        "node": [
+          { "title": "GitHub Pages 放弃决策", "content": "Actions 连续 startup_failure + Pages API 返回 404 + 无法通过 API 检查 Source 模式（需认证）。遵循「以结果为准，跨设备可用 > 调试 GitHub 执念」原则，超过 2 轮排查立刻转向 Cloudflare Pages。", "icon": "🔀" },
+          { "title": "飞书 CLI 探索", "content": "调研飞书官方 CLI（feishu.cn/feishu-cli）——飞书官方开源 AI Agent 操作工具，npm 一行安装。npm 搜索发现多个第三方包（feishu-cli@0.2.0, @fanfanv5/feishu-cli@2.0.11 等）。最终结论：Hermes 已内置 lark_oapi SDK 可直接操作 Bitable，无需额外 CLI 工具。", "icon": "🔍" }
+        ]
+      }
+    },
+    {
       "id": "arch_20260730_01",
       "date": "2026-07-30",
       "title": "GitHub Pages 部署根因定位：Source 模式冲突",
@@ -122,7 +246,14 @@
     { "content": "密钥管理：SSH key 优先，Keychain PAT fallback，永不接受 plaintext credentials。" },
     { "content": "飞书绑定验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。" },
     { "content": "GitHub Pages Source 模式互斥：'Deploy from branch' vs 'GitHub Actions'。deploy-pages action 在经典模式下 startup_failure。无法 API 检查，只能 Settings→Pages 确认。" },
-    { "content": "部署排查铁律：push 不生效时第一步 curl 线上 data.json（浏览器有缓存不可靠），第二步 GitHub API 确认部署源和 Actions 状态。" }
+    { "content": "部署排查铁律：push 不生效时第一步 curl 线上 data.json（浏览器有缓存不可靠），第二步 GitHub API 确认部署源和 Actions 状态。" },
+    { "content": "Cloudflare Pages 部署铁律：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（522 = 暂时未就绪，非失败）。加静态资源必须手动 cp 到 dist/ 再 deploy。" },
+    { "content": "飞书 Bot 权限隔离：Bot 能看到多维表格结构但读不到记录（fields 返回空 {}）= Bot 未被添加为该表协作者，需手动在飞书里授权。" },
+    { "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。" },
+    { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" },
+    { "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%（优秀<1%），FBM仓储固定2%，总仓储费(FBA+海外仓)>4%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。" },
+    { "content": "DOWINX 周报数据入口：飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD) 按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb sheet_id=gVlNxd（只覆盖15个SPU，58J/59A 不在其中）。" },
+    { "content": "智谱 GLM Coding Plan 4个MCP已配入 Hermes config.yaml：zread(HTTP,开源仓库)/web_search(HTTP,联网搜索)/web_reader(HTTP,网页读取) + zai_vision(stdio npx @z_ai/mcp-server,8个视觉工具)。均用 GLM_API_KEY 认证。重启生效后工具名 mcp_{server}_{tool}。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
@@ -132,7 +263,12 @@
     { "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。" },
     { "content": "从单文件 HTML 升级为 React 18 SPA + Vite + Tailwind，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖。" },
     { "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。" },
-    { "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。" }
+    { "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。" },
+    { "content": "GitHub Pages → Cloudflare Pages 跨平台迁移，部署从依赖 CI workflow 简化为 wrangler CLI 一条命令直传。同时打通飞书 Bitable API，实现多维表格结构化读取。" },
+    { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" },
+    { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" },
+    { "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。" },
+    { "content": "DOWINX 周利润分析升级为双周环比体系：W2 环比对照全 SPU 覆盖，三梯队批量扫描（亏损/未达标/达标），SKU 下钻定位核心病因（降价销售是利润流失核心渠道）。同步接入智谱 4 个 MCP 工具 + 固化用户 6 项规则修正。" }
   ],
-  "stats": { "archives": 7, "points": 17, "skills": 5 }
+  "stats": { "archives": 12, "points": 33, "skills": 10 }
 }
