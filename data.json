@@ -1,6 +1,33 @@
 {
   "archives": [
     {
+      "id": "arch_20260817_01",
+      "date": "2026-08-17",
+      "title": "知识库项目落地：印象笔记 92 篇全量迁移 + 智谱 Coding Plan 验收",
+      "desc": "LLM Wiki 三层架构知识库（~/Knowledge）完成印象笔记「迁移」笔记本全量入库：92/92 明文正文（evernote-backup API 通道）+ 453/453 附件（700MB），三项对账全部通过。智谱 GLM Coding Plan 接入完成只读验收（zread/web_search/web_reader 三工具实测 OK），key 走 Keychain 强制 stdin 流程。另处理晨间 glm-4.5-air 降级故障（切回 glm-5.3）。",
+      "tags": ["知识库", "LLM Wiki", "印象笔记迁移", "evernote-backup", "智谱CodingPlan", "MCP验收", "Keychain"],
+      "stats": { "skill": 1, "memory": 3, "evolution": 1, "node": 3 },
+      "command": "evernote-backup init-db && evernote-backup export",
+      "details": {
+        "skill": [
+          { "title": "evernote-backup 迁移管线", "content": "印象笔记迁移正解路径：evernote-backup（hermes venv 已装 1.14.0，--backend china 适配国内版）+ 开发者 Token（app.yinxiang.com/api/DeveloperToken.action）。API 通道导出的是明文正文，与 Mac 9.x 客户端 .notes 导出的 ENC0 账户级 AES 加密（不可解）形成鲜明对比。附件始终明文可提。", "icon": "🔌" }
+        ],
+        "evolution": [
+          { "title": "知识库从规划进入实测运行", "content": "LLM Wiki 三层架构（raw 不可变 / entities+concepts+comparisons+queries / SCHEMA+AGENTS 立法）首次承接真实数据：92 篇笔记（2021-04~2025-08，含售后会议记录、每日利润表、outreach 清单）+ 453 附件全量入 raw 层，git 管理闭环（commit a509f87+353df3c），迁移验收三项全过（笔记数/附件数/抽查正文）。知识库域锚定 AI + 跨境电商。", "icon": "📈" }
+        ],
+        "memory": [
+          { "title": "印象迁移关键事实", "content": "①Mac 9.x 客户端导出 .notes 的正文是 ENC0 账户级 AES 加密不可解、附件明文可提——客户端导出走死路，API 通道才是正解。②evernote-backup v1.14.0 已在 hermes venv，须加 --backend china。③开发者 Token 页面 app.yinxiang.com/api/DeveloperToken.action。④同步顺带拉到另外 3 个笔记本（youniverse/备忘清单/日常记录，62 条）ENEX 暂存 /tmp/evernote_export/，是否入库待定。", "icon": "🧠" },
+          { "title": "Coding Plan 凭证与验收状态", "content": "Coding Plan token 形态与 OpenAPI key 不同（非 sk- 前缀、无 apiKeyId），4 个 MCP（zread/web_search/web_reader/zai_vision）共用一份。Keychain 服务名隔离：新 key 用 GLM_CODING_PLAN_KEY，避免与已 revoke 的 OpenAPI GLM_API_KEY 条目混淆。只读验收三工具实测 OK（zread 查 hermes-agent README / web_search 搜 Hermes Agent official / web_reader 读 example.com）。", "icon": "🧠" },
+          { "title": "Hermes 模型降级告警", "content": "8-17 晨间 Hermes 无响应根因是模型被降到 glm-4.5-air；用户质问后切回 glm-5.3（hermes config get model 确认 default: glm-5.3）。教训：模型配置非用户主动变更时视为异常，主动上报。", "icon": "🧠" }
+        ],
+        "node": [
+          { "title": "印象迁移收尾与安全处理", "content": "Token 文件用后粉碎；建议用户回开发者 Token 页面点「撤销」作废。/tmp 遗留中间文件（707MB zip + 957MB 解压物）待用户确认后清理。另有 3 个笔记本 62 条 ENEX 待决策入库。", "icon": "📍" },
+          { "title": "Coding Plan 流程自查修正", "content": "重画接入流程并自查出 5 处 bug：service 名撞车（改 GLM_CODING_PLAN_KEY）、-w 传参进 history（强制 stdin）、Keychain 写入即算完（读出+立即重打 API 不可省）、/v4/models 无法区分两份凭证（靠前缀形态区分）、onboarding skill 缺 Coding Plan 分支（待补）。", "icon": "📍" },
+          { "title": "MCP 只读验收通过", "content": "zread/web_search/web_reader 三工具在 CLI 会话依次实测调用全部成功（返回真实数据），zai_vision 因无图片输入场景未验（另经 local-ocr-macos-vision skill 路径覆盖视觉需求）。", "icon": "📍" }
+        ]
+      }
+    },
+    {
       "id": "arch_20260813_01",
       "date": "2026-08-13",
       "title": "DOWINX 美国站 W2 环比分析 + 智谱 MCP 工具接入 + 三层下钻规则固化",
@@ -253,7 +280,9 @@
     { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" },
     { "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%（优秀<1%），FBM仓储固定2%，总仓储费(FBA+海外仓)>4%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。" },
     { "content": "DOWINX 周报数据入口：飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD) 按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb sheet_id=gVlNxd（只覆盖15个SPU，58J/59A 不在其中）。" },
-    { "content": "智谱 GLM Coding Plan 4个MCP已配入 Hermes config.yaml：zread(HTTP,开源仓库)/web_search(HTTP,联网搜索)/web_reader(HTTP,网页读取) + zai_vision(stdio npx @z_ai/mcp-server,8个视觉工具)。均用 GLM_API_KEY 认证。重启生效后工具名 mcp_{server}_{tool}。" }
+    { "content": "智谱 GLM Coding Plan 4个MCP已配入 Hermes config.yaml：zread(HTTP,开源仓库)/web_search(HTTP,联网搜索)/web_reader(HTTP,网页读取) + zai_vision(stdio npx @z_ai/mcp-server,8个视觉工具)。均用 GLM_API_KEY 认证。重启生效后工具名 mcp_{server}_{tool}。" },
+    { "content": "印象迁移正解：evernote-backup（hermes venv 1.14.0，--backend china）+ 开发者 Token（app.yinxiang.com/api/DeveloperToken.action）。API 通道出明文正文；Mac 9.x 客户端 .notes 正文是 ENC0 账户级 AES 加密不可解、附件明文可提。" },
+    { "content": "智谱 Coding Plan key 走 Keychain：服务名用 GLM_CODING_PLAN_KEY（与已 revoke 的 OpenAPI GLM_API_KEY 物理隔离），写入强制 stdin。token 非 sk- 前缀，与 OpenAPI key 靠前缀形态区分，/v4/models 无法区分两份凭证。" }
   ],
   "evolutions": [
     { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
@@ -268,7 +297,8 @@
     { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" },
     { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" },
     { "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。" },
-    { "content": "DOWINX 周利润分析升级为双周环比体系：W2 环比对照全 SPU 覆盖，三梯队批量扫描（亏损/未达标/达标），SKU 下钻定位核心病因（降价销售是利润流失核心渠道）。同步接入智谱 4 个 MCP 工具 + 固化用户 6 项规则修正。" }
+    { "content": "DOWINX 周利润分析升级为双周环比体系：W2 环比对照全 SPU 覆盖，三梯队批量扫描（亏损/未达标/达标），SKU 下钻定位核心病因（降价销售是利润流失核心渠道）。同步接入智谱 4 个 MCP 工具 + 固化用户 6 项规则修正。" },
+    { "content": "LLM Wiki 三层架构知识库（~/Knowledge）承接首批真实数据：印象笔记「迁移」笔记本 92 篇明文正文 + 453 附件（700MB）经 evernote-backup API 通道全量入库，git 管理闭环，迁移验收三项全过。知识库从规划进入实测运行。" }
   ],
-  "stats": { "archives": 12, "points": 33, "skills": 10 }
+  "stats": { "archives": 13, "points": 41, "skills": 11 }
 }
