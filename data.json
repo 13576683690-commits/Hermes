@@ -1,6 +1,68 @@
 {
   "archives": [
     {
+      "id": "arch_20260818_01",
+      "date": "2026-08-18",
+      "title": "知识库立库收官 + Hermes-知识库三层进化模型 + 双仓备份体系",
+      "desc": "LLM Wiki 知识库（~/Knowledge，GitHub 私仓）完成立库收官：legacy 历史资料 675 文件/1.37GB 入 raw/legacy（183 视频 6.4GB 仅记 manifest 不入库），编译层 24 页（entities 9 + concepts 15）经 SCHEMA 三次立法（§2.8 实体四分类 platforms/brands/people/orgs、§6.1 冲突三分类、§6.2 优先级原则），全库断链零。用户裁决品牌归属：升降桌全线+平衡垫+屏风(SP)=FEZIBO（前品牌），DOWINX 收窄为纯电竞椅线，全库语境级修正。确立三层进化模型：Knowledge=本体 / 调用层(skill knowledge-invoke+memory)=行为固化 / 档案馆=经验账本（仅投影视图，真串联是 Hermes↔知识库 4 通道）。备份双仓闭环：hermes-brain 私有仓（skills/memories/config/SOUL，220 文件 5MB）+ 每日 03:00 自动快照 cron；state.db 对话历史含敏感片段不上云。",
+      "tags": [
+        "知识库立库",
+        "三层进化模型",
+        "SCHEMA立法",
+        "品牌归属裁决",
+        "FEZIBO",
+        "skill固化",
+        "双仓备份"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 2,
+        "node": 1
+      },
+      "command": "open ~/Knowledge (Obsidian) || cat ~/Knowledge/concepts/AI进化档案馆.md",
+      "details": {
+        "skill": [
+          {
+            "title": "knowledge-invoke 调用层固化",
+            "content": "五步检索流程（定域→查编译层→raw 佐证→组合回答附来源链→沉淀判定）+ 任务末四问复盘（used 页清单/gap 缺口/skill patch/归档候选），每任务必答写入 log.md。硬规则：品牌归属（升降桌/平衡垫/屏风=FEZIBO）、时效标注（2021 打法不冒充现行）、≥2 出现建页。",
+            "icon": "🔌"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "知识检索 → 三层进化模型",
+            "content": "从零散 grep 升级为结构化调用体系：本体（~/Knowledge：130 笔记+503 附件+675 legacy+24 编译页，commit 链 f074048→3ce04f1→efd2b30）/调用层（skill+memory 每轮自动生效，进化不依赖会话记忆）/账本（档案馆 data.json）。档案馆只是投影视图——数据不搬家，只同步指针。",
+            "icon": "📈"
+          },
+          {
+            "title": "单盘裸奔 → 双仓防线",
+            "content": "盘点发现 Hermes 进化资产（skills 4.9M+memories+config+SOUL）此前零备份。建 hermes-brain 私有仓（GitHub，匿名 404 验证私有）+ snapshot/backup/restore 三脚本 + 每日 03:00 cron 自动快照推送，无变化静默。state.db（对话历史）含敏感 token 片段，红线不上云。",
+            "icon": "📈"
+          }
+        ],
+        "memory": [
+          {
+            "title": "品牌-产品线归属两次裁决",
+            "content": "①升降桌全线（大升降桌/双电机/L型/双拼/双基/双框）属 FEZIBO（用户前品牌）非 DOWINX；②平衡垫、屏风(SP) 同归 FEZIBO。DOWINX=纯电竞椅。历史笔记（售后/利润/周会/广告调整）归因不得混入，已写入持久 memory。",
+            "icon": "🧠"
+          },
+          {
+            "title": "档案馆部署正解（教训链）",
+            "content": "GitHub Pages 是遗骸：Actions 永久 startup_failure（Pages Source 模式互斥）。正解=Cloudflare Pages：data.json 双份同步（根+dashboard/public）→ npm run build（node_modules 坏→npmmirror 重装）→ npx wrangler pages deploy dist --project-name=evolution-dashboard。vite base 必须为 '/'，'/Hermes/' 遗产路径致白屏。线上 evolution-dashboard-dim.pages.dev，CDN 缓存 15s。",
+            "icon": "🧠"
+          }
+        ],
+        "node": [
+          {
+            "title": "知识结构与档案馆两条修复线",
+            "content": "知识库线：entities 维度混用（渠道×品牌平级）→ 用户拍板方案A 子目录分层（platforms/brands/people），SCHEMA §2.8 立法+全库链接改写。档案馆线：远端自动化归档卡与本地冲突→回滚完好基线（31d3a0c）重追加；误部署未定版 React UI→回滚定版单文件版（558dc16 链）。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260817_01",
       "date": "2026-08-17",
       "title": "知识库项目落地：印象笔记 92 篇全量迁移 + 智谱 Coding Plan 验收",
@@ -669,59 +731,6 @@
             "title": "多分支模型确认",
             "content": "通过 GitHub API (/actions/runs + /deployments) 确认：所有 pages build 的 head_branch 均为 main，gh-pages 不再触发部署。main = Pages 实际部署源。",
             "icon": "🔍"
-          }
-        ]
-      }
-    },
-    {
-      "id": "arch_20260818_01",
-      "date": "2026-08-18",
-      "title": "知识库立库与 Hermes-知识库三层进化模型",
-      "desc": "从印象笔记迁移到 LLM Wiki 三层架构知识库，确立 Knowledge(本体)/调用层(skill+memory)/档案馆(账本) 三层进化模型，双仓备份闭环。",
-      "tags": [
-        "体系构建",
-        "知识库",
-        "三层模型",
-        "备份体系"
-      ],
-      "command": "打开 ~/Knowledge (Obsidian) 或读 concepts/AI进化档案馆.md",
-      "stats": {
-        "skill": 1,
-        "memory": 2,
-        "evolution": 2,
-        "node": 1
-      },
-      "details": {
-        "skill": [
-          {
-            "title": "knowledge-invoke 调用层固化",
-            "content": "五步检索流程(定域→查编译层→raw佐证→组合回答附来源链→沉淀判定) + 任务末四问复盘(used/gap/patch/归档候选)，每任务必答写入log。"
-          }
-        ],
-        "memory": [
-          {
-            "title": "品牌-产品线归属两次裁决",
-            "content": "升降桌全线+平衡垫+屏风(SP)=FEZIBO(前品牌)；DOWINX=电竞椅。历史笔记归因不得混。"
-          },
-          {
-            "title": "备份红线：state.db 不上云",
-            "content": "对话历史内嵌敏感token片段只做本地备份；可上云资产(skills/memories/config/SOUL)走 hermes-brain 私有仓每日03:00自动推送。"
-          }
-        ],
-        "evolution": [
-          {
-            "title": "知识检索→三层模型",
-            "content": "从零散grep升级为结构化调用：skill固化流程下轮自动生效，进化不依赖会话记忆。"
-          },
-          {
-            "title": "单盘裸奔→双仓防线",
-            "content": "知识库702MB+Hermes大脑5MB全部上云；每日自动快照，匿名404验证私有。"
-          }
-        ],
-        "node": [
-          {
-            "title": "双系统分工裁决",
-            "content": "Knowledge=领域知识本体(Obsidian)；档案馆=Hermes调用与应用经验的账本(投影视图)。数据不搬家，只同步指针。"
           }
         ]
       }
