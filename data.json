@@ -3,8 +3,8 @@
     {
       "id": "arch_20260818_01",
       "date": "2026-08-18",
-      "title": "知识库立库收官 + Hermes-知识库三层进化模型 + 双仓备份体系",
-      "desc": "LLM Wiki 知识库（~/Knowledge，GitHub 私仓）完成立库收官：legacy 历史资料 675 文件/1.37GB 入 raw/legacy（183 视频 6.4GB 仅记 manifest 不入库），编译层 24 页（entities 9 + concepts 15）经 SCHEMA 三次立法（§2.8 实体四分类 platforms/brands/people/orgs、§6.1 冲突三分类、§6.2 优先级原则），全库断链零。用户裁决品牌归属：升降桌全线+平衡垫+屏风(SP)=FEZIBO（前品牌），DOWINX 收窄为纯电竞椅线，全库语境级修正。确立三层进化模型：Knowledge=本体 / 调用层(skill knowledge-invoke+memory)=行为固化 / 档案馆=经验账本（仅投影视图，真串联是 Hermes↔知识库 4 通道）。备份双仓闭环：hermes-brain 私有仓（skills/memories/config/SOUL，220 文件 5MB）+ 每日 03:00 自动快照 cron；state.db 对话历史含敏感片段不上云。",
+      "title": "知识库立库收官 + 三层进化模型 + 双仓备份 + DOWINX W3 周报交付",
+      "desc": "LLM Wiki 知识库（~/Knowledge，GitHub 私仓）完成立库收官：legacy 历史资料 675 文件/1.37GB 入 raw/legacy（183 视频 6.4GB 仅记 manifest 不入库），编译层 24 页（entities 9 + concepts 15）经 SCHEMA 三次立法（§2.8 实体四分类 platforms/brands/people/orgs、§6.1 冲突三分类、§6.2 优先级原则），全库断链零。用户裁决品牌归属：升降桌全线+平衡垫+屏风(SP)=FEZIBO（前品牌），DOWINX 收窄为纯电竞椅线，全库语境级修正。确立三层进化模型：Knowledge=本体 / 调用层(skill knowledge-invoke+memory)=行为固化 / 档案馆=经验账本（仅投影视图，真串联是 Hermes↔知识库 4 通道）。备份双仓闭环：hermes-brain 私有仓（skills/memories/config/SOUL，220 文件 5MB）+ 每日 03:00 自动快照 cron；state.db 对话历史含敏感片段不上云。晚间交付 DOWINX 美国站 W3 周利润三层分析（22 有销量 SPU：亏5/未达标4/达标13；全站主题=亚马逊其他费用 +141% 至 3.29% 波及 5 SPU；58J 亏损 100% 集中于 58J-01，与 9月1日 Deal $80.99 档测算 -16.9% 对撞），用户抓出 6 处数字错误后全量对账修正为 v2（自造缩写「亚其他」全程清理），存档 ~/.hermes/data/dowinx-reports/US-W3-20260810.md，交付渠道定版+数据陷阱沉淀 3 篇 reference 进 dowinx-weekly-profit-analysis skill。",
       "tags": [
         "知识库立库",
         "三层进化模型",
@@ -12,13 +12,14 @@
         "品牌归属裁决",
         "FEZIBO",
         "skill固化",
-        "双仓备份"
+        "双仓备份",
+        "DOWINX周报对账"
       ],
       "stats": {
-        "skill": 1,
-        "memory": 2,
-        "evolution": 2,
-        "node": 1
+        "skill": 2,
+        "memory": 3,
+        "evolution": 3,
+        "node": 2
       },
       "command": "open ~/Knowledge (Obsidian) || cat ~/Knowledge/concepts/AI进化档案馆.md",
       "details": {
@@ -26,6 +27,11 @@
           {
             "title": "knowledge-invoke 调用层固化",
             "content": "五步检索流程（定域→查编译层→raw 佐证→组合回答附来源链→沉淀判定）+ 任务末四问复盘（used 页清单/gap 缺口/skill patch/归档候选），每任务必答写入 log.md。硬规则：品牌归属（升降桌/平衡垫/屏风=FEZIBO）、时效标注（2021 打法不冒充现行）、≥2 出现建页。",
+            "icon": "🔌"
+          },
+          {
+            "title": "dowinx-weekly-profit-analysis 三篇 reference 沉淀",
+            "content": "W3 会话沉淀 us-w3-analysis-20260818.md（分析全程）+ us-w3-delivery-lessons-20260818.md（交付教训：禁自造缩写、转发版无元话语、科目全称）+ report-delivery-channel.md（交付渠道：lark-cli bot 无法主动私发未对话用户、用户身份发送需扫码授权 im:message、当前正解=聊天内完整排版文本由用户转发）。skill 交付规范同步固化：聊天内完整排版、可整段复制、无存档路径等元话语。",
             "icon": "🔌"
           }
         ],
@@ -39,6 +45,11 @@
             "title": "单盘裸奔 → 双仓防线",
             "content": "盘点发现 Hermes 进化资产（skills 4.9M+memories+config+SOUL）此前零备份。建 hermes-brain 私有仓（GitHub，匿名 404 验证私有）+ snapshot/backup/restore 三脚本 + 每日 03:00 cron 自动快照推送，无变化静默。state.db（对话历史）含敏感 token 片段，红线不上云。",
             "icon": "📈"
+          },
+          {
+            "title": "W1/W2 双周基准 → W3 三周趋势体系",
+            "content": "W3 引入 W1 趋势基准，利润率三周连升 1.31%→4.11%→5.95% 可追踪；22 有销量 SPU 全量三梯队扫描 + SKU 下钻（A1:AZ60+A60:AZ160 分页拉取、第 60 行去重陷阱已固化）。Deal 判定纳入流程（Deal 表无进行中活动→非 Deal 周 8% 线）。核心发现链：亚马逊其他费用 ¥20,813→¥50,076（+141%）波及 5 SPU 且 SKU 层按销售额均匀分布→指向科目重分类而非运营动作；58J 亏损 100% 收敛于 58J-01（$81 档）且与 9月1日 Deal $80.99 档测算 -16.9% 直接对撞。",
+            "icon": "📈"
           }
         ],
         "memory": [
@@ -51,12 +62,22 @@
             "title": "档案馆部署正解（教训链）",
             "content": "GitHub Pages 是遗骸：Actions 永久 startup_failure（Pages Source 模式互斥）。正解=Cloudflare Pages：data.json 双份同步（根+dashboard/public）→ npm run build（node_modules 坏→npmmirror 重装）→ npx wrangler pages deploy dist --project-name=evolution-dashboard。vite base 必须为 '/'，'/Hermes/' 遗产路径致白屏。线上 evolution-dashboard-dim.pages.dev，CDN 缓存 15s。",
             "icon": "🧠"
+          },
+          {
+            "title": "周报交付格式三连裁决（已写入持久 memory）",
+            "content": "用户拒绝 md 文件，要「完整版」「直接能够转发」「像上周一样」——交付=消息内完整排版文本、可整段复制、无存档路径/给用户的指令性话语等元话语。另固化：报告禁自造缩写（「¥5万亚其他」教训——转发语境必须用科目全称）；每个数字结论须回源对账（SKU 表分页行 60 重复计 2 次的陷阱）；变化率>100% 仅恶化方向标 ⚠️。",
+            "icon": "🧠"
           }
         ],
         "node": [
           {
             "title": "知识结构与档案馆两条修复线",
             "content": "知识库线：entities 维度混用（渠道×品牌平级）→ 用户拍板方案A 子目录分层（platforms/brands/people），SCHEMA §2.8 立法+全库链接改写。档案馆线：远端自动化归档卡与本地冲突→回滚完好基线（31d3a0c）重追加；误部署未定版 React UI→回滚定版单文件版（558dc16 链）。",
+            "icon": "📍"
+          },
+          {
+            "title": "W3 报告六错修正链（v1→v2）",
+            "content": "用户抓出「¥5万亚」缩写异常后触发全量对账，Python 回源复核发现 6 处实质错误：55 的 W2 基准 ¥1,800→¥911（变化率 +369%→+827%）、55 SKU 分布集中→均匀（和>100% 的低级错误）、57A 集中度 92%→99%、50C 占比口径混用、全站变化率 +138%→+141%、58J-01 亏损 ¥22,208→¥22,413（漏一行 0 销量调整行）。v2 存档+转发版同步重发。教训：初稿抢跑数字未回源，交付前必须逐项对账。",
             "icon": "📍"
           }
         ]
@@ -790,6 +811,9 @@
     },
     {
       "content": "Hermes-知识库三层模型：Knowledge(本体,~/Knowledge)+调用层(skill knowledge-invoke+memory)+档案馆(账本)。档案馆只是投影视图，真串联是Hermes↔知识库的4条通道(memory/skill/log/vault)。数据不搬家只同步指针。"
+    },
+    {
+      "content": "周报交付定版（0818 三连裁决）：用户拒绝 md 文件——交付=消息内完整排版文本、可整段复制转发、无存档路径等元话语。报告禁自造缩写（「¥5万亚其他」教训），转发语境用科目全称；每个数字结论须回源对账。"
     }
   ],
   "evolutions": [
@@ -837,11 +861,14 @@
     },
     {
       "content": "LLM Wiki 知识库收官并确立三层进化模型：130笔记+675文件+24页编译层，SCHEMA三次立法(实体分类/冲突三分类/优先级原则)，knowledge-invoke skill固化调用流程+四问复盘，hermes-brain双仓备份闭环。"
+    },
+    {
+      "content": "DOWINX 美国站周报升级为三周趋势体系并完成首个交付闭环：W3 三层分析(22 SPU 三梯队+SKU 下钻+Deal 对撞判定)，用户抓错触发 v2 全量对账修正 6 处，交付规范(完整排版/可转发/无缩写)与数据陷阱(分页行60重复)沉淀进 skill。"
     }
   ],
   "stats": {
     "archives": 14,
-    "points": 18,
-    "skills": 12
+    "points": 19,
+    "skills": 13
   }
 }
