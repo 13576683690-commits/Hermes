@@ -1,29 +1,240 @@
 {
   "archives": [
     {
+      "id": "arch_20260819_01",
+      "date": "2026-08-19",
+      "title": "完成 DOWINX 加拿大站 W2/W3 复盘：利润公式与口径双立法+三 SPU 报告",
+      "desc": "DOWINX 加拿大站 W2(0803-0809) vs W3(0810-0816) 复盘，交付 58J/55/89A 三份四块报告+全站扫描，当日多轮立法沉淀进 dowinx-weekly-profit-analysis skill：①完整利润公式补收入项（FBA库存赔偿/亚马逊其他收入）与存货计提科目，89A W3 57元赔偿暴露漏项后全表24行勾稽闭合；②口径立法：占比分母=总销售额−促销折扣不扣退款，禁表内占比/利润率/净销售额列一律自算；③四块报告结构+结论行三要素（站点+SPU+周次）；④②③块禁≥4列宽表改一行一指标（用户原话「太密集了」）；⑤科目定性：亚马逊其他费=Deal/Coupon营销费，W3 全站 1,026→5,978 为大促滞后结算非异常扣费（57D 其他费激增同时净额+108% 为铁证）；⑥退款率两层拆解（绝对额回流型 vs 纯分母型）。关键结论：58J -8.44pp（其他费滞后结算+销量-27%费用杠杆）、55 -34.91pp（退款15.9%+仓储刚性）、89A -13.25pp（退款翻倍占跌幅68%）；全站（去合计行）税后利润 11,243→1,370，营销率 9.5%→12.3%。同步修复全站汇总合计行重复计数陷阱（首轮把合计行加了一遍 22,377≈11,135×2）。存档 ~/.hermes/data/dowinx-reports/CA-58J-W2W3-compare-20260810.md 多轮追加，最小拉数流程 5 次 lark-cli≈6s。",
+      "tags": [
+        "DOWINX周利润",
+        "加拿大站",
+        "完整利润公式",
+        "口径立法",
+        "列表式呈现",
+        "科目定性",
+        "勾稽验证",
+        "skill固化"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 3,
+        "evolution": 3,
+        "node": 3
+      },
+      "command": "cat ~/.hermes/data/dowinx-reports/CA-58J-W2W3-compare-20260810.md",
+      "details": {
+        "skill": [
+          {
+            "title": "dowinx-weekly-profit-analysis 单日六项 patch",
+            "content": "①完整利润公式（+收入项 FBA库存赔偿/亚马逊其他收入+存货计提，全表24行勾稽闭合）②口径立法（分母=毛−促销不扣退款，禁表内占比列自算）③四块报告结构+结论行三要素 ④②③块列表式呈现（禁≥4列宽表）⑤科目定性（其他费=Deal/Coupon营销费+识别特征：其他费激增同周净额大增）⑥退款率两层拆解。SPU 两周对比最小流程固化：5 次 lark-cli（索引→2×query→2×窄range cells-get→Deal表）≈6s。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "口径立法（已写入持久 memory）",
+            "content": "占比/利润率分母=总销售额−促销折扣，不扣退款；退款只在利润里扣一次；跨周对比一律从原始金额自算，禁用表内「占比」「利润率」「净销售额」列（各周表内口径不一：W2 净销售额列扣了退款、W3 没扣）。",
+            "icon": "🧠"
+          },
+          {
+            "title": "②③块列表式呈现立法（已写入持久 memory）",
+            "content": "用户原话「这个部分的数据指标展示也太丑了 根本看不出数据情况细节 太密集了」→ 飞书聊天中②业绩对比与③归因分解禁用≥4列宽表，改一行一指标/一行一科目，主因加粗标←主因；完整宽表仅留存档文件。",
+            "icon": "🧠"
+          },
+          {
+            "title": "科目定性与退款根因（锅仔确认）",
+            "content": "亚马逊其他费=Deal费用+Coupon费用，属营销投入非异常扣费，活动周费用滞后结算属正常形态；退款率超标根因=大促退货滞后回流+销量下滑分母收缩，非商品质量突变。识别特征：其他费激增的同一周净额同步大增（57D：29→1,163 同时净额+108%）。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "手工对账 → 立法口径验证体系",
+            "content": "利润公式从「毛−促销−退款−Σ费用」升级为含收入项+存货计提的完整版，全表24行勾稽闭合验证；58J 复算口径修正 7.19%→-1.25%（Δ-8.44pp）。硬规则：勾稽永不跳过，闭合差>0.01 必须挖根因（口径/漏科目/源数据错）后才能出数。",
+            "icon": "📈"
+          },
+          {
+            "title": "宽range返工 → 6秒最短路径",
+            "content": "SPU 两周对比从宽 range（60行全表~1MB 样式 JSON）+误下钻 SKU+漏科目返工，收敛为 5 次 lark-cli 调用≈6s；确立准确性>速度：30s-1min 是预算上限而非压缩验证的理由。",
+            "icon": "📈"
+          },
+          {
+            "title": "单 SPU 分析 → 三报告+全站扫描",
+            "content": "交付 58J（-8.44pp）、55（-34.91pp：退款15.9%超预警线3倍+仓储刚性7.47pp）、89A（-13.25pp：退款4,353翻倍占68%，经营盘未塌）三份四块报告；全站（去合计行）税后利润 11,243→1,370、退款绝对额基本持平（11,202→11,150）→ 站级无恶化、率升纯分母收缩。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "89A 漏项发现链（勾稽驱动）",
+            "content": "「89」编号歧义→查候选 SPU 量级消解（89A 主力出全报告、89D 零销量一笔带过）；89A W3 勾稽差 -57.22 → 定位 FBA库存赔偿 57.22 收入项（此前公式遗漏，58J/55 恰好为 0 未暴露）→ 公式补收入项后全表闭合。",
+            "icon": "📍"
+          },
+          {
+            "title": "全站汇总重复计数陷阱",
+            "content": "首轮全站汇总把「合计」行也累加（22,377≈11,135×2），识别后跳过合计行重算：其他费 1,025→5,978 与已知完全吻合、勾稽闭合。教训：任何汇总先审行构成，合计/总计行必须显式排除。",
+            "icon": "📍"
+          },
+          {
+            "title": "展示格式修正链",
+            "content": "用户发截图抱怨表格过密（vision_analyze 不可用）→ Swift+Vision OCR 读图确认 7 列宽表横向挤压+消息乱码 → ②③块改一行一指标列表式重发 → 用户确认「可以的。这样明显一点」→ skill+memory 双固化。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
+      "id": "arch_20260818_01",
+      "date": "2026-08-18",
+      "title": "知识库立库收官 + 三层进化模型 + 双仓备份 + DOWINX W3 周报交付",
+      "desc": "LLM Wiki 知识库（~/Knowledge，GitHub 私仓）完成立库收官：legacy 历史资料 675 文件/1.37GB 入 raw/legacy（183 视频 6.4GB 仅记 manifest 不入库），编译层 24 页（entities 9 + concepts 15）经 SCHEMA 三次立法（§2.8 实体四分类 platforms/brands/people/orgs、§6.1 冲突三分类、§6.2 优先级原则），全库断链零。用户裁决品牌归属：升降桌全线+平衡垫+屏风(SP)=FEZIBO（前品牌），DOWINX 收窄为纯电竞椅线，全库语境级修正。确立三层进化模型：Knowledge=本体 / 调用层(skill knowledge-invoke+memory)=行为固化 / 档案馆=经验账本（仅投影视图，真串联是 Hermes↔知识库 4 通道）。备份双仓闭环：hermes-brain 私有仓（skills/memories/config/SOUL，220 文件 5MB）+ 每日 03:00 自动快照 cron；state.db 对话历史含敏感片段不上云。晚间交付 DOWINX 美国站 W3 周利润三层分析（22 有销量 SPU：亏5/未达标4/达标13；全站主题=亚马逊其他费用 +141% 至 3.29% 波及 5 SPU；58J 亏损 100% 集中于 58J-01，与 9月1日 Deal $80.99 档测算 -16.9% 对撞），用户抓出 6 处数字错误后全量对账修正为 v2（自造缩写「亚其他」全程清理），存档 ~/.hermes/data/dowinx-reports/US-W3-20260810.md，交付渠道定版+数据陷阱沉淀 3 篇 reference 进 dowinx-weekly-profit-analysis skill。",
+      "tags": [
+        "知识库立库",
+        "三层进化模型",
+        "SCHEMA立法",
+        "品牌归属裁决",
+        "FEZIBO",
+        "skill固化",
+        "双仓备份",
+        "DOWINX周报对账"
+      ],
+      "stats": {
+        "skill": 2,
+        "memory": 3,
+        "evolution": 3,
+        "node": 2
+      },
+      "command": "open ~/Knowledge (Obsidian) || cat ~/Knowledge/concepts/AI进化档案馆.md",
+      "details": {
+        "skill": [
+          {
+            "title": "knowledge-invoke 调用层固化",
+            "content": "五步检索流程（定域→查编译层→raw 佐证→组合回答附来源链→沉淀判定）+ 任务末四问复盘（used 页清单/gap 缺口/skill patch/归档候选），每任务必答写入 log.md。硬规则：品牌归属（升降桌/平衡垫/屏风=FEZIBO）、时效标注（2021 打法不冒充现行）、≥2 出现建页。",
+            "icon": "🔌"
+          },
+          {
+            "title": "dowinx-weekly-profit-analysis 三篇 reference 沉淀",
+            "content": "W3 会话沉淀 us-w3-analysis-20260818.md（分析全程）+ us-w3-delivery-lessons-20260818.md（交付教训：禁自造缩写、转发版无元话语、科目全称）+ report-delivery-channel.md（交付渠道：lark-cli bot 无法主动私发未对话用户、用户身份发送需扫码授权 im:message、当前正解=聊天内完整排版文本由用户转发）。skill 交付规范同步固化：聊天内完整排版、可整段复制、无存档路径等元话语。",
+            "icon": "🔌"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "知识检索 → 三层进化模型",
+            "content": "从零散 grep 升级为结构化调用体系：本体（~/Knowledge：130 笔记+503 附件+675 legacy+24 编译页，commit 链 f074048→3ce04f1→efd2b30）/调用层（skill+memory 每轮自动生效，进化不依赖会话记忆）/账本（档案馆 data.json）。档案馆只是投影视图——数据不搬家，只同步指针。",
+            "icon": "📈"
+          },
+          {
+            "title": "单盘裸奔 → 双仓防线",
+            "content": "盘点发现 Hermes 进化资产（skills 4.9M+memories+config+SOUL）此前零备份。建 hermes-brain 私有仓（GitHub，匿名 404 验证私有）+ snapshot/backup/restore 三脚本 + 每日 03:00 cron 自动快照推送，无变化静默。state.db（对话历史）含敏感 token 片段，红线不上云。",
+            "icon": "📈"
+          },
+          {
+            "title": "W1/W2 双周基准 → W3 三周趋势体系",
+            "content": "W3 引入 W1 趋势基准，利润率三周连升 1.31%→4.11%→5.95% 可追踪；22 有销量 SPU 全量三梯队扫描 + SKU 下钻（A1:AZ60+A60:AZ160 分页拉取、第 60 行去重陷阱已固化）。Deal 判定纳入流程（Deal 表无进行中活动→非 Deal 周 8% 线）。核心发现链：亚马逊其他费用 ¥20,813→¥50,076（+141%）波及 5 SPU 且 SKU 层按销售额均匀分布→指向科目重分类而非运营动作；58J 亏损 100% 收敛于 58J-01（$81 档）且与 9月1日 Deal $80.99 档测算 -16.9% 直接对撞。",
+            "icon": "📈"
+          }
+        ],
+        "memory": [
+          {
+            "title": "品牌-产品线归属两次裁决",
+            "content": "①升降桌全线（大升降桌/双电机/L型/双拼/双基/双框）属 FEZIBO（用户前品牌）非 DOWINX；②平衡垫、屏风(SP) 同归 FEZIBO。DOWINX=纯电竞椅。历史笔记（售后/利润/周会/广告调整）归因不得混入，已写入持久 memory。",
+            "icon": "🧠"
+          },
+          {
+            "title": "档案馆部署正解（教训链）",
+            "content": "GitHub Pages 是遗骸：Actions 永久 startup_failure（Pages Source 模式互斥）。正解=Cloudflare Pages：data.json 双份同步（根+dashboard/public）→ npm run build（node_modules 坏→npmmirror 重装）→ npx wrangler pages deploy dist --project-name=evolution-dashboard。vite base 必须为 '/'，'/Hermes/' 遗产路径致白屏。线上 evolution-dashboard-dim.pages.dev，CDN 缓存 15s。",
+            "icon": "🧠"
+          },
+          {
+            "title": "周报交付格式三连裁决（已写入持久 memory）",
+            "content": "用户拒绝 md 文件，要「完整版」「直接能够转发」「像上周一样」——交付=消息内完整排版文本、可整段复制、无存档路径/给用户的指令性话语等元话语。另固化：报告禁自造缩写（「¥5万亚其他」教训——转发语境必须用科目全称）；每个数字结论须回源对账（SKU 表分页行 60 重复计 2 次的陷阱）；变化率>100% 仅恶化方向标 ⚠️。",
+            "icon": "🧠"
+          }
+        ],
+        "node": [
+          {
+            "title": "知识结构与档案馆两条修复线",
+            "content": "知识库线：entities 维度混用（渠道×品牌平级）→ 用户拍板方案A 子目录分层（platforms/brands/people），SCHEMA §2.8 立法+全库链接改写。档案馆线：远端自动化归档卡与本地冲突→回滚完好基线（31d3a0c）重追加；误部署未定版 React UI→回滚定版单文件版（558dc16 链）。",
+            "icon": "📍"
+          },
+          {
+            "title": "W3 报告六错修正链（v1→v2）",
+            "content": "用户抓出「¥5万亚」缩写异常后触发全量对账，Python 回源复核发现 6 处实质错误：55 的 W2 基准 ¥1,800→¥911（变化率 +369%→+827%）、55 SKU 分布集中→均匀（和>100% 的低级错误）、57A 集中度 92%→99%、50C 占比口径混用、全站变化率 +138%→+141%、58J-01 亏损 ¥22,208→¥22,413（漏一行 0 销量调整行）。v2 存档+转发版同步重发。教训：初稿抢跑数字未回源，交付前必须逐项对账。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260817_01",
       "date": "2026-08-17",
       "title": "知识库项目落地：印象笔记 92 篇全量迁移 + 智谱 Coding Plan 验收",
       "desc": "LLM Wiki 三层架构知识库（~/Knowledge）完成印象笔记「迁移」笔记本全量入库：92/92 明文正文（evernote-backup API 通道）+ 453/453 附件（700MB），三项对账全部通过。智谱 GLM Coding Plan 接入完成只读验收（zread/web_search/web_reader 三工具实测 OK），key 走 Keychain 强制 stdin 流程。另处理晨间 glm-4.5-air 降级故障（切回 glm-5.3）。",
-      "tags": ["知识库", "LLM Wiki", "印象笔记迁移", "evernote-backup", "智谱CodingPlan", "MCP验收", "Keychain"],
-      "stats": { "skill": 1, "memory": 3, "evolution": 1, "node": 3 },
+      "tags": [
+        "知识库",
+        "LLM Wiki",
+        "印象笔记迁移",
+        "evernote-backup",
+        "智谱CodingPlan",
+        "MCP验收",
+        "Keychain"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 3,
+        "evolution": 1,
+        "node": 3
+      },
       "command": "evernote-backup init-db && evernote-backup export",
       "details": {
         "skill": [
-          { "title": "evernote-backup 迁移管线", "content": "印象笔记迁移正解路径：evernote-backup（hermes venv 已装 1.14.0，--backend china 适配国内版）+ 开发者 Token（app.yinxiang.com/api/DeveloperToken.action）。API 通道导出的是明文正文，与 Mac 9.x 客户端 .notes 导出的 ENC0 账户级 AES 加密（不可解）形成鲜明对比。附件始终明文可提。", "icon": "🔌" }
+          {
+            "title": "evernote-backup 迁移管线",
+            "content": "印象笔记迁移正解路径：evernote-backup（hermes venv 已装 1.14.0，--backend china 适配国内版）+ 开发者 Token（app.yinxiang.com/api/DeveloperToken.action）。API 通道导出的是明文正文，与 Mac 9.x 客户端 .notes 导出的 ENC0 账户级 AES 加密（不可解）形成鲜明对比。附件始终明文可提。",
+            "icon": "🔌"
+          }
         ],
         "evolution": [
-          { "title": "知识库从规划进入实测运行", "content": "LLM Wiki 三层架构（raw 不可变 / entities+concepts+comparisons+queries / SCHEMA+AGENTS 立法）首次承接真实数据：92 篇笔记（2021-04~2025-08，含售后会议记录、每日利润表、outreach 清单）+ 453 附件全量入 raw 层，git 管理闭环（commit a509f87+353df3c），迁移验收三项全过（笔记数/附件数/抽查正文）。知识库域锚定 AI + 跨境电商。", "icon": "📈" }
+          {
+            "title": "知识库从规划进入实测运行",
+            "content": "LLM Wiki 三层架构（raw 不可变 / entities+concepts+comparisons+queries / SCHEMA+AGENTS 立法）首次承接真实数据：92 篇笔记（2021-04~2025-08，含售后会议记录、每日利润表、outreach 清单）+ 453 附件全量入 raw 层，git 管理闭环（commit a509f87+353df3c），迁移验收三项全过（笔记数/附件数/抽查正文）。知识库域锚定 AI + 跨境电商。",
+            "icon": "📈"
+          }
         ],
         "memory": [
-          { "title": "印象迁移关键事实", "content": "①Mac 9.x 客户端导出 .notes 的正文是 ENC0 账户级 AES 加密不可解、附件明文可提——客户端导出走死路，API 通道才是正解。②evernote-backup v1.14.0 已在 hermes venv，须加 --backend china。③开发者 Token 页面 app.yinxiang.com/api/DeveloperToken.action。④同步顺带拉到另外 3 个笔记本（youniverse/备忘清单/日常记录，62 条）ENEX 暂存 /tmp/evernote_export/，是否入库待定。", "icon": "🧠" },
-          { "title": "Coding Plan 凭证与验收状态", "content": "Coding Plan token 形态与 OpenAPI key 不同（非 sk- 前缀、无 apiKeyId），4 个 MCP（zread/web_search/web_reader/zai_vision）共用一份。Keychain 服务名隔离：新 key 用 GLM_CODING_PLAN_KEY，避免与已 revoke 的 OpenAPI GLM_API_KEY 条目混淆。只读验收三工具实测 OK（zread 查 hermes-agent README / web_search 搜 Hermes Agent official / web_reader 读 example.com）。", "icon": "🧠" },
-          { "title": "Hermes 模型降级告警", "content": "8-17 晨间 Hermes 无响应根因是模型被降到 glm-4.5-air；用户质问后切回 glm-5.3（hermes config get model 确认 default: glm-5.3）。教训：模型配置非用户主动变更时视为异常，主动上报。", "icon": "🧠" }
+          {
+            "title": "印象迁移关键事实",
+            "content": "①Mac 9.x 客户端导出 .notes 的正文是 ENC0 账户级 AES 加密不可解、附件明文可提——客户端导出走死路，API 通道才是正解。②evernote-backup v1.14.0 已在 hermes venv，须加 --backend china。③开发者 Token 页面 app.yinxiang.com/api/DeveloperToken.action。④同步顺带拉到另外 3 个笔记本（youniverse/备忘清单/日常记录，62 条）ENEX 暂存 /tmp/evernote_export/，是否入库待定。",
+            "icon": "🧠"
+          },
+          {
+            "title": "Coding Plan 凭证与验收状态",
+            "content": "Coding Plan token 形态与 OpenAPI key 不同（非 sk- 前缀、无 apiKeyId），4 个 MCP（zread/web_search/web_reader/zai_vision）共用一份。Keychain 服务名隔离：新 key 用 GLM_CODING_PLAN_KEY，避免与已 revoke 的 OpenAPI GLM_API_KEY 条目混淆。只读验收三工具实测 OK（zread 查 hermes-agent README / web_search 搜 Hermes Agent official / web_reader 读 example.com）。",
+            "icon": "🧠"
+          },
+          {
+            "title": "Hermes 模型降级告警",
+            "content": "8-17 晨间 Hermes 无响应根因是模型被降到 glm-4.5-air；用户质问后切回 glm-5.3（hermes config get model 确认 default: glm-5.3）。教训：模型配置非用户主动变更时视为异常，主动上报。",
+            "icon": "🧠"
+          }
         ],
         "node": [
-          { "title": "印象迁移收尾与安全处理", "content": "Token 文件用后粉碎；建议用户回开发者 Token 页面点「撤销」作废。/tmp 遗留中间文件（707MB zip + 957MB 解压物）待用户确认后清理。另有 3 个笔记本 62 条 ENEX 待决策入库。", "icon": "📍" },
-          { "title": "Coding Plan 流程自查修正", "content": "重画接入流程并自查出 5 处 bug：service 名撞车（改 GLM_CODING_PLAN_KEY）、-w 传参进 history（强制 stdin）、Keychain 写入即算完（读出+立即重打 API 不可省）、/v4/models 无法区分两份凭证（靠前缀形态区分）、onboarding skill 缺 Coding Plan 分支（待补）。", "icon": "📍" },
-          { "title": "MCP 只读验收通过", "content": "zread/web_search/web_reader 三工具在 CLI 会话依次实测调用全部成功（返回真实数据），zai_vision 因无图片输入场景未验（另经 local-ocr-macos-vision skill 路径覆盖视觉需求）。", "icon": "📍" }
+          {
+            "title": "印象迁移收尾与安全处理",
+            "content": "Token 文件用后粉碎；建议用户回开发者 Token 页面点「撤销」作废。/tmp 遗留中间文件（707MB zip + 957MB 解压物）待用户确认后清理。另有 3 个笔记本 62 条 ENEX 待决策入库。",
+            "icon": "📍"
+          },
+          {
+            "title": "Coding Plan 流程自查修正",
+            "content": "重画接入流程并自查出 5 处 bug：service 名撞车（改 GLM_CODING_PLAN_KEY）、-w 传参进 history（强制 stdin）、Keychain 写入即算完（读出+立即重打 API 不可省）、/v4/models 无法区分两份凭证（靠前缀形态区分）、onboarding skill 缺 Coding Plan 分支（待补）。",
+            "icon": "📍"
+          },
+          {
+            "title": "MCP 只读验收通过",
+            "content": "zread/web_search/web_reader 三工具在 CLI 会话依次实测调用全部成功（返回真实数据），zai_vision 因无图片输入场景未验（另经 local-ocr-macos-vision skill 路径覆盖视觉需求）。",
+            "icon": "📍"
+          }
         ]
       }
     },
@@ -32,23 +243,58 @@
       "date": "2026-08-13",
       "title": "DOWINX 美国站 W2 环比分析 + 智谱 MCP 工具接入 + 三层下钻规则固化",
       "desc": "用美国站 W2（08-03至08-09）数据完成了首次环比分析，从单周诊断升级为双周对比。同步完成 SPU 层费用扫描全梯队覆盖（亏损/未达标/达标三批）+ SKU 层下钻（定位到具体 SKU 的客单价偏差和异常费用项）。接入智谱 GLM Coding Plan 的 4 个 MCP 工具（zread/web_search/web_reader/zai_vision）。将用户 6 项规则修正同步到 skill。",
-      "tags": ["DOWINX", "环比分析", "SPU层", "SKU下钻", "智谱MCP", "规则固化", "数据分析"],
-      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "tags": [
+        "DOWINX",
+        "环比分析",
+        "SPU层",
+        "SKU下钻",
+        "智谱MCP",
+        "规则固化",
+        "数据分析"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 1,
+        "node": 2
+      },
       "command": "npx lark-cli sheets +cells-get --spreadsheet-token Nqa0sgXe6hNKM5tEYnCcOQBLnAh --sheet-id \"2pwSbk\" --range \"A3:AW33\" --format json",
       "details": {
         "skill": [
-          { "title": "智谱 GLM Coding Plan MCP 工具接入", "content": "接入智谱 BigModel 的 4 个 MCP 工具：①zread（HTTP，开源仓库文档/代码检索，3 个工具：search_doc/get_repo_structure/read_file）②web_search（HTTP，联网搜索）③web_reader（HTTP，网页读取）④zai_vision（stdio npx @z_ai/mcp-server，8 个视觉工具，GLM-4.6V）。均用 GLM_API_KEY 认证。配置写入 Hermes config.yaml，重启后新会话自动加载，工具名 mcp_{server}_{tool}。", "icon": "🔌" }
+          {
+            "title": "智谱 GLM Coding Plan MCP 工具接入",
+            "content": "接入智谱 BigModel 的 4 个 MCP 工具：①zread（HTTP，开源仓库文档/代码检索，3 个工具：search_doc/get_repo_structure/read_file）②web_search（HTTP，联网搜索）③web_reader（HTTP，网页读取）④zai_vision（stdio npx @z_ai/mcp-server，8 个视觉工具，GLM-4.6V）。均用 GLM_API_KEY 认证。配置写入 Hermes config.yaml，重启后新会话自动加载，工具名 mcp_{server}_{tool}。",
+            "icon": "🔌"
+          }
         ],
         "evolution": [
-          { "title": "DOWINX 周利润分析从单周诊断升级为双周环比体系", "content": "W2 分析实现了完整环比：整体层利润率从 1.27%→4.11%（+2.84pp），24 个 SPU 全部带 W1 环比对照。SPU 层按三梯队批量过：亏损 7 个 / 未达标 7 个 / 达标 10 个，每个 SPU 的费用项均挂 W1 值 + 环比变化率。发现 59A 由盈转亏（-338%），68E 利润率腰斩（10.3%→5.3%），58J 持续失血 ¥4.1万（成本结构问题）。SKU 下钻发现核心规律：所有亏损 SKU 的实际客单价均低于定价目标 10-18%，降价销售是利润流失的核心渠道。", "icon": "📈" }
+          {
+            "title": "DOWINX 周利润分析从单周诊断升级为双周环比体系",
+            "content": "W2 分析实现了完整环比：整体层利润率从 1.27%→4.11%（+2.84pp），24 个 SPU 全部带 W1 环比对照。SPU 层按三梯队批量过：亏损 7 个 / 未达标 7 个 / 达标 10 个，每个 SPU 的费用项均挂 W1 值 + 环比变化率。发现 59A 由盈转亏（-338%），68E 利润率腰斩（10.3%→5.3%），58J 持续失血 ¥4.1万（成本结构问题）。SKU 下钻发现核心规律：所有亏损 SKU 的实际客单价均低于定价目标 10-18%，降价销售是利润流失的核心渠道。",
+            "icon": "📈"
+          }
         ],
         "memory": [
-          { "title": "DOWINX 分析规则 6 项修正", "content": "用户明确修正：①利润率分母=总销售额-促销折扣（净销售额）；②整体层尾程运费需合并看待也需分开看比例（FBA发货费随 FBA 库存变化，海外仓运费按 SKU 单价固定）；③固定项（销售佣金/税费）不判定不展示；④整体层需增加环比列；⑤仓储费增加总仓储费占比维度（FBA+海外仓，标准线=两项预警线之和 4%），FBA仓储费优秀标准修正为<1%；⑥FBA库存赔偿是收入项，越多越好但需监控防止不可控收入虚增利润率掩盖真实问题。" },
-          { "title": "DOWINX 周报数据入口：飞书多维表格 MSKU 周利润报表", "content": "每周新数据更新在飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD)中，按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。W2 美国站 spreadsheet_token=Nqa0sgXe6hNKM5tEYnCcOQBLnAh，SPU维度周利润表 sheet_id=2pwSbk，SKU维度数据原表 sheet_id=4cNKPc。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb，sheet_id=gVlNxd（只覆盖 15 个 SPU，58J/59A 不在其中）。" }
+          {
+            "title": "DOWINX 分析规则 6 项修正",
+            "content": "用户明确修正：①利润率分母=总销售额-促销折扣（净销售额）；②整体层尾程运费需合并看待也需分开看比例（FBA发货费随 FBA 库存变化，海外仓运费按 SKU 单价固定）；③固定项（销售佣金/税费）不判定不展示；④整体层需增加环比列；⑤仓储费增加总仓储费占比维度（FBA+海外仓，标准线=两项预警线之和 4%），FBA仓储费优秀标准修正为<1%；⑥FBA库存赔偿是收入项，越多越好但需监控防止不可控收入虚增利润率掩盖真实问题。"
+          },
+          {
+            "title": "DOWINX 周报数据入口：飞书多维表格 MSKU 周利润报表",
+            "content": "每周新数据更新在飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD)中，按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。W2 美国站 spreadsheet_token=Nqa0sgXe6hNKM5tEYnCcOQBLnAh，SPU维度周利润表 sheet_id=2pwSbk，SKU维度数据原表 sheet_id=4cNKPc。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb，sheet_id=gVlNxd（只覆盖 15 个 SPU，58J/59A 不在其中）。"
+          }
         ],
         "node": [
-          { "title": "美国站 W2 完整分析（三层下钻 + 环比）", "content": "第一层：整体利润率 4.11%（W1: 1.27%，+2.84pp），仍远低于 8%。推广 10.8% 接近标准线，海外仓仓储 2.05% 微超。第二层：24 个 SPU 按梯队批量过——亏损 7 个（58J -¥41,588 持续失血、59A 由盈转亏 -338%、50F 亏损扩大、30 大幅改善 +32pp），未达标 7 个（68E 退款率翻 3 倍恶化、D33/D80B/D38/D55/D57D 改善中），达标 10 个（D89A/D55A/D33C/D57K 利润下滑但费用端基本健康）。第三层 SKU 下钻：亏损 SKU 共同特征是客单价低于定价目标 10-18%（降价销售），50F-01 广告 28%、59A-04 退款 21.36%、68E-02 广告 47% 为极端异常值。", "icon": "📊" },
-          { "title": "分析呈现风格迭代", "content": "用户反馈：飞书聊天中大表格占空间且混排文字难读，偏好纯文字精炼版（每个 SPU 一行紧凑描述）。后又调整为表格为主但补充内容塞进表格不拆散结构。最终确认：SPU 层用列表式文字描述（每个 SPU 一段），不用宽表格。亏损 SPU 必须给出标准性诊断（超预警线的项+差距、环比恶化>30%的项），不设行动优先级排名（不同 SPU = 不同运营负责人）。", "icon": "🎨" }
+          {
+            "title": "美国站 W2 完整分析（三层下钻 + 环比）",
+            "content": "第一层：整体利润率 4.11%（W1: 1.27%，+2.84pp），仍远低于 8%。推广 10.8% 接近标准线，海外仓仓储 2.05% 微超。第二层：24 个 SPU 按梯队批量过——亏损 7 个（58J -¥41,588 持续失血、59A 由盈转亏 -338%、50F 亏损扩大、30 大幅改善 +32pp），未达标 7 个（68E 退款率翻 3 倍恶化、D33/D80B/D38/D55/D57D 改善中），达标 10 个（D89A/D55A/D33C/D57K 利润下滑但费用端基本健康）。第三层 SKU 下钻：亏损 SKU 共同特征是客单价低于定价目标 10-18%（降价销售），50F-01 广告 28%、59A-04 退款 21.36%、68E-02 广告 47% 为极端异常值。",
+            "icon": "📊"
+          },
+          {
+            "title": "分析呈现风格迭代",
+            "content": "用户反馈：飞书聊天中大表格占空间且混排文字难读，偏好纯文字精炼版（每个 SPU 一行紧凑描述）。后又调整为表格为主但补充内容塞进表格不拆散结构。最终确认：SPU 层用列表式文字描述（每个 SPU 一段），不用宽表格。亏损 SPU 必须给出标准性诊断（超预警线的项+差距、环比恶化>30%的项），不设行动优先级排名（不同 SPU = 不同运营负责人）。",
+            "icon": "🎨"
+          }
         ]
       }
     },
@@ -57,23 +303,58 @@
       "date": "2026-08-12",
       "title": "DOWINX 周利润三层下钻分析框架 + lark-cli 数据打通",
       "desc": "基于飞书思维导图框架与美国站真实数据（2026-07-27至08-02），建立了 DOWINX 电竞椅品牌周利润三层下钻分析体系（项目整体→SPU→SKU）。通过 lark-cli 打通飞书 Sheets API，实现 59 列 6 个工作表的结构化数据读取，并用真实数据完成首轮完整分析演示。",
-      "tags": ["DOWINX", "周利润分析", "lark-cli", "飞书表格", "三层下钻", "跨境电商", "数据分析"],
-      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "tags": [
+        "DOWINX",
+        "周利润分析",
+        "lark-cli",
+        "飞书表格",
+        "三层下钻",
+        "跨境电商",
+        "数据分析"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 1,
+        "node": 2
+      },
       "command": "npx lark-cli sheets +cells-get --spreadsheet-token FgNgsqS3Shp1Pstqvk7cQlOonD7 --sheet-id \"0rlojD\" --range \"A1:BH1\"",
       "details": {
         "skill": [
-          { "title": "lark-cli Sheets API 数据读取", "content": "通过 lark-cli（@larksuite/cli v1.0.79）的 `sheets +cells-get` 命令读取飞书电子表格数据。关键参数：--spreadsheet-token, --sheet-id, --range。发现 lark-cli --jq 过滤不支持复杂结构（cells 为嵌套数组），需用 `--format json` + Python 解析。成功读取 DOWINX 美国站周利润报表的 SPU维度原表（59列×200行）、SKU维度原表（51列×754行）等 5 个工作表。spreadsheet_token=FgNgsqS3Shp1Pstqvk7cQlOonD7。", "icon": "🔌" }
+          {
+            "title": "lark-cli Sheets API 数据读取",
+            "content": "通过 lark-cli（@larksuite/cli v1.0.79）的 `sheets +cells-get` 命令读取飞书电子表格数据。关键参数：--spreadsheet-token, --sheet-id, --range。发现 lark-cli --jq 过滤不支持复杂结构（cells 为嵌套数组），需用 `--format json` + Python 解析。成功读取 DOWINX 美国站周利润报表的 SPU维度原表（59列×200行）、SKU维度原表（51列×754行）等 5 个工作表。spreadsheet_token=FgNgsqS3Shp1Pstqvk7cQlOonD7。",
+            "icon": "🔌"
+          }
         ],
         "evolution": [
-          { "title": "DOWINX 周利润三层下钻分析框架成型", "content": "从用户飞书思维导图 + 口述规则中提炼出完整分析框架：①项目整体层（业绩指标：销售额=总销售额-促销折扣，利润率标准：非Deal周≥8%/Deal周≥5%；各项费用扫描：逐项占比 vs 预警线）→ ②SPU层（同一套规则定位问题产品，偏差分析 vs 整体均值）→ ③SKU层（客单价是否符合定价 + FBA仓储费超范围定位）。用美国站真实数据完整演示：利润率1.27%严重不达标，LS-66D58J是最大隐患（销量最高498但亏损¥36,095，采购成本46.58%+海外仓运费21.49%）。", "icon": "📈" }
+          {
+            "title": "DOWINX 周利润三层下钻分析框架成型",
+            "content": "从用户飞书思维导图 + 口述规则中提炼出完整分析框架：①项目整体层（业绩指标：销售额=总销售额-促销折扣，利润率标准：非Deal周≥8%/Deal周≥5%；各项费用扫描：逐项占比 vs 预警线）→ ②SPU层（同一套规则定位问题产品，偏差分析 vs 整体均值）→ ③SKU层（客单价是否符合定价 + FBA仓储费超范围定位）。用美国站真实数据完整演示：利润率1.27%严重不达标，LS-66D58J是最大隐患（销量最高498但亏损¥36,095，采购成本46.58%+海外仓运费21.49%）。",
+            "icon": "📈"
+          }
         ],
         "memory": [
-          { "title": "DOWINX 周利润分析规则体系", "content": "销售额=总销售额-促销折扣。利润率达标线：非Deal周≥8%，Deal周≥5%（Deal周判定方式待补充）。费用预警阈值：退款率标准3%/高额5%/异常>5%；推广占比10%标准/10-13%控制/>13%有问题/>20%出方案；亚马逊其他费用>3%预警/>5%调整活动；FBA仓储费>2%；FBM仓储费固定2%；海外仓其他费>2%。分析流程：先看整体健康→拆SPU→下钻SKU。每周还需做环比（上周对比，变化率>20%才重点分析）。" },
-          { "title": "飞书思维导图 + lark-cli 数据源", "content": "DOWINX 分析框架来源于飞书思维导图（wiki node GyFrwPHrAiWL9jkOJncckonCnGd，私有网络 web_extract 被拦截，需用 lark-cli mindnotes 读取）。数据源为飞书电子表格，美国站 token=FgNgsqS3Shp1Pstqvk7cQlOonD7，包含5个工作表：SPU维度数据原表(0rlojD)、SKU维度数据原表(1IEfIN)、SKU维度周利润表(6rnVwv)、SPU维度周利润表(qEtY2g)、SPU维度周推广表(kolVWX)。各站独立分析，不做跨站合并。" }
+          {
+            "title": "DOWINX 周利润分析规则体系",
+            "content": "销售额=总销售额-促销折扣。利润率达标线：非Deal周≥8%，Deal周≥5%（Deal周判定方式待补充）。费用预警阈值：退款率标准3%/高额5%/异常>5%；推广占比10%标准/10-13%控制/>13%有问题/>20%出方案；亚马逊其他费用>3%预警/>5%调整活动；FBA仓储费>2%；FBM仓储费固定2%；海外仓其他费>2%。分析流程：先看整体健康→拆SPU→下钻SKU。每周还需做环比（上周对比，变化率>20%才重点分析）。"
+          },
+          {
+            "title": "飞书思维导图 + lark-cli 数据源",
+            "content": "DOWINX 分析框架来源于飞书思维导图（wiki node GyFrwPHrAiWL9jkOJncckonCnGd，私有网络 web_extract 被拦截，需用 lark-cli mindnotes 读取）。数据源为飞书电子表格，美国站 token=FgNgsqS3Shp1Pstqvk7cQlOonD7，包含5个工作表：SPU维度数据原表(0rlojD)、SKU维度数据原表(1IEfIN)、SKU维度周利润表(6rnVwv)、SPU维度周利润表(qEtY2g)、SPU维度周推广表(kolVWX)。各站独立分析，不做跨站合并。"
+          }
         ],
         "node": [
-          { "title": "美国站首周数据分析演示", "content": "用美国站 2026-07-27至08-02 数据完整走了一遍三层下钻：整体利润率1.27%（远低于8%标准），3个SPU亏损（LS-66D58J最严重-12.62%，LS-66D50F -6.39%，LS-66D57A -1.44%），LS-66D58退款率4.71%接近5%高额线。整体费用：采购38.61%+海外仓运费14.65%+销售佣金15.39% 吃掉绝大部分利润。", "icon": "📊" },
-          { "title": "分析引擎待固化", "content": "框架和规则已确认，下一步是将三层下钻逻辑 + 费用预警阈值固化成 Python 分析引擎（输入飞书表格token自动输出诊断报告）。环比判断需要等第二周数据到位后启动。", "icon": "🔧" }
+          {
+            "title": "美国站首周数据分析演示",
+            "content": "用美国站 2026-07-27至08-02 数据完整走了一遍三层下钻：整体利润率1.27%（远低于8%标准），3个SPU亏损（LS-66D58J最严重-12.62%，LS-66D50F -6.39%，LS-66D57A -1.44%），LS-66D58退款率4.71%接近5%高额线。整体费用：采购38.61%+海外仓运费14.65%+销售佣金15.39% 吃掉绝大部分利润。",
+            "icon": "📊"
+          },
+          {
+            "title": "分析引擎待固化",
+            "content": "框架和规则已确认，下一步是将三层下钻逻辑 + 费用预警阈值固化成 Python 分析引擎（输入飞书表格token自动输出诊断报告）。环比判断需要等第二周数据到位后启动。",
+            "icon": "🔧"
+          }
         ]
       }
     },
@@ -82,23 +363,57 @@
       "date": "2026-08-11",
       "title": "easyocr OCR 路径验证 + DOWINX 跨境电商周利润分析框架",
       "desc": "验证了 easyocr（Python torch 生态）作为 GLM-5.2 无视觉能力时的 OCR 备选方案，成功识别飞书多维表格截图。基于识别结果，为 DOWINX 电竞椅品牌（亚马逊四站点）设计了四层金字塔周利润分析体系。",
-      "tags": ["OCR", "easyocr", "跨境电商", "利润分析", "DOWINX", "亚马逊"],
-      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "tags": [
+        "OCR",
+        "easyocr",
+        "跨境电商",
+        "利润分析",
+        "DOWINX",
+        "亚马逊"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 1,
+        "node": 2
+      },
       "command": "pip3 install easyocr && python3 -c \"import easyocr; reader = easyocr.Reader(['ch_sim','en'], gpu=False)\"",
       "details": {
         "skill": [
-          { "title": "easyocr Python OCR 能力", "content": "通过 easyocr（torch 2.8.0 + opencv-headless + scipy）实现 Python 生态的中英文 OCR。在 3346x804 飞书多维表格截图上成功识别出中文品牌名、站点名、日期等关键信息。比 Swift+Vision 重（需安装 ~2GB torch 依赖），但在无法直接调用 Swift 的场景下是可靠备选。", "icon": "🔍" }
+          {
+            "title": "easyocr Python OCR 能力",
+            "content": "通过 easyocr（torch 2.8.0 + opencv-headless + scipy）实现 Python 生态的中英文 OCR。在 3346x804 飞书多维表格截图上成功识别出中文品牌名、站点名、日期等关键信息。比 Swift+Vision 重（需安装 ~2GB torch 依赖），但在无法直接调用 Swift 的场景下是可靠备选。",
+            "icon": "🔍"
+          }
         ],
         "evolution": [
-          { "title": "跨境电商周利润分析框架成型", "content": "为 DOWINX 品牌（亚马逊美/欧/日/加四站）设计了四层金字塔分析体系：①全局汇总（跨站对比、利润占比排名）→ ②站点深度拆解（收入端×成本端逐项）→ ③趋势&异常检测（周环比、成本项波动）→ ④决策建议（每站行动项+资源分配）。核心逻辑：从目标倒推，先看利润差额再定位流量/转化问题。", "icon": "📈" }
+          {
+            "title": "跨境电商周利润分析框架成型",
+            "content": "为 DOWINX 品牌（亚马逊美/欧/日/加四站）设计了四层金字塔分析体系：①全局汇总（跨站对比、利润占比排名）→ ②站点深度拆解（收入端×成本端逐项）→ ③趋势&异常检测（周环比、成本项波动）→ ④决策建议（每站行动项+资源分配）。核心逻辑：从目标倒推，先看利润差额再定位流量/转化问题。",
+            "icon": "📈"
+          }
         ],
         "memory": [
-          { "title": "DOWINX 品牌业务信息", "content": "DOWINX = 锅仔运营的电竞椅品牌，亚马逊跨境电商，覆盖美国/欧洲/日本/加拿大四大站点。周维度利润报表存储在飞书多维表格「分站点可售链接/月度财务报表」中。企业主体：杭州木棉网络科技有限公司。" },
-          { "title": "easyocr vs Swift+Vision OCR 路径选择", "content": "GLM-5.2 无视觉能力时，OCR 有两条验证可用路径：①Swift+Vision（8/4 验证，零依赖，需写 swift 脚本）②easyocr（8/11 验证，Python 生态，需 torch ~2GB）。Memory 之前标注「勿试 easyocr」过于保守——easyocr 实际可用，只是依赖重。在 feishu 会话中无法直接跑 swift 时，easyocr 是合理 fallback。" }
+          {
+            "title": "DOWINX 品牌业务信息",
+            "content": "DOWINX = 锅仔运营的电竞椅品牌，亚马逊跨境电商，覆盖美国/欧洲/日本/加拿大四大站点。周维度利润报表存储在飞书多维表格「分站点可售链接/月度财务报表」中。企业主体：杭州木棉网络科技有限公司。"
+          },
+          {
+            "title": "easyocr vs Swift+Vision OCR 路径选择",
+            "content": "GLM-5.2 无视觉能力时，OCR 有两条验证可用路径：①Swift+Vision（8/4 验证，零依赖，需写 swift 脚本）②easyocr（8/11 验证，Python 生态，需 torch ~2GB）。Memory 之前标注「勿试 easyocr」过于保守——easyocr 实际可用，只是依赖重。在 feishu 会话中无法直接跑 swift 时，easyocr 是合理 fallback。"
+          }
         ],
         "node": [
-          { "title": "OCR 探索阶梯", "content": "逐级排查：vision_analyze(GLM 400) → pytesseract(tesseract binary 缺失) → numpy+PIL 图像结构分析(安装 numpy 成功但无文字识别) → easyocr(安装 torch+opencv，OCR 成功)。关键教训：先试 Swift+Vision（已有 skill），避免安装重依赖。", "icon": "🔧" },
-          { "title": "周利润分析体系规划", "content": "基于飞书多维表格识别到的四站利润数据，设计了从全局汇总到单站拆解到趋势追踪到行动建议的完整分析闭环。待用户确认报表内字段后可落地为具体分析模板。", "icon": "📊" }
+          {
+            "title": "OCR 探索阶梯",
+            "content": "逐级排查：vision_analyze(GLM 400) → pytesseract(tesseract binary 缺失) → numpy+PIL 图像结构分析(安装 numpy 成功但无文字识别) → easyocr(安装 torch+opencv，OCR 成功)。关键教训：先试 Swift+Vision（已有 skill），避免安装重依赖。",
+            "icon": "🔧"
+          },
+          {
+            "title": "周利润分析体系规划",
+            "content": "基于飞书多维表格识别到的四站利润数据，设计了从全局汇总到单站拆解到趋势追踪到行动建议的完整分析闭环。待用户确认报表内字段后可落地为具体分析模板。",
+            "icon": "📊"
+          }
         ]
       }
     },
@@ -107,22 +422,52 @@
       "date": "2026-08-04",
       "title": "亚马逊链接诊断框架 + macOS Vision OCR 能力突破",
       "desc": "建立了从目标倒推的亚马逊旗舰店链接诊断体系（流量/转化/对标三层），并通过 Swift+Vision 框架实现了零依赖的本地 OCR 能力，绕过了 tesseract/pytesseract 安装壁垒。",
-      "tags": ["亚马逊运营", "诊断框架", "OCR", "macOS Vision", "目标倒推"],
-      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 2 },
+      "tags": [
+        "亚马逊运营",
+        "诊断框架",
+        "OCR",
+        "macOS Vision",
+        "目标倒推"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 1,
+        "evolution": 1,
+        "node": 2
+      },
       "command": "swift /tmp/ocr.swift",
       "details": {
         "skill": [
-          { "title": "macOS Vision OCR 能力", "content": "通过 Swift 命令行脚本调用原生 Vision 框架（VNRecognizeTextRequest），实现零外部依赖的本地 OCR。支持 zh-Hans/zh-Hant/en-US 多语言识别，精度为 accurate 级别。绕过了 tesseract 需要 Homebrew（本机无 brew）、easyocr 需大量依赖的限制。已验证可从 2640x1134 截图提取完整中文框架结构图文字。", "icon": "🔍" }
+          {
+            "title": "macOS Vision OCR 能力",
+            "content": "通过 Swift 命令行脚本调用原生 Vision 框架（VNRecognizeTextRequest），实现零外部依赖的本地 OCR。支持 zh-Hans/zh-Hant/en-US 多语言识别，精度为 accurate 级别。绕过了 tesseract 需要 Homebrew（本机无 brew）、easyocr 需大量依赖的限制。已验证可从 2640x1134 截图提取完整中文框架结构图文字。",
+            "icon": "🔍"
+          }
         ],
         "evolution": [
-          { "title": "亚马逊链接诊断体系成型", "content": "建立了从目标倒推的诊断链：目标(销量+利润) → 目标差额 → 流量缺口 vs 转化缺口 → 具体原因(流量少/贵/波动，广告/自然转化) → 对标体系(品牌级 & 自身级标准) → 开源节流·降本增效。核心优势：先有目标锚点再倒推诊断，而非'什么都看一下'。", "icon": "📈" }
+          {
+            "title": "亚马逊链接诊断体系成型",
+            "content": "建立了从目标倒推的诊断链：目标(销量+利润) → 目标差额 → 流量缺口 vs 转化缺口 → 具体原因(流量少/贵/波动，广告/自然转化) → 对标体系(品牌级 & 自身级标准) → 开源节流·降本增效。核心优势：先有目标锚点再倒推诊断，而非'什么都看一下'。",
+            "icon": "📈"
+          }
         ],
         "memory": [
-          { "title": "Swift OCR fallback 模式", "content": "当 tesseract 不可用（无 Homebrew）、pytesseract/easyocr 缺依赖、pyobjc 未安装时，Swift + Vision 框架是 macOS 上最可靠的零依赖 OCR 方案。命令：swift /tmp/ocr.swift，需导入 Vision + Foundation，用 VNRecognizeTextRequest + VNImageRequestHandler。注意 GCD 异步需用 DispatchSemaphore 等待。" }
+          {
+            "title": "Swift OCR fallback 模式",
+            "content": "当 tesseract 不可用（无 Homebrew）、pytesseract/easyocr 缺依赖、pyobjc 未安装时，Swift + Vision 框架是 macOS 上最可靠的零依赖 OCR 方案。命令：swift /tmp/ocr.swift，需导入 Vision + Foundation，用 VNRecognizeTextRequest + VNImageRequestHandler。注意 GCD 异步需用 DispatchSemaphore 等待。"
+          }
         ],
         "node": [
-          { "title": "图片 OCR 基础设施探索", "content": "逐级排查：tesseract(binary缺失) → pytesseract(无brew) → easyocr(无依赖) → pyobjc/Vision(无objc模块) → Swift命令行(成功)。最终方案是直接写 Swift 脚本调用 Vision 框架，用 DispatchSemaphore 解决异步等待。", "icon": "🔧" },
-          { "title": "诊断框架对标体系", "content": "框架强调品牌链接与自身链接的双层对标：品牌流量标准/转化标准 vs 自身流量标准/转化标准，作为判断'差在哪'的基准线。", "icon": "📊" }
+          {
+            "title": "图片 OCR 基础设施探索",
+            "content": "逐级排查：tesseract(binary缺失) → pytesseract(无brew) → easyocr(无依赖) → pyobjc/Vision(无objc模块) → Swift命令行(成功)。最终方案是直接写 Swift 脚本调用 Vision 框架，用 DispatchSemaphore 解决异步等待。",
+            "icon": "🔧"
+          },
+          {
+            "title": "诊断框架对标体系",
+            "content": "框架强调品牌链接与自身链接的双层对标：品牌流量标准/转化标准 vs 自身流量标准/转化标准，作为判断'差在哪'的基准线。",
+            "icon": "📊"
+          }
         ]
       }
     },
@@ -131,14 +476,48 @@
       "date": "2026-06-14",
       "title": "自进化档案馆：从零到一的架构构建",
       "desc": "基于设计规范，从零搭建了具备三层视图的自进化看板，确立归档本体论。",
-      "tags": ["SPA架构", "视觉重构", "本体论", "增量原则"],
+      "tags": [
+        "SPA架构",
+        "视觉重构",
+        "本体论",
+        "增量原则"
+      ],
       "details": {
-        "skill": [{ "title": "进化看板架构", "content": "实现三层视图路由切换与数据/视图分离架构。", "icon": "🏗️" }],
-        "evolution": [{ "title": "自动化归档", "content": "建立基于 Cronjob 的每日定时更新机制。", "icon": "📈" }],
-        "memory": [{ "title": "归档本体论", "content": "定义 Skill、记忆点、进化点、探索节点四维归档标准。", "icon": "🧠" }],
-        "node": [{ "title": "架构锁定", "content": "完成看板核心模块锁定。", "icon": "📍" }]
+        "skill": [
+          {
+            "title": "进化看板架构",
+            "content": "实现三层视图路由切换与数据/视图分离架构。",
+            "icon": "🏗️"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "自动化归档",
+            "content": "建立基于 Cronjob 的每日定时更新机制。",
+            "icon": "📈"
+          }
+        ],
+        "memory": [
+          {
+            "title": "归档本体论",
+            "content": "定义 Skill、记忆点、进化点、探索节点四维归档标准。",
+            "icon": "🧠"
+          }
+        ],
+        "node": [
+          {
+            "title": "架构锁定",
+            "content": "完成看板核心模块锁定。",
+            "icon": "📍"
+          }
+        ]
       },
-      "stats": { "skill": 1, "memory": 4, "evolution": 4, "node": 5 },
+      "stats": {
+        "skill": 1,
+        "memory": 4,
+        "evolution": 4,
+        "node": 5
+      },
       "command": "hermes archive --session-id current"
     },
     {
@@ -146,13 +525,36 @@
       "date": "2026-06-16",
       "title": "确立 Hermes-锅仔协作宪法",
       "desc": "确立了‘大脑+手’工作模式，固化五大执行准则，实现 Agent 与决策逻辑的深度对齐。",
-      "tags": ["体系构建", "协作准则"],
-      "stats": { "skill": 0, "memory": 1, "evolution": 1, "node": 1 },
+      "tags": [
+        "体系构建",
+        "协作准则"
+      ],
+      "stats": {
+        "skill": 0,
+        "memory": 1,
+        "evolution": 1,
+        "node": 1
+      },
       "command": "hermes persona --view-constitution",
       "details": {
-        "memory": [{ "title": "协作宪法", "content": "五大准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。"}],
-        "evolution": [{ "title": "架构对齐", "content": "确立了代理的自主运营者与思想合伙人定位。"}],
-        "node": [{ "title": "准则迭代", "content": "从身份定义到权限边界的闭环构建。"}]
+        "memory": [
+          {
+            "title": "协作宪法",
+            "content": "五大准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "架构对齐",
+            "content": "确立了代理的自主运营者与思想合伙人定位。"
+          }
+        ],
+        "node": [
+          {
+            "title": "准则迭代",
+            "content": "从身份定义到权限边界的闭环构建。"
+          }
+        ]
       }
     },
     {
@@ -160,13 +562,36 @@
       "date": "2026-06-16",
       "title": "项目制元内核架构升级",
       "desc": "完成工作区的物理模块化重构，建立了 meta/workspace/global_utils/scripts 的标准化标准。",
-      "tags": ["工程治理", "架构重构"],
-      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 1 },
+      "tags": [
+        "工程治理",
+        "架构重构"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 1,
+        "evolution": 1,
+        "node": 1
+      },
       "command": "cd ~/Desktop/Codex-Hermes/ && ls -F",
       "details": {
-        "skill": [{ "title": "工作区标准化", "content": "确立了内核+工作空间的孵化架构。"}],
-        "evolution": [{ "title": "路径健壮性", "content": "实现了自动化归档脚本与目录结构的解耦。"}],
-        "node": [{ "title": "物理空间审计", "content": "完成了从混乱目录到标准工作区的重塑。"}]
+        "skill": [
+          {
+            "title": "工作区标准化",
+            "content": "确立了内核+工作空间的孵化架构。"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "路径健壮性",
+            "content": "实现了自动化归档脚本与目录结构的解耦。"
+          }
+        ],
+        "node": [
+          {
+            "title": "物理空间审计",
+            "content": "完成了从混乱目录到标准工作区的重塑。"
+          }
+        ]
       }
     },
     {
@@ -174,13 +599,36 @@
       "date": "2026-06-16",
       "title": "Codex 工程环境联动打通",
       "desc": "修复 CLI 链路，联通电商插件与本地开发环境，实现了工程能力的 API 级调用。",
-      "tags": ["能力集成", "工程实践"],
-      "stats": { "skill": 1, "memory": 0, "evolution": 1, "node": 1 },
+      "tags": [
+        "能力集成",
+        "工程实践"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 0,
+        "evolution": 1,
+        "node": 1
+      },
       "command": "codex plugin list",
       "details": {
-        "skill": [{ "title": "MCP 联动", "content": "成功打通 SellerSprite/Sorftime 等电商数据插件。"}],
-        "evolution": [{ "title": "工程接口集成", "content": "打通底层执行链路，实现调用标准化。"}],
-        "node": [{ "title": "环境校验", "content": "通过路径修正与插件校验，确认了工程环境的可用性。"}]
+        "skill": [
+          {
+            "title": "MCP 联动",
+            "content": "成功打通 SellerSprite/Sorftime 等电商数据插件。"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "工程接口集成",
+            "content": "打通底层执行链路，实现调用标准化。"
+          }
+        ],
+        "node": [
+          {
+            "title": "环境校验",
+            "content": "通过路径修正与插件校验，确认了工程环境的可用性。"
+          }
+        ]
       }
     },
     {
@@ -188,17 +636,47 @@
       "date": "2026-06-29",
       "title": "档案馆治理总纲与单文件架构重构",
       "desc": "完成档案馆全链路运行总纲的最终确立，并将前端重构为抗脆弱的单文件静态部署模式。",
-      "tags": ["体系构建", "工程降级", "单文件部署"],
-      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 1 },
+      "tags": [
+        "体系构建",
+        "工程降级",
+        "单文件部署"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 1,
+        "node": 1
+      },
       "command": "hermes archive --view-constitution",
       "details": {
-        "skill": [{ "title": "单文件部署能力", "content": "掌握将 SPA 降级为单文件 HTML + Fetch 的稳定模式，100% 屏蔽 CDN 404 与构建链路崩溃。"}],
-        "evolution": [{ "title": "抗脆弱架构落地", "content": "即使在 node_modules 坏掉的极端情况下，依然能交付可运行的静态产品。"}],
-        "memory": [
-          { "title": "档案馆治理总纲", "content": "确立实质性门槛 (无实质进化不归档) 与去重合并原则 (同日合并增量)，拒绝注水档案。" },
-          { "title": "工程化风险准则", "content": "Web 资源严禁中文命名 (必须英文/拼音)，否则极易在 CI/CD 流程中引发 404。" }
+        "skill": [
+          {
+            "title": "单文件部署能力",
+            "content": "掌握将 SPA 降级为单文件 HTML + Fetch 的稳定模式，100% 屏蔽 CDN 404 与构建链路崩溃。"
+          }
         ],
-        "node": [{ "title": "去工程化决策", "content": "在现代框架部署受阻时，降级为最简静态方案是更具责任心的工程选择。"}]
+        "evolution": [
+          {
+            "title": "抗脆弱架构落地",
+            "content": "即使在 node_modules 坏掉的极端情况下，依然能交付可运行的静态产品。"
+          }
+        ],
+        "memory": [
+          {
+            "title": "档案馆治理总纲",
+            "content": "确立实质性门槛 (无实质进化不归档) 与去重合并原则 (同日合并增量)，拒绝注水档案。"
+          },
+          {
+            "title": "工程化风险准则",
+            "content": "Web 资源严禁中文命名 (必须英文/拼音)，否则极易在 CI/CD 流程中引发 404。"
+          }
+        ],
+        "node": [
+          {
+            "title": "去工程化决策",
+            "content": "在现代框架部署受阻时，降级为最简静态方案是更具责任心的工程选择。"
+          }
+        ]
       }
     },
     {
@@ -206,19 +684,55 @@
       "date": "2026-07-29",
       "title": "React SPA 重写 + GitHub Actions 云端部署",
       "desc": "将档案馆从单文件 HTML 升级为 React 18 + Vite + Tailwind SPA，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖的跨设备自动化。",
-      "tags": ["架构升级", "云端部署", "React", "GitHub Actions"],
-      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "tags": [
+        "架构升级",
+        "云端部署",
+        "React",
+        "GitHub Actions"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 1,
+        "node": 2
+      },
       "command": "cd ~/evolution-dashboard && npm run build",
       "details": {
-        "skill": [{ "title": "project-governance 治理框架", "content": "将通用型 Codex 项目设计提示词适配为 Hermes 文档驱动架构，创建为可复用 skill。四层结构：主控+执行+同步+知识，18 项治理文件模板。", "icon": "🏗️" }],
-        "evolution": [{ "title": "部署架构跨代升级", "content": "从单文件 HTML（数据烘焙）→ React SPA（数据渲染分离）+ GitHub Actions 自动构建部署。彻底消除单机依赖。", "icon": "📈" }],
+        "skill": [
+          {
+            "title": "project-governance 治理框架",
+            "content": "将通用型 Codex 项目设计提示词适配为 Hermes 文档驱动架构，创建为可复用 skill。四层结构：主控+执行+同步+知识，18 项治理文件模板。",
+            "icon": "🏗️"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "部署架构跨代升级",
+            "content": "从单文件 HTML（数据烘焙）→ React SPA（数据渲染分离）+ GitHub Actions 自动构建部署。彻底消除单机依赖。",
+            "icon": "📈"
+          }
+        ],
         "memory": [
-          { "title": "GitHub Pages 部署路径", "content": "Vite build → cp dist/* → git push main → Actions 自动部署。坑：git rm 导致 node_modules 误删需重装；gh-pages-temp 分支残留需清理。" },
-          { "title": "密钥管理铁律", "content": "SSH key 优先，Keychain PAT fallback。永不接受 plaintext credentials。用户曾泄露 PAT，此后一律走 Keychain/SSH。" }
+          {
+            "title": "GitHub Pages 部署路径",
+            "content": "Vite build → cp dist/* → git push main → Actions 自动部署。坑：git rm 导致 node_modules 误删需重装；gh-pages-temp 分支残留需清理。"
+          },
+          {
+            "title": "密钥管理铁律",
+            "content": "SSH key 优先，Keychain PAT fallback。永不接受 plaintext credentials。用户曾泄露 PAT，此后一律走 Keychain/SSH。"
+          }
         ],
         "node": [
-          { "title": "飞书长连接绑定", "content": "WebSocket 握手成功 ≠ 功能可用。验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。", "icon": "🔌" },
-          { "title": "治理框架落地", "content": "进化档案馆作为首个项目按 project-governance 框架补齐全套治理文档，覆盖度 30%→100%。", "icon": "📋" }
+          {
+            "title": "飞书长连接绑定",
+            "content": "WebSocket 握手成功 ≠ 功能可用。验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。",
+            "icon": "🔌"
+          },
+          {
+            "title": "治理框架落地",
+            "content": "进化档案馆作为首个项目按 project-governance 框架补齐全套治理文档，覆盖度 30%→100%。",
+            "icon": "📋"
+          }
         ]
       }
     },
@@ -227,23 +741,56 @@
       "date": "2026-07-31",
       "title": "Cloudflare Pages 迁移 + 飞书 Bitable API 集成",
       "desc": "GitHub Pages 因 Source 模式互斥连续 startup_failure 无法修复（需用户手动改 Settings），果断迁移到 Cloudflare Pages 实现跨设备部署。同时打通飞书多维表格 Bitable API，实现企业数据结构化读取。",
-      "tags": ["平台迁移", "Cloudflare Pages", "飞书API", "Bitable", "Wrangler"],
-      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 2 },
+      "tags": [
+        "平台迁移",
+        "Cloudflare Pages",
+        "飞书API",
+        "Bitable",
+        "Wrangler"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 1,
+        "node": 2
+      },
       "command": "npx wrangler pages deploy dist --project-name evolution-dashboard --branch main",
       "details": {
         "skill": [
-          { "title": "飞书 Bitable API 集成", "content": "通过 lark_oapi Python SDK 实现飞书多维表格的认证、列表读取、字段定义解析和记录数据提取。支持 app_token 路由、table_id 定位、raw JSON 解析。已验证可读取「财务报表处理」多维表格（16 条记录、9 字段）。", "icon": "🔌" }
+          {
+            "title": "飞书 Bitable API 集成",
+            "content": "通过 lark_oapi Python SDK 实现飞书多维表格的认证、列表读取、字段定义解析和记录数据提取。支持 app_token 路由、table_id 定位、raw JSON 解析。已验证可读取「财务报表处理」多维表格（16 条记录、9 字段）。",
+            "icon": "🔌"
+          }
         ],
         "evolution": [
-          { "title": "部署平台跨代迁移", "content": "GitHub Pages（受 Source 模式互斥阻塞）→ Cloudflare Pages（wrangler CLI 直传 dist/，全球 CDN，无限带宽/请求）。彻底消除 GitHub Actions 依赖，部署从「依赖 CI workflow 正确触发」简化为「一条 wrangler 命令直传」。", "icon": "📈" }
+          {
+            "title": "部署平台跨代迁移",
+            "content": "GitHub Pages（受 Source 模式互斥阻塞）→ Cloudflare Pages（wrangler CLI 直传 dist/，全球 CDN，无限带宽/请求）。彻底消除 GitHub Actions 依赖，部署从「依赖 CI workflow 正确触发」简化为「一条 wrangler 命令直传」。",
+            "icon": "📈"
+          }
         ],
         "memory": [
-          { "title": "Cloudflare Pages 部署铁律", "content": "更新流程：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（部署后立刻 curl 可能返回 522 = 暂时未就绪，非失败）。加静态资源（如 avatar）必须手动 cp 到 dist/ 根目录再 deploy。wrangler login OAuth 有 ~60s 超时，首次注册慢导致超时→重跑即可。" },
-          { "title": "飞书 Bot 权限隔离", "content": "Bot 能看到多维表格结构（字段定义）但读不到记录内容（fields 返回空 {}）= Bot 未被添加为该多维表格的协作者。必须手动在飞书表格里「添加协作者」搜索机器人并授权。「财务报表处理」表 app_token=KOSBbEntlaWVKCsIYemc7TX7nRa。" }
+          {
+            "title": "Cloudflare Pages 部署铁律",
+            "content": "更新流程：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（部署后立刻 curl 可能返回 522 = 暂时未就绪，非失败）。加静态资源（如 avatar）必须手动 cp 到 dist/ 根目录再 deploy。wrangler login OAuth 有 ~60s 超时，首次注册慢导致超时→重跑即可。"
+          },
+          {
+            "title": "飞书 Bot 权限隔离",
+            "content": "Bot 能看到多维表格结构（字段定义）但读不到记录内容（fields 返回空 {}）= Bot 未被添加为该多维表格的协作者。必须手动在飞书表格里「添加协作者」搜索机器人并授权。「财务报表处理」表 app_token=KOSBbEntlaWVKCsIYemc7TX7nRa。"
+          }
         ],
         "node": [
-          { "title": "GitHub Pages 放弃决策", "content": "Actions 连续 startup_failure + Pages API 返回 404 + 无法通过 API 检查 Source 模式（需认证）。遵循「以结果为准，跨设备可用 > 调试 GitHub 执念」原则，超过 2 轮排查立刻转向 Cloudflare Pages。", "icon": "🔀" },
-          { "title": "飞书 CLI 探索", "content": "调研飞书官方 CLI（feishu.cn/feishu-cli）——飞书官方开源 AI Agent 操作工具，npm 一行安装。npm 搜索发现多个第三方包（feishu-cli@0.2.0, @fanfanv5/feishu-cli@2.0.11 等）。最终结论：Hermes 已内置 lark_oapi SDK 可直接操作 Bitable，无需额外 CLI 工具。", "icon": "🔍" }
+          {
+            "title": "GitHub Pages 放弃决策",
+            "content": "Actions 连续 startup_failure + Pages API 返回 404 + 无法通过 API 检查 Source 模式（需认证）。遵循「以结果为准，跨设备可用 > 调试 GitHub 执念」原则，超过 2 轮排查立刻转向 Cloudflare Pages。",
+            "icon": "🔀"
+          },
+          {
+            "title": "飞书 CLI 探索",
+            "content": "调研飞书官方 CLI（feishu.cn/feishu-cli）——飞书官方开源 AI Agent 操作工具，npm 一行安装。npm 搜索发现多个第三方包（feishu-cli@0.2.0, @fanfanv5/feishu-cli@2.0.11 等）。最终结论：Hermes 已内置 lark_oapi SDK 可直接操作 Bitable，无需额外 CLI 工具。",
+            "icon": "🔍"
+          }
         ]
       }
     },
@@ -252,53 +799,168 @@
       "date": "2026-07-30",
       "title": "GitHub Pages 部署根因定位：Source 模式冲突",
       "desc": "定位了 Actions 持续 startup_failure 的根因——GitHub Pages Source 设置为 'Deploy from branch' 而非 'GitHub Actions'，两种模式互斥。确立了系统化部署排查方法论。",
-      "tags": ["部署排障", "GitHub Pages", "Actions", "根因分析"],
-      "stats": { "skill": 0, "memory": 2, "evolution": 1, "node": 1 },
+      "tags": [
+        "部署排障",
+        "GitHub Pages",
+        "Actions",
+        "根因分析"
+      ],
+      "stats": {
+        "skill": 0,
+        "memory": 2,
+        "evolution": 1,
+        "node": 1
+      },
       "command": "curl -s https://13576683690-commits.github.io/Hermes/data.json",
       "details": {
-        "evolution": [{ "title": "部署排查方法论成型", "content": "建立了五步排查 ladder：①curl 确认线上实际内容（不靠浏览器）→ ②GitHub API 确认部署源和 Actions 状态 → ③确认 push 到了正确分支 → ④检查构建产物是否更新 → ⑤检查 Pages Source 模式。", "icon": "📈" }],
-        "memory": [
-          { "title": "Pages Source 模式互斥", "content": "'Deploy from branch' 与 'GitHub Actions' 两种 Pages Source 模式互斥。经典模式下带 deploy-pages action 的 workflow 会 startup_failure。无法通过 API 检查（需认证），只能用户去 Settings→Pages 确认。" },
-          { "title": "部署排查铁律", "content": "push 不生效时：第一步 curl 线上 data.json 确认实际内容（浏览器有缓存不可靠），第二步用 GitHub API 确认部署源分支和 Actions 状态。不靠猜测。" }
+        "evolution": [
+          {
+            "title": "部署排查方法论成型",
+            "content": "建立了五步排查 ladder：①curl 确认线上实际内容（不靠浏览器）→ ②GitHub API 确认部署源和 Actions 状态 → ③确认 push 到了正确分支 → ④检查构建产物是否更新 → ⑤检查 Pages Source 模式。",
+            "icon": "📈"
+          }
         ],
-        "node": [{ "title": "多分支模型确认", "content": "通过 GitHub API (/actions/runs + /deployments) 确认：所有 pages build 的 head_branch 均为 main，gh-pages 不再触发部署。main = Pages 实际部署源。", "icon": "🔍" }]
+        "memory": [
+          {
+            "title": "Pages Source 模式互斥",
+            "content": "'Deploy from branch' 与 'GitHub Actions' 两种 Pages Source 模式互斥。经典模式下带 deploy-pages action 的 workflow 会 startup_failure。无法通过 API 检查（需认证），只能用户去 Settings→Pages 确认。"
+          },
+          {
+            "title": "部署排查铁律",
+            "content": "push 不生效时：第一步 curl 线上 data.json 确认实际内容（浏览器有缓存不可靠），第二步用 GitHub API 确认部署源分支和 Actions 状态。不靠猜测。"
+          }
+        ],
+        "node": [
+          {
+            "title": "多分支模型确认",
+            "content": "通过 GitHub API (/actions/runs + /deployments) 确认：所有 pages build 的 head_branch 均为 main，gh-pages 不再触发部署。main = Pages 实际部署源。",
+            "icon": "🔍"
+          }
+        ]
       }
     }
   ],
   "memories": [
-    { "content": "【核心定义】Skill：新增程序化工具；记忆点：事实性固化；进化点：能力量化提升；探索节点：分支子任务。" },
-    { "content": "五大协作准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。" },
-    { "content": "档案馆治理：实质进化门槛 + 1会话1档案 + 同日合并增量。无意义记录严禁入档。" },
-    { "content": "GitHub Pages 部署路径：Vite build → cp dist/* → git push main → Actions 自动部署。" },
-    { "content": "密钥管理：SSH key 优先，Keychain PAT fallback，永不接受 plaintext credentials。" },
-    { "content": "飞书绑定验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。" },
-    { "content": "GitHub Pages Source 模式互斥：'Deploy from branch' vs 'GitHub Actions'。deploy-pages action 在经典模式下 startup_failure。无法 API 检查，只能 Settings→Pages 确认。" },
-    { "content": "部署排查铁律：push 不生效时第一步 curl 线上 data.json（浏览器有缓存不可靠），第二步 GitHub API 确认部署源和 Actions 状态。" },
-    { "content": "Cloudflare Pages 部署铁律：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（522 = 暂时未就绪，非失败）。加静态资源必须手动 cp 到 dist/ 再 deploy。" },
-    { "content": "飞书 Bot 权限隔离：Bot 能看到多维表格结构但读不到记录（fields 返回空 {}）= Bot 未被添加为该表协作者，需手动在飞书里授权。" },
-    { "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。" },
-    { "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。" },
-    { "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%（优秀<1%），FBM仓储固定2%，总仓储费(FBA+海外仓)>4%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。" },
-    { "content": "DOWINX 周报数据入口：飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD) 按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb sheet_id=gVlNxd（只覆盖15个SPU，58J/59A 不在其中）。" },
-    { "content": "智谱 GLM Coding Plan 4个MCP已配入 Hermes config.yaml：zread(HTTP,开源仓库)/web_search(HTTP,联网搜索)/web_reader(HTTP,网页读取) + zai_vision(stdio npx @z_ai/mcp-server,8个视觉工具)。均用 GLM_API_KEY 认证。重启生效后工具名 mcp_{server}_{tool}。" },
-    { "content": "印象迁移正解：evernote-backup（hermes venv 1.14.0，--backend china）+ 开发者 Token（app.yinxiang.com/api/DeveloperToken.action）。API 通道出明文正文；Mac 9.x 客户端 .notes 正文是 ENC0 账户级 AES 加密不可解、附件明文可提。" },
-    { "content": "智谱 Coding Plan key 走 Keychain：服务名用 GLM_CODING_PLAN_KEY（与已 revoke 的 OpenAPI GLM_API_KEY 物理隔离），写入强制 stdin。token 非 sk- 前缀，与 OpenAPI key 靠前缀形态区分，/v4/models 无法区分两份凭证。" }
+    {
+      "content": "【核心定义】Skill：新增程序化工具；记忆点：事实性固化；进化点：能力量化提升；探索节点：分支子任务。"
+    },
+    {
+      "content": "五大协作准则：主动性、证据反驳、责任闭环、权限门控、记忆标准化。"
+    },
+    {
+      "content": "档案馆治理：实质进化门槛 + 1会话1档案 + 同日合并增量。无意义记录严禁入档。"
+    },
+    {
+      "content": "GitHub Pages 部署路径：Vite build → cp dist/* → git push main → Actions 自动部署。"
+    },
+    {
+      "content": "密钥管理：SSH key 优先，Keychain PAT fallback，永不接受 plaintext credentials。"
+    },
+    {
+      "content": "飞书绑定验证三门槛：用户看到消息 + gateway log 有 inbound event + Hermes 成功回复。"
+    },
+    {
+      "content": "GitHub Pages Source 模式互斥：'Deploy from branch' vs 'GitHub Actions'。deploy-pages action 在经典模式下 startup_failure。无法 API 检查，只能 Settings→Pages 确认。"
+    },
+    {
+      "content": "部署排查铁律：push 不生效时第一步 curl 线上 data.json（浏览器有缓存不可靠），第二步 GitHub API 确认部署源和 Actions 状态。"
+    },
+    {
+      "content": "Cloudflare Pages 部署铁律：改 data.json → cp 到 dist/ → wrangler pages deploy。CDN 传播延迟 10-15s（522 = 暂时未就绪，非失败）。加静态资源必须手动 cp 到 dist/ 再 deploy。"
+    },
+    {
+      "content": "飞书 Bot 权限隔离：Bot 能看到多维表格结构但读不到记录（fields 返回空 {}）= Bot 未被添加为该表协作者，需手动在飞书里授权。"
+    },
+    {
+      "content": "macOS Vision OCR：tesseract/brew 不可用时，Swift + Vision 框架（VNRecognizeTextRequest）是零依赖本地 OCR 方案，支持中英文，用 DispatchSemaphore 处理异步。"
+    },
+    {
+      "content": "easyocr（Python+torch）是 GLM 无视觉时的备选 OCR 方案，中英文识别可用，但依赖重（torch ~2GB）。OCR 路径优先级：Swift+Vision > easyocr > pytesseract。"
+    },
+    {
+      "content": "DOWINX 周利润分析规则：销售额=总销售额-促销折扣，利润率标准非Deal周≥8%/Deal周≥5%。费用预警：退款率3%/5%/>5%，推广占比10%/13%/20%，亚马逊其他费用3%/5%，FBA仓储>2%（优秀<1%），FBM仓储固定2%，总仓储费(FBA+海外仓)>4%。分析流程：整体→SPU→SKU三层下钻 + 环比（>20%变化才分析）。各站独立。"
+    },
+    {
+      "content": "DOWINX 周报数据入口：飞书多维表格「电竞椅信息汇总」(app_token=LhKEbRhdraQf5ssD6NTcD4zwnlf) 的「MSKU周利润报表」表(tblbeUE9lx7TEhOD) 按站点×周次索引所有报表链接。每周是新 spreadsheet，token/sheet_id 都变，必须动态获取。定价利润测算表 token=UzAqsKAfahbeIXtuLIZcZFP1nNb sheet_id=gVlNxd（只覆盖15个SPU，58J/59A 不在其中）。"
+    },
+    {
+      "content": "智谱 GLM Coding Plan 4个MCP已配入 Hermes config.yaml：zread(HTTP,开源仓库)/web_search(HTTP,联网搜索)/web_reader(HTTP,网页读取) + zai_vision(stdio npx @z_ai/mcp-server,8个视觉工具)。均用 GLM_API_KEY 认证。重启生效后工具名 mcp_{server}_{tool}。"
+    },
+    {
+      "content": "印象迁移正解：evernote-backup（hermes venv 1.14.0，--backend china）+ 开发者 Token（app.yinxiang.com/api/DeveloperToken.action）。API 通道出明文正文；Mac 9.x 客户端 .notes 正文是 ENC0 账户级 AES 加密不可解、附件明文可提。"
+    },
+    {
+      "content": "智谱 Coding Plan key 走 Keychain：服务名用 GLM_CODING_PLAN_KEY（与已 revoke 的 OpenAPI GLM_API_KEY 物理隔离），写入强制 stdin。token 非 sk- 前缀，与 OpenAPI key 靠前缀形态区分，/v4/models 无法区分两份凭证。"
+    },
+    {
+      "content": "Hermes-知识库三层模型：Knowledge(本体,~/Knowledge)+调用层(skill knowledge-invoke+memory)+档案馆(账本)。档案馆只是投影视图，真串联是Hermes↔知识库的4条通道(memory/skill/log/vault)。数据不搬家只同步指针。"
+    },
+    {
+      "content": "DOWINX 口径立法（0819）：占比/利润率分母=总销售额−促销折扣不扣退款，禁表内占比/利润率/净销售额列一律自算；完整利润公式=毛−促销−退款−Σ费用(含存货计提)+收入项(FBA库存赔偿/亚马逊其他收入)；科目定性：亚马逊其他费=Deal+Coupon营销费；②③报告块禁≥4列宽表改一行一指标。"
+    },
+    {
+      "content": "勾稽驱动漏项发现：89A W3 勾稽差 -57.22 定位到 FBA库存赔偿收入项（58J/55 恰为 0 未暴露）；全站汇总必须显式排除合计行（曾把合计行累加致 22,377≈11,135×2）。勾稽永不跳过，闭合差>0.01 先挖根因再出数。"
+    },
+    {
+      "content": "周报交付定版（0818 三连裁决）：用户拒绝 md 文件——交付=消息内完整排版文本、可整段复制转发、无存档路径等元话语。报告禁自造缩写（「¥5万亚其他」教训），转发语境用科目全称；每个数字结论须回源对账。"
+    }
   ],
   "evolutions": [
-    { "content": "建立并测试了基于 Cronjob 的每日定时更新机制。" },
-    { "content": "完成从单页到三层视图 SPA 架构的演进。" },
-    { "content": "确立内核与工作空间分离的项目制开发范式。" },
-    { "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。" },
-    { "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。" },
-    { "content": "从单文件 HTML 升级为 React 18 SPA + Vite + Tailwind，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖。" },
-    { "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。" },
-    { "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。" },
-    { "content": "GitHub Pages → Cloudflare Pages 跨平台迁移，部署从依赖 CI workflow 简化为 wrangler CLI 一条命令直传。同时打通飞书 Bitable API，实现多维表格结构化读取。" },
-    { "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。" },
-    { "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。" },
-    { "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。" },
-    { "content": "DOWINX 周利润分析升级为双周环比体系：W2 环比对照全 SPU 覆盖，三梯队批量扫描（亏损/未达标/达标），SKU 下钻定位核心病因（降价销售是利润流失核心渠道）。同步接入智谱 4 个 MCP 工具 + 固化用户 6 项规则修正。" },
-    { "content": "LLM Wiki 三层架构知识库（~/Knowledge）承接首批真实数据：印象笔记「迁移」笔记本 92 篇明文正文 + 453 附件（700MB）经 evernote-backup API 通道全量入库，git 管理闭环，迁移验收三项全过。知识库从规划进入实测运行。" }
+    {
+      "content": "建立并测试了基于 Cronjob 的每日定时更新机制。"
+    },
+    {
+      "content": "完成从单页到三层视图 SPA 架构的演进。"
+    },
+    {
+      "content": "确立内核与工作空间分离的项目制开发范式。"
+    },
+    {
+      "content": "打通 Codex CLI，集成 SellerSprite/Sorftime MCP，实现数据接口工程化。"
+    },
+    {
+      "content": "在 GitHub Pages 部署连续受挫的背景下，通过降级为单文件 HTML + Base64 内嵌图片，完成了完美的端到端部署。"
+    },
+    {
+      "content": "从单文件 HTML 升级为 React 18 SPA + Vite + Tailwind，部署从单机 launchd 迁移到 GitHub Actions，实现零本地依赖。"
+    },
+    {
+      "content": "将通用型 Codex 治理框架适配为 Hermes 文档驱动架构，创建 project-governance skill，18 项治理模板可复用。"
+    },
+    {
+      "content": "建立 GitHub Pages 部署五步排查 ladder，定位 Pages Source 模式冲突为 Actions startup_failure 根因。"
+    },
+    {
+      "content": "GitHub Pages → Cloudflare Pages 跨平台迁移，部署从依赖 CI workflow 简化为 wrangler CLI 一条命令直传。同时打通飞书 Bitable API，实现多维表格结构化读取。"
+    },
+    {
+      "content": "建立亚马逊链接诊断体系（目标倒推：流量缺口 vs 转化缺口），并发现 macOS Vision 框架作为零依赖 OCR 方案的技术路径。"
+    },
+    {
+      "content": "验证 easyocr 作为 Python 生态 OCR 备选方案，并为 DOWINX 跨境电商四站点建立四层金字塔周利润分析框架（全局汇总→站点拆解→趋势检测→决策建议）。"
+    },
+    {
+      "content": "建立 DOWINX 周利润三层下钻分析框架（项目整体→SPU→SKU），通过 lark-cli 打通飞书 Sheets API，用美国站真实数据完成首周完整诊断（利润率1.27%，LS-66D58J最大隐患）。"
+    },
+    {
+      "content": "DOWINX 周利润分析升级为双周环比体系：W2 环比对照全 SPU 覆盖，三梯队批量扫描（亏损/未达标/达标），SKU 下钻定位核心病因（降价销售是利润流失核心渠道）。同步接入智谱 4 个 MCP 工具 + 固化用户 6 项规则修正。"
+    },
+    {
+      "content": "LLM Wiki 三层架构知识库（~/Knowledge）承接首批真实数据：印象笔记「迁移」笔记本 92 篇明文正文 + 453 附件（700MB）经 evernote-backup API 通道全量入库，git 管理闭环，迁移验收三项全过。知识库从规划进入实测运行。"
+    },
+    {
+      "content": "LLM Wiki 知识库收官并确立三层进化模型：130笔记+675文件+24页编译层，SCHEMA三次立法(实体分类/冲突三分类/优先级原则)，knowledge-invoke skill固化调用流程+四问复盘，hermes-brain双仓备份闭环。"
+    },
+    {
+      "content": "DOWINX 美国站周报升级为三周趋势体系并完成首个交付闭环：W3 三层分析(22 SPU 三梯队+SKU 下钻+Deal 对撞判定)，用户抓错触发 v2 全量对账修正 6 处，交付规范(完整排版/可转发/无缩写)与数据陷阱(分页行60重复)沉淀进 skill。"
+    },
+    {
+      "content": "DOWINX 加拿大站 W2/W3 复盘完成立法闭环：完整利润公式(+收入项/存货计提，全表24行勾稽闭合)+口径立法(分母=毛−促销不扣退款)+科目定性(其他费=Deal/Coupon营销费，全站 1,026→5,978 为大促滞后结算)+退款率两层拆解；交付 58J/55/89A 三份四块报告，SPU 两周对比收敛至 5 次 lark-cli≈6s。"
+    }
   ],
-  "stats": { "archives": 13, "points": 41, "skills": 11 }
+  "stats": {
+    "archives": 15,
+    "points": 21,
+    "skills": 14
+  }
 }
