@@ -1,6 +1,69 @@
 {
   "archives": [
     {
+      "id": "arch_20260820_01",
+      "date": "2026-08-20",
+      "title": "德国Deal站双雄调研落库+飞书API直读+关键词库V2.1文档解析",
+      "desc": "三条主线一日闭环：①Meindeal 调研——meindeal.de 根域为 S3 占位页，定位真身 mein-deal.com，经中文卖家圈（跨境知道/AMZ123/DLZ123）三源交叉验证 Mein-Deal（编辑制时间流、月访1.6M、94.9%德国流量、低门槛、当天进newsletter）与 Mydealz（社区温度制、140万会员、白名单制、中国卖家~80%拒审、自养号点赞=封品牌红线）双雄机制，按 SCHEMA 摄取流程落库 ~/Knowledge：3 raw + entities/platforms/Mein-Deal+Mydealz + comparisons/Meindeal-vs-Mydealz 共6页，commit 6a1a4c0，决策路径=Mein-Deal 先行验证→数据好再经红人通道冲 Mydealz；②飞书API直读打通：hermes 内置 feishu_doc_tool 仅限评论上下文（client 由 feishu_comment.py 注入），改走 ~/.hermes/.env 凭证→tenant_access_token→docx raw_content 接口，HTTP 200 拉下关键词库 V2.1 全文（81KB/1408行）；③全文解析：三板块流水线（SIF反查→搜索框联想→卖家精灵扩词→十表→清洗Sheet2/3/4唯一分流行数闭环→F1-F5分类/竞争/趋势装配），8个draft Skill无P1，卡点=Codex内置浏览器无法稳定操作Amazon→联想not_executed→首轮案例整批暂停。另完成 hermes-brain 备份迁移告警核验（remote已对齐3fd6110双向一致，Keychain -25308为噪音零操作）与德国夏令时订单换算（CEST比北京晚6h，订单均落在德国08/19傍晚17:14-21:10）。",
+      "tags": [
+        "站外推广",
+        "德国Deal站",
+        "Mein-Deal",
+        "Mydealz",
+        "知识库摄取",
+        "飞书API直读",
+        "关键词库V2.1",
+        "时区换算"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 1,
+        "evolution": 2,
+        "node": 2
+      },
+      "command": "cd ~/Knowledge && git show 6a1a4c0 --stat | head -12",
+      "details": {
+        "skill": [
+          {
+            "title": "飞书文档 API 直读路径",
+            "content": "hermes 内置 feishu_doc_tool/feishu_drive_tool 的 lark client 仅在评论上下文注入（feishu_comment.py::_run_comment_agent 线程本地），聊天会话调用会返回 client 不可用。直读正解：source ~/.hermes/.env 取 FEISHU_APP_ID/SECRET → POST /open-apis/auth/v3/tenant_access_token/internal → GET /open-apis/docx/v1/documents/:doc_token/raw_content（Bearer 认证）。81KB 文档一次拉全。触发场景：聊天中读飞书文档全文。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "德国Deal站双雄机制（已写入知识库+持久memory）",
+            "content": "Mein-Deal(mein-deal.com)=编辑制时间流：低门槛、家居/电子类优、当天进newsletter、可指定德国上午发、多变体必须写明code适用所有变体；Mydealz=社区温度制：白名单、中国卖家~80%拒审、自养号点赞评论=封品牌红线、红人代发要求250+评价+全网最低价（案例3天200+单小类Top20）。页面：comparisons/Meindeal-vs-Mydealz + entities/platforms/{Mein-Deal,Mydealz}，commit 6a1a4c0。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "占位域名→真身定位→知识落库全链路",
+            "content": "meindeal.de 根域 S3 NoSuchKey 占位页 → curl 多路径探测+中文卖家圈三源情报交叉（ikjzd/AMZ123/DLZ123）→ 定位真身 mein-deal.com → 6页落库 git 闭环。从「打不开的网站」到「可决策的对比页」单会话完成。",
+            "icon": "📈"
+          },
+          {
+            "title": "备份告警→双向核验闭环",
+            "content": "OCR 读 cron 回执发现 GitHub 仓库迁移提示 → ls-remote 实测 remote HEAD=本地 HEAD=3fd6110、remote URL 已是新地址（仅大小写差异）→ 结论零操作；Keychain failed to store -25308 判定为后台进程无法弹窗存凭证的噪音，非认证故障。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "关键词库 V2.1 流水线解析与卡点识别",
+            "content": "1408行文档解析：三板块（采集十表→清洗唯一分流→分析装配）+Sheet2+3+4=原始行数闭环验收门；Gaming Chair 案例 2000→151/1232/617。识别单点阻塞：Codex内置浏览器可拉起Amazon但无法稳定识别操作→联想（必选来源、明文禁外部替代）not_executed→全流水线暂停，需项目层立法裁决（修浏览器 or 用户裁决降级联想）。",
+            "icon": "📍"
+          },
+          {
+            "title": "德国时区换算（CEST夏令时）",
+            "content": "8月夏令时 CEST=UTC+2，比北京晚6小时；GMT+8 订单时间戳换算后全部落在德国 08/19 傍晚 17:14–21:10（无跨日）；10月底冬令时起时差变7小时。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260819_01",
       "date": "2026-08-19",
       "title": "完成 DOWINX 加拿大站 W2/W3 复盘：利润公式与口径双立法+三 SPU 报告",
@@ -903,6 +966,9 @@
     },
     {
       "content": "周报交付定版（0818 三连裁决）：用户拒绝 md 文件——交付=消息内完整排版文本、可整段复制转发、无存档路径等元话语。报告禁自造缩写（「¥5万亚其他」教训），转发语境用科目全称；每个数字结论须回源对账。"
+    },
+    {
+      "content": "德国Deal站双雄：Mein-Deal(mein-deal.com)=编辑制时间流/低门槛/月访1.6M/94.9%德国流量/当天进newsletter/德国上午发最佳/多变体须写明code全变体适用；Mydealz=社区温度制/白名单/中国卖家~80%拒审/自养号点赞评论=封品牌红线。决策路径=Mein-Deal先行验证→数据好再经红人通道冲Mydealz（250+评价+全网最低价案例3天200+单）。知识库：comparisons/Meindeal-vs-Mydealz，commit 6a1a4c0。另：飞书文档直读=tenant_access_token→docx raw_content（.env凭证），feishu_doc_tool仅评论上下文可用。"
     }
   ],
   "evolutions": [
@@ -956,11 +1022,14 @@
     },
     {
       "content": "DOWINX 加拿大站 W2/W3 复盘完成立法闭环：完整利润公式(+收入项/存货计提，全表24行勾稽闭合)+口径立法(分母=毛−促销不扣退款)+科目定性(其他费=Deal/Coupon营销费，全站 1,026→5,978 为大促滞后结算)+退款率两层拆解；交付 58J/55/89A 三份四块报告，SPU 两周对比收敛至 5 次 lark-cli≈6s。"
+    },
+    {
+      "content": "德国站外推广知识从零到决策链：meindeal.de 占位页→定位真身 mein-deal.com→三源交叉验证双雄机制→6页落库(3 raw+2实体+1对比) git 闭环；飞书文档直读打通(.env凭证→tenant_access_token→raw_content，81KB全文一次拉全)；关键词库 V2.1 文档(1408行)全量解析，识别浏览器单点阻塞卡点。"
     }
   ],
   "stats": {
-    "archives": 15,
-    "points": 21,
-    "skills": 14
+    "archives": 16,
+    "points": 22,
+    "skills": 15
   }
 }
