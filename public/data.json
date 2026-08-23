@@ -1,6 +1,74 @@
 {
   "archives": [
     {
+      "id": "arch_20260821_01",
+      "date": "2026-08-21",
+      "title": "meeting-intelligence 消费端落地：协议化交接+受控脱敏四轮测试+首条真实交接 PROCESSED",
+      "desc": "把「Codex 采集/分析、Hermes 消费」的两脑分工从构想推到协议级落地，一日四段闭环：①主会话（15:40-18:24 飞书）——用户问「会议纪要还能怎么用」，Hermes 定位到隐藏项目 ~/Desktop/开了一堆会的内容总结/（七模块 Codex 治理，纪要本体在 AES-256 sparsebundle，reports/ 只有模板、零周报产出），诊断「治理超重、价值未兑现」，给出三条消费路径（端到端首周报→决策台账↔DOWINX 对齐→行动项闭环）；②立法——创建 knowledge-management/meeting-knowledge-consumer skill：门禁链（schema/confirmed/哈希/幂等键/路径隔离校验，/tmp 与 Desktop/Documents/云同步根全部拒绝）+ Obsidian 隔离区（~/Knowledge/meeting-intelligence-local/，已加 .gitignore）+ 六态回执协议（PROCESSED/NO_REUSABLE_KNOWLEDGE/NEEDS_CLARIFICATION/STALE_VERSION/REJECTED_SCOPE/FAILED），配 scan_ready.py 校验器与 knowledge-note-template.md（KN-XXXX/五状态/contested/confidence）；③测试——4 个 CLI 受控会话（虚构 MI-9901-9903 前向 → MI-9902 rev2 脱敏复测 → 无写入退出 → MI-9904 处理），门禁拦截与幂等全部按预期；④实战——18:49 处理首条真实交接 MI-0028 r1（2026-08-14 多渠道经营会议分析档案，证据等级 A），产出 3 页 draft 知识（KN-0001 多渠道价格活动统一治理 / KN-0002 重投入前受控小规模验证 / KN-0003 例会固定卡片+会末三分栏，均低置信、待确认），合规敏感提议（比价展示干预/异常成交/价格历史操纵）零进入知识页，回执 PROCESSED 原子写入 0600，复扫 already_processed=1 无遗留。同时本飞书私聊被指定为该工程的知识通道：【锅仔Hermes｜…】前缀承载知识候选/SOP/冲突/过期提醒/知识确认，18:23 握手闭环验证通过（三条件：用户看到+inbound 到达+Hermes 回复）。待办：GitHub 远端仓库用户尚未创建；知识是否进 ~/Knowledge（git 私仓）与项目章程「会议内容不得进 git」的冲突待用户裁决。",
+      "tags": [
+        "meeting-intelligence",
+        "受控交接协议",
+        "Brain+Hands",
+        "脱敏测试",
+        "Obsidian隔离区",
+        "知识通道",
+        "MI-0028",
+        "合规门禁"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 1,
+        "evolution": 2,
+        "node": 3
+      },
+      "command": "python3 ~/.hermes/skills/knowledge-management/meeting-knowledge-consumer/scripts/scan_ready.py --max-items 5",
+      "details": {
+        "skill": [
+          {
+            "title": "meeting-knowledge-consumer skill（含 scan_ready.py+两 reference）",
+            "content": "触发：处理 Codex 会议交接清单/会议衍生知识更新。门禁：handoffs/codex-to-hermes/ready/*.json 必须过 schema=codex-hermes-handoff-v1、review_status=confirmed、sha256 哈希一致、幂等键=record_id:revision:hash、会议库在 git+云同步外（Desktop/Documents/Mobile Documents 全拒、/tmp 拒、权限含组/其他位拒）。产出：Obsidian 隔离区 draft 知识页（KN-XXXX、status: draft、contested 冲突并列），回执六态原子写入 receipts/（0600）。能力边界：不改会议档案、不改行动台账、不读 raw/、不 git 操作。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "meeting-intelligence 项目事实 + 知识通道协议（已写入持久 memory）",
+            "content": "本地仓 ~/Desktop/开了一堆会的内容总结/（七模块 Codex 治理，GitHub 远端待用户创建）；纪要本体在 ~/Documents/MeetingIntelligenceSecure.sparsebundle，git 仓只放治理/代码/空模板；MI-0013+ 才是真业务会（0013-14 TikTok/0015 AMAZON），0001-0012 教程噪音。本飞书私聊=知识通道：【锅仔Hermes｜…】前缀承载知识候选/SOP/冲突/过期提醒/知识确认，不含会议正文；2026-08-21 握手闭环验证通过（测试消息系追加进 Hermes 出站消息，非 Hermes 撰写）。知识是否进 ~/Knowledge 与项目章程冲突，待裁决。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "会议知识消费从「无消费端」到「协议化自动门禁」",
+            "content": "此前 27 条会议记录只有采集+分析（Codex 七模块），零知识产出；现在 Codex 确认的会议档案经协议化交接（哈希+幂等+路径门禁）→ Obsidian 隔离区 draft 知识页，单条 MI-0028 一次会话产出 3 页带溯源的知识草稿。从「治理完成但价值未兑现」到「首条真实链路跑通」。",
+            "icon": "📈"
+          },
+          {
+            "title": "合规敏感提议事前阻断首次真实验证",
+            "content": "比价展示干预、异常成交、价格历史操纵等平台灰产手法在会议分析中被标记为高风险，交接协议保证其零进入知识页（NOT 进入 SOP/自动化/待办）。门禁设计的事前阻断价值首次在真实数据上验证通过。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "隐藏项目定位链",
+            "content": "用户只说「有个 github 仓在做会议纪要」→ 13576683690-commits 5 仓全无 → mdfind 找到 sparsebundle → .codex archived_sessions 8月中旬4个会话记忆拼出项目全貌（路径/七模块/MI 分类）。线索断链时 Codex 会话记忆是有效的最后一环。",
+            "icon": "📍"
+          },
+          {
+            "title": "受控测试序列（4 会话）",
+            "content": "虚构 MI-9901-9903 前向测试 → MI-9902 rev2 脱敏复测 → 无写入退出测试（2 msg 零工具）→ MI-9904 处理。前向测试用 /tmp 测试根（allow-test-root）+ 虚构 record ID，保证不碰真实会议库。",
+            "icon": "📍"
+          },
+          {
+            "title": "回执原子写入验证",
+            "content": "回执 MI-0028-r1-ad81a999e383.json 经 tempfile.mkstemp+os.replace 原子落盘，chmod 0600，回读 status=PROCESSED created_note_ids=3；复扫 scan_ready already_processed=1、无 blocked/stopped。幂等成立。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260820_01",
       "date": "2026-08-20",
       "title": "德国Deal站双雄调研落库+飞书API直读+关键词库V2.1文档解析",
@@ -969,6 +1037,9 @@
     },
     {
       "content": "德国Deal站双雄：Mein-Deal(mein-deal.com)=编辑制时间流/低门槛/月访1.6M/94.9%德国流量/当天进newsletter/德国上午发最佳/多变体须写明code全变体适用；Mydealz=社区温度制/白名单/中国卖家~80%拒审/自养号点赞评论=封品牌红线。决策路径=Mein-Deal先行验证→数据好再经红人通道冲Mydealz（250+评价+全网最低价案例3天200+单）。知识库：comparisons/Meindeal-vs-Mydealz，commit 6a1a4c0。另：飞书文档直读=tenant_access_token→docx raw_content（.env凭证），feishu_doc_tool仅评论上下文可用。"
+    },
+    {
+      "content": "meeting-intelligence 双脑分工：Codex 七模块管采集/分析（纪要本体 AES-256 sparsebundle，git 仓只放治理/代码/空模板，MI-0013+ 才是真业务会）；Hermes=消费端，meeting-knowledge-consumer skill 立法（哈希/幂等/路径门禁+六态回执+Obsidian 隔离区 ~/Knowledge/meeting-intelligence-local/ 仅 draft）。本飞书私聊=该项目知识通道：【锅仔Hermes｜…】前缀承载知识候选/SOP/冲突/过期提醒/知识确认，不含会议正文。MI-0028 首条真实交接 PROCESSED 产 3 页 KN 草稿。"
     }
   ],
   "evolutions": [
@@ -1025,11 +1096,14 @@
     },
     {
       "content": "德国站外推广知识从零到决策链：meindeal.de 占位页→定位真身 mein-deal.com→三源交叉验证双雄机制→6页落库(3 raw+2实体+1对比) git 闭环；飞书文档直读打通(.env凭证→tenant_access_token→raw_content，81KB全文一次拉全)；关键词库 V2.1 文档(1408行)全量解析，识别浏览器单点阻塞卡点。"
+    },
+    {
+      "content": "Brain+Hands 分工在会议知识域落地：meeting-knowledge-consumer skill 以协议化交接（codex-hermes-handoff-v1 schema+sha256 哈希+幂等键+路径门禁）打通 Codex 分析产物到 Hermes 知识消费端，4 轮虚构数据受控测试后首条真实交接 MI-0028 PROCESSED 产出 3 页 draft 知识页，合规敏感提议（比价干预/异常成交/价格历史操纵）零进入知识页。"
     }
   ],
   "stats": {
-    "archives": 16,
-    "points": 22,
-    "skills": 15
+    "archives": 17,
+    "points": 23,
+    "skills": 16
   }
 }
