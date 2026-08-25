@@ -1,6 +1,79 @@
 {
   "archives": [
     {
+      "id": "arch_20260824_01",
+      "date": "2026-08-24",
+      "title": "MI-0031 交接落地+五条知识确认全闭环+credential 脱敏事故自愈",
+      "desc": "三段闭环日：①credential 事故自愈（11:06-11:24 feishu）——用户截图问备份回执为何总带备注，Swift+Vision OCR 识别为 GitHub 仓库迁移提示；修复中两次依据 terminal 脱敏显示的 URL 做 set-url，空 token 覆盖真凭证弄坏 hermes-brain remote，从 ~/Knowledge/.git/config 找回同 PAT（API 200 验证）修复，端到端实跑 backup.sh 推 41066f5；教训固化持久 memory。次日 03:00 cron 备份 b96e833 推送成功且迁移备注消失，生产链路自动验证通过。②MI-0031 受控交接（14:38 cli）——门禁（哈希/幂等/路径）通过，产出 KN-0004 广告调优阈值+KN-0005 结构调整三原则两页 draft（meeting-intelligence-local/00-Inbox/），回执 PROCESSED，复扫 already_processed=2 幂等成立；15:32 用户裁决降格：单款式/单链接个案不得立为规则，须多款式数据确认共同性方可升格，两条降为 case-observation 并加 promotion_gate。③知识体系 v2 升级+确认闭环（15:42-23:47，3 个 cli 会话+feishu 晚间）——知识模板 v2（maturity 五级/scope_key/topic_key/promotion_gate 枚举/双比较轨道），只读迁移预览→五条知识确认卡→理解回执三件套；用户逐条回复后五条 KN 全闭环：KN-0001 确认（月度成本表=唯一成本源，财务→批量处理→电竞椅汇总多维表格）、KN-0002 确认（Walmart 海外仓直发+WFS 暂不进）、KN-0003 转积累锚点（高效开会方法够多再立规）、KN-0004/0005 维持个案（同参数再现即启动共同性对比）。全程零静默升格、零 git 泄漏（check-ignore 复核）。",
+      "tags": [
+        "meeting-intelligence",
+        "MI-0031",
+        "知识确认闭环",
+        "credential脱敏陷阱",
+        "知识模板v2",
+        "个案升格门槛",
+        "KN-0001~0005",
+        "hermes-brain"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 2,
+        "evolution": 2,
+        "node": 3
+      },
+      "command": "python3 ~/.hermes/skills/knowledge-management/meeting-knowledge-consumer/scripts/scan_ready.py --max-items 5",
+      "details": {
+        "skill": [
+          {
+            "title": "meeting-knowledge-consumer v2：范围化个案草稿+周期归纳",
+            "content": "触发：会议知识交接/草稿归纳/升格提案。升级点：处理流程改为「单次会议/单一款式只能形成个案草稿，不得改写通用规则」；新增「周期草稿整理」节（日扫 20:30 补索引/周扫六比较变更组/月扫复核全量）+ references/draft-consolidation.md（same_scope/cross_scope 双比较轨道，single_case→clustered→pattern_candidate→promotion_pending→formalized 五级成熟度，「至少两个案例」仅为进入比较队列条件而非自动升格阈值）+ scripts/plan_draft_consolidation.py 规划器；knowledge-note-template.md 升 v2（schema_version=meeting-knowledge-note-v2，新增 maturity/scope_level/scope_key/topic_key/comparison_tracks/generalizable/promotion_gate/owner_confirmed_at 等 8 字段，confirmed 必须同时记录 owner_confirmed_at+owner_confirmation_scope）。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "credential 脱敏红线（已写入持久 memory）",
+            "content": "terminal 显示的 remote URL 必脱敏（x-access-token:github....git 是掩码非真实状态）——绝不可据此 set-url，空 token 会覆盖真凭证（08-24 两次弄坏 hermes-brain remote）。Token 真实来源=各仓 .git/config 内嵌（~/Knowledge 与 hermes-brain 同 PAT）；backup.sh 的 -25308 是 keychain 写噪音勿修。",
+            "icon": "🧠"
+          },
+          {
+            "title": "知识升格门槛立法+成本源链路确认（已写入持久 memory）",
+            "content": "08-24 裁决：单款式/单链接个案数据不得立为规则，须多款式数据确认共同性方可升格（KN-0004/0005 降 case-observation+promotion_gate）。KN-0001 成本源链路确认：财务月度发→锅仔批量处理→电竞椅信息汇总多维表格=唯一成本源；Amazon 价格基线+活动错峰=跨渠道要求。KN-0003=积累锚点（高效开会方法持续挂载，够多再总结立规）。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "知识消费从「交接跑通」到「确认全闭环」",
+            "content": "08-21 仅首条交接 MI-0028 产 3 页 draft 待确认；08-24 完整闭环：交接→候选推送→用户裁决降格→v2 迁移预览→确认卡→理解回执→逐条落定，五条 KN 一日内全闭环（2 确认/1 锚点/2 个案），无一静默升格、无一未确认内容包装为规则。",
+            "icon": "📈"
+          },
+          {
+            "title": "credential 事故 13 分钟自愈+次日自动验证",
+            "content": "11:07 set-url 覆盖坏 remote→11:12 从 Knowledge/.git/config 找回 PAT 修复并实推 41066f5（引入到修复 13 分钟）；次日 03:00 cron 备份 b96e833 推送成功且无迁移备注，修复经生产链路自动验证，回执噪音根除。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "OCR→回执→remote 修复链（含脱敏陷阱定位）",
+            "content": "截图→Swift+Vision OCR→识别 03:00 备份回执→cronjob list 定位 job 8fbf4bb90ea6→git remote -v 显示脱敏 URL→两次 set-url 空 token 覆盖→push 认证失败暴露问题→grep Knowledge/.git/config 提取真 PAT（API 200）→set-url+dry-run+实跑三重验证。事故根因=把脱敏显示当真实状态。",
+            "icon": "📍"
+          },
+          {
+            "title": "KN-0004/0005 降格执行链",
+            "content": "候选推送（sop/management-principle）→用户自然语言裁决→逐字段降格：type 改 case-observation、title 加「58J 个案…非通用规则」、scope.products 收窄「58J 单链接」、新增 promotion_gate 字段、冲突区记裁决原文、变更记录留痕；边界复核（隔离区仅 00-Inbox 五页、git check-ignore 通过、status 无泄漏）。",
+            "icon": "📍"
+          },
+          {
+            "title": "确认闭环时间线（15:42-23:47）",
+            "content": "15:42 v2 迁移预览（5 条全 single_case/case，无 clustered 候选，scope_key/topic_key 均为建议值待规划器核对）→16:00 五条知识确认卡→16:13 回复理解回执（本轮零写入）→21:52/23:47 用户逐条回复→KN-0001 确认/KN-0002 确认/KN-0003 积累锚点/KN-0004、0005 维持个案，全部落 meeting-intelligence-local 不进 git。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260821_01",
       "date": "2026-08-21",
       "title": "meeting-intelligence 消费端落地：协议化交接+受控脱敏四轮测试+首条真实交接 PROCESSED",
@@ -1040,6 +1113,9 @@
     },
     {
       "content": "meeting-intelligence 双脑分工：Codex 七模块管采集/分析（纪要本体 AES-256 sparsebundle，git 仓只放治理/代码/空模板，MI-0013+ 才是真业务会）；Hermes=消费端，meeting-knowledge-consumer skill 立法（哈希/幂等/路径门禁+六态回执+Obsidian 隔离区 ~/Knowledge/meeting-intelligence-local/ 仅 draft）。本飞书私聊=该项目知识通道：【锅仔Hermes｜…】前缀承载知识候选/SOP/冲突/过期提醒/知识确认，不含会议正文。MI-0028 首条真实交接 PROCESSED 产 3 页 KN 草稿。"
+    },
+    {
+      "content": "知识确认闭环三件套定式（08-24）：只读迁移预览→知识内容确认卡→回复理解回执；未获明确确认的内容一律保持 draft，绝不包装为规则。单款式/单链接个案→case-observation+升格门槛（多款式共同性）；知识模板 v2（maturity 五级/scope_key/topic_key/双比较轨道/owner_confirmed_at）。credential 红线：terminal 显示的 remote URL 必脱敏，绝不据此 set-url——真实 token 在各仓 .git/config 内嵌。"
     }
   ],
   "evolutions": [
@@ -1099,11 +1175,14 @@
     },
     {
       "content": "Brain+Hands 分工在会议知识域落地：meeting-knowledge-consumer skill 以协议化交接（codex-hermes-handoff-v1 schema+sha256 哈希+幂等键+路径门禁）打通 Codex 分析产物到 Hermes 知识消费端，4 轮虚构数据受控测试后首条真实交接 MI-0028 PROCESSED 产出 3 页 draft 知识页，合规敏感提议（比价干预/异常成交/价格历史操纵）零进入知识页。"
+    },
+    {
+      "content": "会议知识消费完成确认全闭环：MI-0031 交接产 KN-0004/0005 → 用户裁决降格 case-observation（单款式个案不立规则，多款式共同性方可升格）→ 知识模板 v2（五级成熟度+双比较轨道）→ 五条 KN 一日全落定（2 确认/1 积累锚点/2 个案），零静默升格。同日 credential 脱敏事故（terminal 掩码 URL→set-url 覆盖坏 PAT）13 分钟自愈，次日 03:00 生产备份 b96e833 无备注自动验证。"
     }
   ],
   "stats": {
-    "archives": 17,
-    "points": 23,
-    "skills": 16
+    "archives": 18,
+    "points": 24,
+    "skills": 17
   }
 }
