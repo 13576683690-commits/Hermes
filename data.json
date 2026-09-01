@@ -1,6 +1,68 @@
 {
   "archives": [
     {
+      "id": "arch_20260831_01",
+      "date": "2026-08-31",
+      "title": "会议知识消费批量提速并首次跑通周候选双轨归纳",
+      "desc": "六段受控 CLI 会话（16:15-18:18）归档。①MI 批次恢复与冲刺：8-28 中断的批次重启，MI-0014~MI-0020 七个目标全数 PROCESSED，交接回执 3→10 份，00-Inbox 知识页 5→24 页（新增 KN-0006~KN-0024 共 19 页，覆盖 TK 店铺治理/Amazon 广告诊断纪律/Listing 产出流程/欧洲站库存分层与负责人治理模型等）；每页均带 scope_key+topic_key 双键与跨范围比较候选标注（如 KN-0006↔KN-0001 同 topic price-activity-governance 不同渠道），跨范围比较组 KN-0021↔KN-0010 首次显式成型但零自动升格。②周候选归纳首跑：meeting-knowledge-weekly-candidate 按 meeting-weekly-candidate-v1 schema 处理 15 篇会议语料（3601 行），双轨归纳产出 12 条候选（8 条升格评估/4 条个案观察）+4 项冲突（含人效口径 6.08 vs 6.35 费用范围不一、划线价合规边界两说并存）+6 项待确认问题，全部 owner_confirmation_required=true 留决策权给项目所有者。③MI-0021 目标（欧洲团队能力诊断会）读档与相邻草稿比对完成后再次中断，无回执——批次中断从偶发变为模式，恢复只需重跑。cron 例行（备份/归档判定）无新实质。",
+      "tags": [
+        "meeting-knowledge-consumer",
+        "MI批次恢复",
+        "KN-0006~0024",
+        "双键比较",
+        "weekly-candidate",
+        "双轨归纳",
+        "幂等回执"
+      ],
+      "stats": {
+        "skill": 1,
+        "memory": 1,
+        "evolution": 1,
+        "node": 3
+      },
+      "command": "python3 -m json.tool ~/evolution-dashboard/data.json > /dev/null && grep -c KN ~/Knowledge/meeting-intelligence-local/00-Inbox/*.md | wc -l",
+      "details": {
+        "skill": [
+          {
+            "title": "meeting-knowledge-weekly-candidate 首次生产运行",
+            "content": "触发：周批量归纳指令。产出 meeting-weekly-candidate-v1 schema（summary/candidates≤12/conflicts/questions，owner_confirmation_required 恒 true）；双轨归纳规则=同款式场景比重复现象与变化 + 跨款式场景比相似机制与边界；单一来源默认 case_only，升格建议枚举 continue_observing/scoped_confirmation/generalization_candidate/resolve_conflict。人看字段禁会议编号/路径/哈希/技术元数据。产出落 reporting/hermes-weekly-candidates/2026-08-31-local-acceptance-v1/。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "交接队列状态快照（操作性事实）",
+            "content": "已 PROCESSED：MI-0013/0014/0015/0016/0017/0018/0019/0020/0028/0031；MI-0021 r1 门禁已过（哈希 27b5944a…一致）但读档后中断无回执，恢复=重跑即可（幂等键防重复）。ready 队列尚有 MI-0029/0030/0032~0043 待处理。00-Inbox 现有 24 页 KN 草稿，全部 draft/single_case/generalizable=false，唯一跨范围比较组已成型：KN-0021↔KN-0010（change-discipline-before-adjustment，欧洲 58 vs 美国 58）。知识页仅存 Knowledge vault 本地（git-ignore），不入库。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "会议知识吞吐量：单批 1-3 页 → 单日 19 页 + 首份周候选报告",
+            "content": "旧（08-28 前）：MI-0028 单批 3 页、MI-0031 单批 2 页，且批次中段中断未恢复。新（08-31）：单日七目标连跑 PROCESSED、19 新页全带 v2 模板双键、首份周候选报告 12 候选+4 冲突+6 问题一次成型，且全程零静默升格、零自动合并——规模上来后升格门禁纪律未松动。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "批次恢复链：中断识别 → 幂等重跑 → 逐目标回执",
+            "content": "8-28 中断点从「读 MI-0014 后断」恢复：scan_ready 显示 already_processed=3 且 MI-0014 仍 READY（幂等键无成功回执）→ 直接重跑，MI-0013 不重复处理。此后 MI-0015/0016 各自独立会话、MI-0017/0018 与 MI-0019/0020 双目标会话、每目标独立回执（hermes-codex-receipt-v1，0600 原子写）。",
+            "icon": "📍"
+          },
+          {
+            "title": "同主题合并判定链（MI-0019/0020 → 既有页增量更新）",
+            "content": "MI-0019 变体同步完成、MI-0020 SPU 维度梳理均为 MI-0018 建立的 KN-0017「推广前置治理清单」的完成态补充 → 不新建页，patch 既有页 source_meetings/证据摘要/变更记录，status/maturity 不变；MI-0020 另产出 3 个新主题（利润口径/Deal 承接/负责人治理）建新页。新增 vs 补充的判定先搜隔离区再动手。",
+            "icon": "📍"
+          },
+          {
+            "title": "周候选冲突定位：两处口径分裂现场",
+            "content": "①人效：一元人力成本利润额部门汇总≈6.08 vs 小组汇总≈6.35，原文明确费用范围不同不能混称，与年初目标 9 比较前须先统一费用范围；②划线价：一处认定刷单维持有合规风险，另一处确认三单最小量刷 list price 操作边界，两者并存 → 判 resolve_conflict 留所有者裁定，不择一覆盖。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260828_01",
       "date": "2026-08-28",
       "title": "打通德国站欧元测算闭环并暴露会议消费批次中断缺口",
@@ -1325,6 +1387,9 @@
   ],
   "evolutions": [
     {
+      "content": "会议知识消费进入批量生产期：单日七目标 PROCESSED（回执 3→10）、知识页 5→24 页全带双键且零静默升格，首份周候选报告（12 候选+4 冲突+6 问题）跑通双轨归纳；批次中断点推进至 MI-0021，幂等重跑模式确立。"
+    },
+    {
       "content": "站外测算口径立法（0.835/0.785 双系数）+欧洲站利润标准独立固化（8%/6%/5% 红线+4欧Deal成本），通知卡复刻失败教训沉淀；周利润链路升级为当周 spreadsheet 动态直读，58J W4 全参数一次拉全勾稽闭合。"
     },
     {
@@ -1395,8 +1460,8 @@
     }
   ],
   "stats": {
-    "archives": 21,
-    "points": 30,
-    "skills": 20
+    "archives": 22,
+    "points": 31,
+    "skills": 21
   }
 }
