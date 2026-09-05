@@ -1,6 +1,55 @@
 {
   "archives": [
     {
+      "id": "arch_20260904_01",
+      "date": "2026-09-04",
+      "title": "推广×利润五层框架立+知识周报相对路径故障定位与补跑",
+      "desc": "飞书主会话（13:15-17:31）+cron例行归档。①DOWINX 美国站 W5 推广×利润结合分析 v2：从周报数据下钻推广层，17 个 SPU 双源合并（SPU维度周推广表 W5/W4 + US-W5 利润报告 + Deal 表复核），立五层分析框架（漏斗→花费→利润结合→结构→总量）+判定矩阵。核心公式：广告前毛利率=税后利润率+ACOAS，保本 ROAS=100÷广告前毛利率，增量 ROAS iROAS=Δ广告销额÷Δ广告花费（周差分，加减预算唯一裁判）。四组结论：89A iROAS 37.6x 全站唯一大幅加投标的（自然率仅4%广告即生命线）；58J 保本20.3x vs 实际4.6x 结构无解，Deal 9/15 前空窗期每周26.6K 失血压守排名档；58 存量-22%但 iROAS+26.5x=减投减错方向先修CVR；iROAS 与存量背离（57G/38/30）=最危险信号须回撤加投。预算方案 126.3→117.0K 预期周利润+8~12K。框架固化进 dowinx-weekly-profit-analysis skill，报告存 US-W5-20260824-promo.md，知识库 queries/gaps.md 首建记 2 条 gap。②17:00 知识周报 cron 失败（OUTPUT_MISSING）：state.db 回放子 hermes 会话定位根因=受控 CLI 用相对路径读 synthesis-input.md 被文件工具解析到家目录，executor 传了正确 cwd 但 glm-5.3 路径策略不稳定，8/31 成功属概率性。排限流/超时（2次API调用正常、无429）。原包被幂等门禁锁死，建一次性 cron 今晚00:30 补跑。③00:30 补跑同故障复现（stdout 250字节=文件不存在回复），相对路径 bug 二次实证，根因确认需 Codex 改脚本（synthesis-input.md 改绝对路径或加 cwd 锚定）。",
+      "tags": ["推广×利润", "保本ROAS", "iROAS", "广告四件套", "知识周报故障", "相对路径bug", "cron补跑"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 3 },
+      "command": "grep -c 'iROAS' ~/.hermes/data/dowinx-reports/US-W5-20260824-promo.md && grep -c 'OUTPUT_MISSING' '/Users/macgy/会议资料库-开了一堆会的内容总结/reporting/hermes-weekly-candidates/2026-09-05T17-00+08-00/candidate-run.json' && grep -c 'gap' ~/Knowledge/queries/gaps.md",
+      "details": {
+        "skill": [
+          {
+            "title": "推广×利润结合分析框架立入 skill（五层+判定矩阵）",
+            "content": "dowinx-weekly-profit-analysis 新增标准框架：漏斗层（CTR/CVR定位哪环漏，CTR低=页面问题广告救不了）→花费层（CPC/ACOS/ACOAS/ROAS）→利润结合层（保本ROAS=100÷广告前毛利率；iROAS=Δ广销÷Δ花费为加减预算唯一裁判，存量ROAS含自然外溢会骗人）→结构层（自然率=(总单-广告单)/总单，自然单才是利润本体）→总量层（推广占比三级线+复盘四件套同框）。判定矩阵四象限：利润✓+ROAS>保本→加投；利润✓+ROAS<保本→广告护卫维持；利润✗+ROAS<保本→减投止损；利润✗+ROAS>保本→根因不在广告查促销/成本。首例实操存档 US-W5-20260824-promo.md（17 SPU 四组：89A加投/58J止损/58修CVR/iROAS背离回撤）。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "知识周报受控 CLI 相对路径故障（根因+二次实证）",
+            "content": "run_hermes_weekly_candidate.py 的 -z 提示让子 hermes 读「当前目录的 synthesis-input.md」，但 CLI 文件工具把相对路径解析到 /Users/macgy 而非 executor 传的 packet cwd——09-04 17:00 失败与 09-05 00:30 补跑同因复现（stdout 179/250 字节均为文件不存在回复）。glm-5.3 路径策略不稳定，8/31 成功属概率性。治本=改脚本用绝对路径或 cwd 锚定（Codex 管辖的 meeting-intelligence 脚本）。3 场会议数据无损仍在 uncovered 池，周报仅延迟；修复后恢复自然，无数据丢失。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "广告分析：单指标读数 → 利润结合量化决策",
+            "content": "旧（08-27）：推广表仅列映射直出（广告单占比/ACOS/CPC 读数层），「广告出单怎么样」只答表现不接决策。新（09-04）：保本 ROAS 把每个 SPU 的「该不该投」变成一条可算的线（广告前毛利率=利润率+ACOAS），iROAS 把「加多少」变成增量口径的量化裁判——预算再分配从经验判断升级为公式驱动：52% 预算在各自保本线下但真正要动的只有 C 组 48.6K 低效部分，广告角色三分化（买量机器/养自然护卫/无底洞）→ 预算按角色分配不按统一 ACOS 线。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "推广×利润双源合并分析链（17 SPU 全量算齐）",
+            "content": "推广表 W5（GqI0sb…/3grtux）+W4（HTcUsQ…/3hDhRV）拉齐→Deal 表 tblQA8TZZ384z4h7 复核（58J Deal 9/1 未开跑 9/15 开跑，直接影响建议方向）→~/Knowledge 广告知识页考古（广告指标体系/利润测算/阿波罗增量法/060 复盘断货教训/052 站内外）→合并表 16 SPU×11 指标全量计算（利润率/ACOAS/CTR/CVR广/CVR总/自然率/ROAS/保本/边值/Δ花费/iROAS）→四组归型出建议。",
+            "icon": "📍"
+          },
+          {
+            "title": "知识周报故障定位链：日志→回放→根因→补跑→复现",
+            "content": "cron 失败卡片→executions.db 状态→packet 目录六文件完好（输入哈希锁定）→candidate-usage.json（2次API调用正常、9079入232出、无限流）→state.db 回放子 hermes 会话（20260904_170021_1444e6）：read_file('synthesis-input.md') 返回 File not found（解析到 /Users/macgy）→定位 -z 提示相对路径+CLI 文件工具 cwd 解析不一致→建一次性 cron 补跑→09-05 00:30 同故障复现（会话 20260905_003030_4ddeab，stdout 250 字节同因）→根因二次实证。",
+            "icon": "📍"
+          },
+          {
+            "title": "知识库 gaps 登记链",
+            "content": "推广结合分析过程中识别 2 处库内缺页：保本ROAS/iROAS 无标准词条（本次自建公式，标注「出现第2次时建页」）+广告单占比>100% 归因溢出无运营侧解读（学术底座有 MTA 论文 arXiv 2508.08209 但无实务页）。terminal heredoc 写入被安全门拦（timeout block），改 read_file 确认不存在→write_file 新建 queries/gaps.md 落盘 631 字节。首次建立 gaps 登记文件。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260902_01",
       "date": "2026-09-02",
       "title": "数据主权立法：V文件废止+Bitable唯一权威，日欧W5权威版收口",
@@ -1417,6 +1466,9 @@
   ],
   "memories": [
     {
+      "content": "【知识周报管线 09-04/09-05 二次实证】run_hermes_weekly_candidate.py 的 -z 提示让子 hermes 读相对路径 synthesis-input.md，CLI 文件工具解析到家目录而非 packet cwd——17:00 正跑与 00:30 补跑同因失败（OUTPUT_MISSING），glm-5.3 路径策略不稳定，8/31 成功属概率性。治本=Codex 改脚本用绝对路径/cwd 锚定；3 场会议数据无损仍在 uncovered 池。"
+    },
+    {
       "content": "【数据主权 09-02 立法】DOWINX 唯一权威源=锅仔的电竞椅信息汇总 Bitable；第三方账号私聊发来的文件一律不作数（V文件欧W4符号反转/美W4翻倍均系无留痕重述，已废止，衍生报告v2×2已标废止）；V表独有列（负责人/库存/备注）=待验证线索不得引为事实。⚠️ bot 另有第三方账号私聊接入(ou_2014bba…，8/27起查DOWINX数据)，授权未确认待锅仔处理。"
     },
     {
@@ -1500,6 +1552,9 @@
   ],
   "evolutions": [
     {
+      "content": "广告分析从单指标读数升级为利润结合量化决策：保本 ROAS=100÷广告前毛利率（利润率+ACOAS）把「该不该投」变成每个 SPU 一条可算的线，iROAS=Δ广销÷Δ花费把「加多少」变成增量口径裁判；美国 W5 17 SPU 四组归型（89A 加投/58J 止损/58 修 CVR/iROAS 背离回撤），预算按广告角色分配不按统一 ACOS 线。同日知识周报 cron 故障根因定位到行级（受控 CLI 相对路径×文件工具 cwd 解析不一致）并经 00:30 补跑二次实证。"
+    },
+    {
       "content": "DOWINX 周报分析完成数据主权立法与三站 W5 收口：V 文件经 gateway.log 溯源（第三方账号 ou_2014bba 私聊发来）整体废止，Bitable 立为唯一权威源并完成四件套回退；日本 W5（净额五周新高+利润率反降至 2.82%，积分两周翻两番成结构性失血主因，68B↔B1 镜像对冲）与欧洲 W5 权威版 v3（五周全 Bitable 口径：平台期→58C 坍塌→底部回正；58C 黑洞二连定为唯一战略级决策点）同日按权威源重出；MB38 Deal 3% 亚其他口径纠正（双重扣费→日均23单/7天162单回代闭合）。知识周报 11 项裁决同日全量收口（supplement 机制首跑，零未决）。"
     },
     {
@@ -1579,8 +1634,8 @@
     }
   ],
   "stats": {
-    "archives": 24,
-    "points": 33,
-    "skills": 23
+    "archives": 25,
+    "points": 34,
+    "skills": 24
   }
 }
