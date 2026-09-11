@@ -1,6 +1,119 @@
 {
   "archives": [
     {
+      "id": "arch_20260910_01",
+      "date": "2026-09-10",
+      "title": "群线程引用附件拉取链路诊断+双晚z.ai瞬断归档断链修复",
+      "desc": "①新群 A1（运营 Listing 协作群）首条任务：运营负责人发模板附件「输入criss cross chair.xlsx」并 @all 要求每人按模板填产品信息发群里。Hermes 尝试拉取被引用附件（reply_to 的 file 消息），完整走完六层排查：本地 Downloads/Lark 容器全搜索（未落盘）→ gateway.log 证实该附件从未被网关下载（回复引用的 file 消息在 Hermes 入群前发出，无 file-message 事件）→ browser_exec 因 Chrome 未运行不可用 → 直连 Feishu OpenAPI：主 bot 的 tenant_access_token 有效但 im/v1/messages 对该群返回 230002「Bot/User can NOT be out of the chat」（bot 未被拉进该群线程上下文）→ 发现 Keychain 中存在第二套 DOWINX 专用凭证 com.dowinx.codex.feishu-app-id（cli_aae3d1db…），token 有效但同样 230002——两套凭证均无该群读取权限，附件不可达根因=群权限而非凭证。②当晚 11:41-11:46 open.feishu.cn 出站 SSL 全断（UNEXPECTED_EOF 3 次重试全失败+ws 断连 4 次重连），该群回复（耗时 926s/51 次调用的深度调查）投递失败。③9/9 晚同模式：19:24 用户「11」与 20:49 「hi」均 response=50 chars Transient agent failure（z.ai 瞬断）；9/10 早 08:07 归档 cron 因 z.ai max_retries_exhausted 死亡（request_dump 留档），致 9/9 全天内容归档断链一天，本次 cron 补齐。",
+      "tags": ["群线程附件", "Feishu-OpenAPI", "230002权限定性", "出站SSL中断", "z.ai瞬断", "归档断链补齐", "双凭证排查"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 4 },
+      "command": "grep -c '230002' ~/.hermes/logs/gateway.log; grep -c 'arch_20260910_01' ~/evolution-dashboard/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "群线程引用附件六层排查法落地（未落盘→网关日志→OpenAPI 双凭证定性）",
+            "content": "对「回复引用了附件但消息本身无附件」的场景固化排查序列：①本地 Downloads/Lark 容器搜文件名（用户手动另存才落盘，默认不落）→②gateway.log 查 file-message 事件（附件在 Hermes 入群/监听前发出的则网关从未下载）→③browser_exec 不可用时跳过（Chrome 未运行是常态）→④主凭证 tenant_access_token + GET im/v1/messages/{msg_id} 定位群→⑤HTTP 230002=bot 不在群内，凭证有效但无群权限→⑥查 Keychain 是否有第二套业务专用凭证（com.dowinx.codex.feishu-*），交叉验证。本次走完全六层，定性「权限不可达」而非「找不到」。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "新群 A1 附件不可达根因（已写入持久 memory 候选）",
+            "content": "运营 Listing 协作群 oc_8ba56a43455cd544c10f87dbd21e3db6（新群「A1」）：主 bot 与 DOWINX 专用凭证（cli_aae3d1db…，Keychain com.dowinx.codex.feishu-app-id）两套凭证均对被引用附件消息返回 230002「Bot/User can NOT be out of the chat」——均为凭证有效但群读取权限缺失。「输入criss cross chair.xlsx」等群内历史附件需用户转发到 DM 或 bot 被拉进群后重发才可读。",
+            "icon": "🧠"
+          },
+          {
+            "title": "DOWINX 第二套飞书凭证存在（已确认）",
+            "content": "Keychain 中除主 bot 外存在 com.dowinx.codex.feishu-app-id / com.dowinx.codex.feishu-app-secret（cli_aae3d1db04bbdbd5），token 可正常获取。归属 DOWINX 业务线（另一套 Codex 接入），与 Hermes 主 bot 凭证并存，跨群操作前先确认用哪套。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "附件拉取：从「找不到文件」到「权限不可达定性」",
+            "content": "旧：附件取不到时在本地文件系统反复搜（Downloads/Lark 容器/全盘 find 多轮空转，search_files 还遇 TCC 报错），结论停在「文件不存在」。新：六层排查法一次走完，用 OpenAPI 返回码（230002）把问题定性为「凭证有效但群权限缺失」并识别出第二套业务凭证——从无效搜索升级为根因定位，同场景复发时直接从第④层起查，预计省 10+ 分钟空转。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "附件排查链（11:29-11:41，51 次 API 调用）",
+            "content": "本地全盘搜索（~/Downloads、~/Library/Containers、LarkShell 目录，均无）→ gateway.log 定位 reply_to_id=om_x100b6524f0dc6080b1caf3c1e9f4170 为 file 消息但日志无对应 file-message 下载事件（附件发于 11:29 之前、Hermes 入群上下文外）→ browser_exec 两试失败（chrome-not-running）→ 转直接调 OpenAPI。",
+            "icon": "📍"
+          },
+          {
+            "title": "双凭证交叉验证链",
+            "content": "主凭证（.env FEISHU_APP_ID）：token ok、bot/v3/info ok、im/v1/chats 仅列群「11」→ GET 目标消息 HTTP 400 230002。Keychain 检索发现 com.dowinx.codex.feishu-app-id → 取 token ok → 同样 230002。结论：两套凭证都没被拉进新群 A1 的可见范围，附件权限不可达，需运营侧拉 bot 进群或转发附件到 DM。",
+            "icon": "📍"
+          },
+          {
+            "title": "9/9-9/10 双晚 z.ai 瞬断链",
+            "content": "9/9 19:24「11」：response=50 chars、36.6s、Transient agent failure；9/9 20:49「hi」：27.1s、同样 50 chars 瞬态失败；9/10 08:07 归档 cron：z.ai max_retries_exhausted 死亡（request_dump_cron_b9b5d9bb3f10_20260910_080756 留档，模型 glm-4.5-air）——归档断链一天的直接根因；9/10 11:41-11:46 open.feishu.cn SSL 出站全断（11:48 第 4 次重连成功），深度调查回复（926s/51 调用）投递失败。两天三起同模式：上游 API 瞬断。",
+            "icon": "📍"
+          },
+          {
+            "title": "群任务上下文与遗留事项",
+            "content": "A1 群为运营 Listing 协作群：负责人要求每人准备一个产品跑 Listing、按模板（输入criss cross chair.xlsx）填信息发群里统一收集。Hermes 因附件不可达未能代填模板，仅完成诊断；后续若运营把 bot 拉进群或转发附件至 DM，可接手模板填写。9/9 会话「11」「hi」两轮无实质内容（用户测试连通性），无归档价值，但 9/9 白天的日美周报分析已单独归档 arch_20260909_01。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
+      "id": "arch_20260909_01",
+      "date": "2026-09-09",
+      "title": "日本W6周报+50K单SKU根因定位+美国W6三连拆(站级/SPU/销量对比)",
+      "desc": "飞书主会话（10:19-20:49，234 轮，期间 10:35 断网一次用户报「刚刚断网了 现在继续」无缝续做）。①日本 W6(0831-0906) 分析完成存档 JP-W6-20260831.md：销量 920→966（+5.0%），利润大增但费用驱动，非 Deal 周 8% 线仍未达标；勾稽差恰好=采购成本 308,175——公式漏列项非数据问题，修正勾稽后闭合。②用户点题「重点看下日本50K」触发 SPU 深挖：销量 45→72（+60%）、净额 29,940→47,387（+58%），单件发货费跳变 21.3→55.6 在 SPU 层解释不了根因，按立法做最小 SKU 定位——定位成功，FBA发货费 916→3,670（+301%、占比 3.1%→7.7%）为表观主因，全科目明细逐项判定。③美国 W6 三连拆：站级（利润 -93% 全部是 58J Deal 战损，剔除后大盘近六周最佳，非 Deal 盘面 13.29% 量价齐升）、SPU 维度明细（25 个有销量 SPU 四分组：亏损组 3 个含 58J 税后 -130.6K/率 -36.8%、单件净收 469 vs 全成本 642 每单亏 172.7，恶化项全是 Deal 放量的随量放大、费用结构本身未失控，根因在定价端）、每 SPU 两周销量对比（58J 225→756 +236% 居首，55 61→113 +85% 守价增量对照组，广告驱动转亏的 80B/30 可直接行动）。Deal 表 W6 无 JP 站活动判定日本为非 Deal 周线。④晚间 z.ai 瞬断两起（19:24「11」、20:49「hi」均 50 chars Transient failure），不影响白天三份产出。",
+      "tags": ["周利润W6", "日本站分析", "美国站分析", "50K-SKU定位", "SPU四分组", "销量对比", "勾稽闭合", "Deal周判定"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 4 },
+      "command": "grep -c 'arch_20260909_01' ~/evolution-dashboard/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "最小 SKU 定位法首次按立法实战（SPU 层解释不了的跳变下沉到 SKU）",
+            "content": "dowinx-weekly-profit-analysis 既有立法的实战首例：单件发货费 21.3→55.6 的跳变在 SPU 层找不到结构性解释（销量/客单/科目占比均正常），按「SPU 层解释不了根因→下沉最小 SKU 定位」执行，锁定具体 SKU 后全科目明细逐项判定（FBA发货费 +301% 为表观主因），输出头部指标+全科目环比+占比 Δpp+判定的完整明细。触发场景：所有 SPU 层异常科目跳变。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "日本站勾稽恒等式含采购成本漏列项（已固化）",
+            "content": "日本站周报表勾稽验证时差额恰好等于采购成本合计（本次 308,175）不是数据错误，是表内公式漏列该项——验证表内净额=总额−促销−退款−积分时须把采购成本作为已知漏列项前置扣除再对平。Deal 表 W6 无 JP 站活动（仅 US/DE），日本周判定走非 Deal 周线。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "周报分析从「站级一张报」到「站级+SPU+SKU 三层按需下钻」",
+            "content": "旧（W5 时代）：一次会话出一份站级周报，SPU 明细仅在用户追问时临时拼。新（W6 本日）：同一会话内按用户连续三轮追问（美国情况→SPU 详细→每 SPU 销量对比）即时切换三层粒度，且 50K 异常科目按立法自动下沉到 SKU 定位——日本+美国两站四份产出（JP-W6/US-W6 存档 + SPU 四分组 + 销量对比表）单会话完成，断网中断后无缝续做。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "日本 W6 站级分析链",
+            "content": "拉 Bitable 索引确认日本最新周 → 读 W5 存档做环比基线 → 发现合计行 966 vs SPU 行求和 1869 差 2 倍 → 查行结构确认重复块 → Deal 表查 W6 无 JP 活动判非 Deal 周线 → 修正勾稽（差额=采购成本 308,175 公式漏列）→ 补查 D50K 发货结构 → 存档 JP-W6-20260831.md + 精简报告。",
+            "icon": "📍"
+          },
+          {
+            "title": "50K 单 SKU 根因定位链",
+            "content": "用户点题「重点看下日本50K」→ SPU 层头部（量 +60%/净额 +58%/fbm 2→6）与科目明细（发货费占比 3.1%→7.7% +4.7pp 异常）→ 单件发货费 21.3→55.6 跳变 SPU 层无法解释 → 按立法下沉最小 SKU 定位 → 定位成功输出全科目判定明细。",
+            "icon": "📍"
+          },
+          {
+            "title": "美国 W6 三层拆解链",
+            "content": "站级：利润 77.3K→5.5K（-93%）全部是 58J Deal 战损（量 +236%/客单 656→475 击穿/促销占毛额 60.1%），剔除 58J 后 96.7K→136.0K（+40.6%）、率 9.88%→13.29% 近六周最佳；SPU 明细：25 个有销量 SPU 四分组，58J 税后 -130.6K（每单亏 172.7、恶化项全是随量放大非结构失控、根因=定价端击穿），55 同周上 Deal 量翻倍率反升 10.1% 作守价对照，80B/30 广告驱动转亏可直接行动；销量对比：W5→W6 逐 SPU 对比表（58J +236% 居首）。",
+            "icon": "📍"
+          },
+          {
+            "title": "会话中断与恢复链",
+            "content": "10:35 用户「刚刚断网了 现在继续」——网关已正确 persist 用户消息保上下文，恢复后从 W5 基线拉取无缝续做；19:24「11」与 20:49「hi」为 z.ai 瞬断期连通性测试（50 chars Transient failure），无实质内容不单独归档。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260908_01",
       "date": "2026-09-08",
       "title": "W6四站周报全景+Deal字段读反三连错追责+读数三防线立法",
@@ -1743,8 +1856,8 @@
     }
   ],
   "stats": {
-    "archives": 27,
-    "points": 36,
-    "skills": 26
+    "archives": 29,
+    "points": 38,
+    "skills": 28
   }
 }
