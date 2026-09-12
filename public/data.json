@@ -1,6 +1,60 @@
 {
   "archives": [
     {
+      "id": "arch_20260911_01",
+      "date": "2026-09-11",
+      "title": "知识周报管线三次尝试收敛+断链检测法首验+归档链恢复连续",
+      "desc": "①08:07 归档 cron 执行断链检测法（9/11 新立法，references/cron-deploy-workflow.md L140-150）首次实战：最新归档日期 vs 昨日比对+request_dump 死亡指纹双重检查，确认 9/9-9/10 断链已由前次补齐，本次正常追加 arch_20260909_01/arch_20260910_01 两卡（注：该两卡由 9/11 08:07 本次 cron 运行写入），归档链恢复连续（27→29 卡），三点同步 MD5 一致、wrangler 部署成功（预览 6eb5ef63）、git push e5a8108。②17:00 知识周报管线三次子会话尝试（17:00 glm-5.3 / 17:00 glm-5.2 / 18:09 glm-5.3）：前两次因子进程以「当前目录的 synthesis-input.md」相对路径提示读文件，glm-5.2/5.3 路径解析到 /Users/macgy 家目录而失败；第三次尝试时模型不再盲读家目录而是先 search_files 定位再读绝对路径（/Users/macgy/会议资料库-开了一堆会的内容总结/reporting/hermes-weekly-candidates/2026-09-11T17-00+08-00/synthesis-input.md），143.6s 产出 CANDIDATE_GENERATED 状态周报（2 场会议：日本站周会+TikTok 合作沟通会，输入包 4 文件哈希锁定），18:12:25 卡片投递飞书群 oc_f453c4627e23f5b178efc7c9cc893430 成功（agent.log:15147）。周报内容双线：日本站分析表达标准收敛为「具体指标+归因+可执行动作」+SB 组合投放/否词配套补量/跳转流量闭环；TikTok 渠道低价带先行出单（80-90 美金）、高客单价适配未验证、跨境店/本土店差异为未核实关键前提。",
+      "tags": ["知识周报", "synthesis-input路径", "断链检测法", "归档连续性", "日本周会表达标准", "TikTok渠道判断", "飞书卡片投递"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 4 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT id,status FROM sessions WHERE id LIKE '20260911%'\"; grep -n 'delivered to feishu' ~/.hermes/logs/agent.log | tail -1",
+      "details": {
+        "skill": [
+          {
+            "title": "断链检测法首次实战通过（最新归档日期 vs request_dump 指纹双重检查）",
+            "content": "references/cron-deploy-workflow.md L140-150 立法的归档缺口检查：①sqlite 查 data.json 最新归档日期与昨日比对（差>1 天即断链）②ls ~/.hermes/sessions/request_dump_cron_* 死亡指纹（count=1 条消息的 cron session + 对应时间 request_dump = provider 故障死亡）。本次 9/11 08:07 cron 首次带此检查运行，正确判定无断链、正常追加两卡。触发场景：每日归档 cron 启动时必做。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "synthesis-input.md 相对路径陷阱与第三次成功的自愈模式（管线已知坑）",
+            "content": "知识周报子进程提示词含「当前目录的 synthesis-input.md」，但模型路径解析不稳定（家目录 vs 包目录）。已固化事实：2026-09-04 cron 首失败+当晚 00:30 补跑成功先例、09-05/09-07/09-11 均为多尝试内收敛（9/11 为第三次尝试成功）。自愈模式=失败后模型先 search_files 全盘定位再读绝对路径；治本仍待脚本改绝对路径（Codex 管辖的 meeting-intelligence 项目）。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "知识周报管线：从「单次失败即断链」到「三次尝试内自愈收敛」",
+            "content": "旧（9/4-9/5 时代）：路径解析失败=当日周报断链，需人工补跑 cron。新（9/11 本日）：管线内三次尝试（17:00×2+18:09）全部在当日收敛，第三次成功产出完整周报+投递飞书成功，无需人工干预。当日 2 场会议、143.6s 生成、4 输入文件哈希锁定、卡片投递有日志证据（agent.log 18:12:25 delivered to feishu:oc_f453…）。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "归档 cron 链（08:00 触发，断链检测首验）",
+            "content": "update_evolution.py exit=0（历史占位脚本）→ 断链检测：最新归档 2026-09-10（补齐后）与 9/10 无缺口 → 追加 arch_20260909_01（日本W6+50K定位+美国三连拆）+ arch_20260910_01（A1群附件230002定性+双晚瞬断）→ 三点同步 → wrangler 部署（预览 6eb5ef63）→ git push e5a8108。归档链恢复连续。",
+            "icon": "📍"
+          },
+          {
+            "title": "知识周报三次尝试链（17:00→17:00→18:09）",
+            "content": "尝试1（glm-5.3, 17:00:13）：盲读 /Users/macgy/synthesis-input.md 失败，正确拒绝编造。尝试2（glm-5.2, 17:00:57）：全盘排查（Desktop/Downloads/Documents/Knowledge/Codex-Hermes/.hermes）均无，正确拒绝编造，指出文件可能在日常 Mac。尝试3（glm-5.3, 18:09:59）：先 search_files('synthesis-input*') 定位到当日 17:00 调度生成的包目录，读绝对路径成功，产出完整 JSON 周报。",
+            "icon": "📍"
+          },
+          {
+            "title": "周报产出与投递链（18:09-18:12）",
+            "content": "输入包：2 场已确认会议（日本站周会+TikTok 合作沟通会）meeting-corpus 22KB / synthesis-input 32KB，4 文件 sha256 锁定。产出：candidate-report.json（5 候选：SB组合投放/否词配套补量/断货保链接/TikTok低价带/复盘表达标准，3 冲突 4 待确认）。投递：18:12:25 delivered to feishu:oc_f453c4627e23f5b178efc7c9cc893430（agent.log:15147），gateway.mirror 无会话警告为投递后正常回执噪音。",
+            "icon": "📍"
+          },
+          {
+            "title": "周报内容主线（2 场会议 → 5 候选）",
+            "content": "日本站周会：分析表达标准收敛「具体指标+归因+可执行动作」（禁模糊表述）+SB「两强带一弱」组合投放+否词须同步补 bid/补流量防流量断崖+跳转去向 ASIN 铺 SP/SB/SD 流量闭环+断货主力款保链接数据完整性+清货款以盈亏平衡为边界。TikTok 沟通会：出单集中低价活动带 80-90 美金、100-200 美金主力产品弱；对方本土店 GMV 自店七成（直播三成/达人三四成）为单方陈述参照基线；跨境店 vs 本土店差异未核实，按「关键前提未核实前不落定方案」推进。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260910_01",
       "date": "2026-09-10",
       "title": "群线程引用附件拉取链路诊断+双晚z.ai瞬断归档断链修复",
@@ -1856,8 +1910,8 @@
     }
   ],
   "stats": {
-    "archives": 29,
-    "points": 38,
-    "skills": 28
+    "archives": 30,
+    "points": 39,
+    "skills": 29
   }
 }
