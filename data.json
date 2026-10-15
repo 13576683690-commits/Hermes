@@ -1,6 +1,129 @@
 {
   "archives": [
     {
+      "id": "arch_20261014_01",
+      "date": "2026-10-14",
+      "title": "打通飞书会议室查询预约全链路+日本W9W10双周塌方归因",
+      "desc": "两个 feishu 会话（S1 收尾 15 消息 + S2 新开 278 消息/118 工具调用）。①会议室能力从 0 到全链路：锅仔点题「我跟你说需求，你直接帮我查询会议室情况和预约」→ bot API 免登录读企业 wiki《会议预约系统用法》（沉淀 feishu-wiki-reader + mumian-office-procedures 两个 skill）→ 权限攻关五连败后破局：vc:room:readonly 开通但 rooms 返回 0（数据可见范围窄）→ contact 通讯录权限+全部成员后层级树可见房间仍 0 → 猜测的 meeting_room:room_info:readonly 不存在，OCR 用户截图定位真身 scope=calendar:room:readonly 且为高级权限（链接通道不收）→ 改走用户身份 OAuth 设备流扫码×3（首次默认未勾权限被拒）→ 全链路真实验测：查空房 4 间实时返回、订真会议室5 回查 accept 后取消、改时间/换房/加人、查忙闲+共同空档全通，教训固化进 feishu-calendar-rooms skill（+room-find 唯一正路、绑房=type:resource+room_id）；用户转发沈泽昊侧同型 agent（DTC Agent）7 项能力表对标。②日本站 W9+W10（0921–1004）双周分析：三周勾稽闭合（diff≤27 元），销量 832→918→954、税后 25,944→35,229→15,899（-55%）、利润率 2.30% 双周未达标（线 8%）；W10 塌方归因 Δ-19,330：促销折扣 4.76%→9.15%（-4.62pp）主因①、亚其他费 +408%（-2.79pp）主因②；纠正周次口径（0727=W1 绝对起点），存档 JP-W9W10-20260921.md。③木棉办公室设备权限制度入库（红线：身份/密码禁共用，违规直接降权）。",
+      "tags": ["飞书会议室预约", "OAuth设备流破局", "calendar:room:readonly", "DOWINX日本W9W10", "促销塌方归因", "全链路smoke test", "feishu-calendar-rooms", "权限拉锯修复链"],
+      "stats": { "skill": 2, "memory": 2, "evolution": 1, "node": 4 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT message_count FROM sessions WHERE id='20261014_111621_6c7d15f8'\"; ls ~/.hermes/data/dowinx-reports/ | grep JP-W9W10; grep -c 'arch_20261014_01' ~/evolution-dashboard/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "feishu-calendar-rooms：会议室查询/预约全链路（0→7 项实测）",
+            "content": "lark-cli 以用户身份打通：查空房 calendar +room-find --slot（rooms/search 的 keyword 检索与 GET /vc/v1/rooms 在企业内均返回空，+room-find 是唯一正路）→ 建日程 → 绑房 attendees type=resource + room_id（不是 meeting_room/meeting_room_id）→ 改/删日程约 1 分钟同步门锁。7 项能力全部真实验测：查空房 4 间实时返回/订房 accept/改时间/换房/加人/取消/查忙闲+共同空档。触发场景：用户一句话「明天下午 2 点约 6 人开 DOWINX 周会，找个会议室」直接查空房→订房→拉人→回日程卡片。",
+            "icon": "🔌"
+          },
+          {
+            "title": "feishu-wiki-reader + mumian-office-procedures（企业 wiki 免登录直读）",
+            "content": "bot API tenant_access_token 直读企业飞书 wiki/doc（免登录），首单=《会议预约系统用法》制度全文（预约三步/机器人发当次开门密码/四条红线/违规连坐/百叶窗规定），快照入 skill 随时可刷新。此后用户甩任何企业 wiki 链接即可直接读，不再走「发截图人肉转述」。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "木棉办公室设备权限红线（锅仔亲发，已入持久 memory）",
+            "content": "身份/密码严禁共用，抓到一次直接降普通用户权限（WiFi/门禁/NAS 全设权限，无商量）；5 个会议平板进门 PIN 998825（会议中也可进）；管理层 WiFi：MuMian-Office / Woaimumian1314（保管理不外传）。群聊与对第三方的输出一律不复述这些值。",
+            "icon": "🧠"
+          },
+          {
+            "title": "飞书权限 scope 立法：不猜 id、高级权限走双路",
+            "content": "scope id 不能按命名规律猜（meeting_room:room_info:readonly 不存在，会议室真身=calendar:room:readonly）；高级权限走开通链接会报 invalid params，路只有两条：后台开通+管理员审批，或用户身份 OAuth 设备流整体绕开；设备流扫码页权限默认不勾，必须提醒用户全部勾选再确认（首次因未勾被拒，多扫两次）。已入持久 memory 与 skill。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "会议室域 0→7 项能力全实测；权限定位从口述猜 UI 到 OCR 读图收口",
+            "content": "旧：无任何会议室 API 能力，权限开通靠用户来回找按钮。新：7 项能力全通且全部真实验测（订真会议室5→回查 accept→取消），交互降为用户一句话直订；权限定位升级为「用户截图+本地 OCR 读 UI」两步收口，不再让用户描述界面。同日日本周报从单周升级双周连环比（W8→W10 三周趋势+pp 级归因分解）。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "权限拉锯修复链（5 连败→OAuth 破局）",
+            "content": "vc:room:readonly 开通但 rooms=0（数据可见范围窄）→ 开 contact:contact.base:readonly+数据范围全部成员 → 层级树可见房间仍 0 → 猜测 scope 404/权限搜索空 → OCR 截图发现筛选器滤掉未开通项 → 定位真身 calendar:room:readonly=高级权限 → 链接通道不收 → 用户 OAuth 设备流扫码×3（首次权限默认未勾被拒）→ 全通。",
+            "icon": "📍"
+          },
+          {
+            "title": "全链路 smoke test（真房实测口径）",
+            "content": "查空房 4 间（名称/位置/容量实时）→ 以用户身份订会议室5 → 回查 accept → 取消；忙闲实测 10-15 08:00-20:00 全天空闲；用户转发沈泽昊侧同型 agent（DTC Agent）当日 14:06 的 7 项能力表作为对标，同型路径跨用户验证。",
+            "icon": "📍"
+          },
+          {
+            "title": "日本 W9+W10 双周归因链",
+            "content": "三周勾稽闭合（diff≤27 元）→ W10 Δ税后 -19,330 分解：促销折扣 31.2K→63.2K（占净额 4.76%→9.15%，-4.62pp 主因①）、亚马逊其他费用 4.7K→24.1K（+408%，-2.79pp 主因②）、销售佣金费率锁 16.5% 纯随量 → 按规程反查 Deal 表+促销归属。存档 JP-W9W10-20260921.md。",
+            "icon": "📍"
+          },
+          {
+            "title": "周次口径纠错（0727=W1 绝对起点）",
+            "content": "上轮口误称 W10/W11，实际 0921–0927=W9、0928–1004=W10（数据本身无误）；口径立法防止后续周报错位引用。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
+      "id": "arch_20261009_01",
+      "date": "2026-10-09",
+      "title": "补做溢出沉默消息并破案W11对数：销量全对金额全错",
+      "desc": "归档断链补齐：10-10 起双 cron 连续 5 天 provider 瞬灭（request_dump+单消息 session 指纹），本卡由 10-15 cron 补归档。feishu 会话（10:52 起，当日 3 user/36 assistant/49 工具调用）。①context-overflow 沉默补做：10:48 锅仔消息（周利润对比+截图）入站正常但会话上下文爆表、回复生成失败（gateway log 定性 context-overflow→auto-reset），补做：Swift+Vision OCR 读出截图（周期 0928–1004，8 国：销量 2,539/总销售额 245.95 万/税后 94,812/利润率 3.85% 环比 -2.36pp；美 +72,776、欧 +37,338、日 +15,898；亏损位英国 -46.46%、加拿大 -8.46%），8 国加总=合计差 0.6 元内部自洽。②W11 对数破案：lark-cli 重新授权后拉 Bitable，销量四站分毫不差（972/138/954/427）但金额无一吻合（美 +72,776 vs -266,468；日 +15,898 vs -152,059；欧 +37,338 vs -88,645；总销售额 97.17 万 vs 42.52 万），穷尽自查后才定性：同簿三子表互证一致+Meenice 旁证（美 -97.9% 同向）+ASP 1024→437 腰斩签名+截图「上期」指纹匹配 0914-20 表+截图内部自矛盾（上期列=W9 环比却按 W10 算）→ 结论「不一致，两边必有其一错位」，教训沉淀进 dowinx-weekly-profit-analysis skill 读数三防线（防线2：负断言超 2 周即过期）。",
+      "tags": ["DOWINX对数破案", "W11截图对质", "context-overflow补做", "Swift-Vision OCR", "数据源矛盾定性", "负断言时效立法", "归档断链补齐"],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 4 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT count(*) FROM messages WHERE session_id='20261009_105236_cd712af4'\"; grep -n '防线2' ~/.hermes/skills/software-development/dowinx-weekly-profit-analysis/SKILL.md | head -1; grep -c 'arch_20261009_01' ~/evolution-dashboard/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "「数据源矛盾」五重自查链沉淀进读数三防线",
+            "content": "截图/口径与权威源矛盾时的程序化自查：①同工作簿多子表互证（原表/分析表/推广表）②旁证账号交叉（Meenice 美国同向 -97.9%）③指标签名比对（ASP 1024→437 腰斩=表内真实结构非列错位）④「上期」身份指纹匹配（加拿大 185 件精确对上 0914-20 表）⑤内部自洽反推（环比口径按 W10 而上期列=W9，-7.38% 精确吻合）。穷尽后才定性外部错位。触发场景：用户截图数字与拉数对不上时。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "数据源矛盾先自查再归外部（立法固化）",
+            "content": "销量全对、金额全错=数据源级错位信号，不是拉数 bug；定性「不一致」前必须穷尽自查（五重旁证链），禁止第一步就归咎报表端或用户看错。已写入持久 memory 与 dowinx skill 防线。",
+            "icon": "🧠"
+          },
+          {
+            "title": "context-overflow 沉默 ≠ 未处理",
+            "content": "飞书消息入站正常+回复生成失败（context-overflow→auto-reset）=基础设施故障而非无视用户；处置=查 gateway log 定性→主动交代沉默原因→立即补做，不辩解。已写入持久 memory。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "对数定性从「周期对质三步」到「司法级旁证定性」",
+            "content": "旧（09-23）：OCR 定性周期→查表龄→核口径微差，处理「用户看错周期」型矛盾。新（10-09）：处理「两数据源互相矛盾」型——五重旁证穷尽后输出「不一致，两边必有其一错位」，并指认可疑方特征（表内 ASP 腰斩+近全 SPU 深亏 vs 截图全站盈利）。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "溢出沉默补做链",
+            "content": "gateway log 定性 context-overflow→auto-reset → 截图缓存仍在 → Swift+Vision OCR 读数 → 8 国勾稽自洽（差 0.6 元舍入级）→ 交代+补做一气呵成。",
+            "icon": "📍"
+          },
+          {
+            "title": "对数发现链（销量 vs 金额分维度）",
+            "content": "销量 972/138/954/427 四站全对（周期与 token 无误）→ 金额无一吻合（美总销售额 97.17 万 vs 42.52 万、税后 +72,776 vs -266,468）→ 排除拉数错误方向。",
+            "icon": "📍"
+          },
+          {
+            "title": "自查穷尽链（三子表+旁证+签名）",
+            "content": "W11 新表头（税后利润挪 col5）先疑列错位 → 表内合计行自证（972 件/42.5 万/-62.66% 自洽）→ 原表/分析表/推广表三子表互证一致 → Meenice 美国同向 -97.9% → ASP 腰斩+近全 SPU 深亏=表内真实结构。",
+            "icon": "📍"
+          },
+          {
+            "title": "上期身份破案链",
+            "content": "截图「上期」美国 1066 件 ≠ 拉的 W9 表 919 件 → 加拿大 185 件指纹精确匹配 0914-20 表 → 截图内部自矛盾（上期列=W9、环比却按 W10 算，CA -7.38% 精确吻合）→ 定性收口。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20260923_01",
       "date": "2026-09-23",
       "title": "W8全球四站周报闭环+截图对质发现新表+美国SPU三梯队诊断",
@@ -1945,6 +2068,12 @@
     },
     {
       "content": "暂估水分跨周验证闭环（D68C 案例）：暂估异常→当周剔除口径+显式标注→次周补正回填叙事。W7 判断（单件 22.7 元虚增）在 W8 被报表补正（385 元）完全证实。不因账面好看放过暂估，不因暂估否定整表。"
+    },
+    {
+      "content": "数据源矛盾定性立法（10-09）：销量全对金额全错=数据源级错位而非拉数 bug；定性前穷尽五重自查（同簿三子表互证/旁证表/指标签名/上期指纹/内部自洽反推），禁止先归咎外部。context-overflow 沉默=入站正常+回复失败，查 log 定性后立即补做不辩解。"
+    },
+    {
+      "content": "飞书会议室权限立法（10-14）：scope id 禁猜（会议室真身=calendar:room:readonly，高级权限链接通道不收）；双路=后台审批或用户 OAuth 设备流绕开，扫码页权限默认不勾须提醒全勾。木棉办公红线：身份/密码禁共用一次违规降权；平板 PIN 998825；管理 WiFi MuMian-Office 不外传。"
     }
   ],
   "evolutions": [
@@ -2037,11 +2166,17 @@
     },
     {
       "content": "DOWINX W8 全球四站周报闭环：单会话完成 W7 全球复盘（四站勾稽全闭合+真实大盘连续两周下滑定性）与 W8 全量分析（欧洲 8.90%/美 9.25% 剔除口径/日 D68C 暂估补正确认/加双超线），截图对质经 OCR 定性 W8 新表消除口径疑云；美国 SPU 三梯队诊断工具化（31 SPU 四栏诊断一次生成），58J 三周收官总账 -163,800 立案。"
+    },
+    {
+      "content": "对数定性从周期对质三步升级为司法级五重旁证（10-09）：W11 截图 vs Bitable 销量四站分毫不差、金额无一吻合，穷尽自查后定性「两边必有其一错位」并指认可疑方特征（ASP 腰斩签名），教训沉淀进 dowinx-weekly-profit-analysis skill 读数三防线。"
+    },
+    {
+      "content": "飞书会议室域能力 0→7 项全实测（10-14）：查空房 4 间/订房 accept/改时间换房加人/取消/忙闲/共同空档，用户一句话直订交互落地；权限攻关 5 连败后以用户 OAuth 设备流破局，教训固化进 feishu-calendar-rooms skill。同日日本周报升级双周连环比体系（W8→W10 三周趋势+pp 级归因）。"
     }
   ],
   "stats": {
-    "archives": 32,
-    "points": 55,
-    "skills": 31
+    "archives": 34,
+    "points": 72,
+    "skills": 34
   }
 }
