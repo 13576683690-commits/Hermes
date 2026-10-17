@@ -1,6 +1,55 @@
 {
   "archives": [
     {
+      "id": "arch_20261016_01",
+      "date": "2026-10-16",
+      "title": "会议室投产第二单：一句话订房带拉人，人名解析破通讯录墙",
+      "desc": "10-16 增量（15:22–15:26，同会话尾段，10-15 卡后继续）。①第二单带参会人：「帮我预约一下会议室1 现在到四点 会议人我和echo」——echo 双身份受阻（user contact 搜索 missing_scope→bot tenant 40004 no dept authority），距开会 38 分钟，决策先锁房后加人：15:24 锁会议室1（大工区南侧 15 人）→16:00，rsvp=accept。②锅仔给真名「毛蒙蒙」：日历 30 场 attendees 无命中→转聊天关系——im chat-list 列 91 会话定位 A1 群→群成员枚举（2 user）命中 ou_5f66e8ad…→15:26 加进日程（needs_action 已通知），一句话到人房齐备 4 分钟。③通路当场固化（SKILL.md+api-notes.md 15:28 更新「按姓名找人」节）：通讯录 scope 未开时 chat-list→chat-members-list 是人名→open_id 唯一通路。④17:00 知识周报 cron 空转（0 场确认 0 候选），不计进化。",
+      "tags": ["会议室第二单", "人名解析open_id", "群成员枚举补位", "通讯录权限墙", "先锁房后加人", "feishu-calendar-rooms"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 3 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT count(*) FROM messages WHERE session_id='20261014_111621_6c7d15f8' AND timestamp >= 1792080000\"; grep -c '毛蒙蒙' ~/.hermes/skills/productivity/feishu-calendar-rooms/references/api-notes.md; grep -c 'arch_20261016_01' ~/evolution-dashboard/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "人名→open_id 解析通路（api-notes「按姓名找人」固化）",
+            "content": "通讯录双身份均不通时（user 缺 contact:user:search 常未授权；bot tenant 40004 no dept authority——都别耗）走聊天关系：lark-cli im +chat-list --types=p2p,group --page-all 找同名 p2p 或目标所在业务群 → +chat-members-list --chat-id <oc_…> 枚举成员 grep 姓名。触发场景：订会议室要拉人但只知姓名/花名（本例 echo→毛蒙蒙 ou_5f66e8ad…）。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "echo=毛蒙蒙 + 本环境人名解析边界（已固化 skill）",
+            "content": "锅仔口中的「echo」=毛蒙蒙（ou_5f66e8ad…，A1 群成员）。环境事实：通讯录 scope 未开，人名→open_id 唯一通路=群成员枚举；时间紧（<40 分钟开会）时先锁房后加人，不串行等待解析。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "会议室域从单人订房到带参会人协同",
+            "content": "10-15：一句话订房（单组织者 60 秒，房 accept）。10-16：一句话订房+拉人一单双交付（房 accept+参会人 needs_action 通知，全程 4 分钟）；人名解析 5 次试错收敛：missing_scope→40004→日历 30 场无命中→chat-list 91 会话→群成员枚举命中。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "echo 解析受阻链（先锁房决策）",
+            "content": "user contact 搜索 missing_scope → bot tenant 40004 no dept authority → 判定双路都不通且时间紧（38 分钟后开会）→ 15:24 先锁会议室1（大工区南侧 15 人，15:24→16:00，回查 accept）。",
+            "icon": "📍"
+          },
+          {
+            "title": "毛蒙蒙命中链（聊天关系破壁）",
+            "content": "真名「毛蒙蒙」日历 30 场 attendees 无命中 → im chats 列 91 会话定位 A1 群（oc_8ba5…）→ chat-members-list 枚举 2 user → 命中 ou_5f66e8ad… → 加日程 needs_action，15:26 闭环，4 分钟。",
+            "icon": "📍"
+          },
+          {
+            "title": "周报 cron 空转（不计进化）",
+            "content": "17:00 meeting-intelligence-weekly-knowledge 交付：本周本地发现 0 场、已确认 0 场、0 候选——管线健康但无输入，按实质性门槛不产卡。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20261015_01",
       "date": "2026-10-15",
       "title": "会议室能力投产首日：一句话订真房+受邀会房间读取破权限壁",
@@ -2126,6 +2175,9 @@
     },
     {
       "content": "飞书受邀日程权限模型（10-15 实测）：别人组织我参加的会会镜像到用户自己日历，用自己 calendar_id+原始 event_id 查 attendees 即全量可见（组织者日历必 194001）；location 字段恒空，房只绑 resource attendee。自组织会可读可改，受邀会只读。房间库 5 间齐（会议室2=茶水间隔壁 12 人，A1/A2 周会固定用房）。"
+    },
+    {
+      "content": "会议室第二单（10-16）：一句话订房+拉人 4 分钟闭环——echo=毛蒙蒙（ou_5f66e8ad…，A1 群）。人名→open_id 边界：本环境通讯录 scope 未开（user 缺 contact:user:search、bot 40004 都别耗），唯一通路=chat-list→群成员枚举；时间紧先锁房后加人。通路固化进 feishu-calendar-rooms api-notes「按姓名找人」。"
     }
   ],
   "evolutions": [
@@ -2227,11 +2279,14 @@
     },
     {
       "content": "飞书会议室域投产（10-15）：首单生产级预订一句话 60 秒交付（room-find 验空闲→建日程→绑房→accept 回查）；受邀会房间读取从 194001 误判「读不到」到镜像日历姿势全量可见（两次用户追问驱动修正，固化进 skill 第 6 步）；房间库补全至 5 间。"
+    },
+    {
+      "content": "飞书会议室域投产第二单（10-16）：从单人一句话订房升级为带参会人协同（订房 accept+拉人 needs_action 通知一单双交付，全程 4 分钟）；人名解析在双身份通讯录权限墙下经群成员枚举补位收敛（5 次试错），通路固化进 skill references「按姓名找人」节。"
     }
   ],
   "stats": {
-    "archives": 35,
-    "points": 78,
-    "skills": 35
+    "archives": 36,
+    "points": 84,
+    "skills": 36
   }
 }
