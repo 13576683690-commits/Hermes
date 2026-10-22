@@ -1,6 +1,45 @@
 {
   "archives": [
     {
+      "id": "arch_20261021_01",
+      "date": "2026-10-21",
+      "title": "会议室第四单：房间库改商场名自感知自修补，66秒平推A2周会",
+      "desc": "10-21 增量（17:10:24–17:11:30，8 消息，S2 会话次日续聊）。第四单「A2周会」：一句话订今天 17:30–18:30 万象城——room-find 返回即发现房间库整体改商场命名（诚高大厦19楼-木棉会议室-万象城(7)/in77(7)/银泰城(7)/来福士(80)，4 房 room_id 全不变），万象城空→建会绑房 rsvp=accept，全程 66 秒零试错。环境漂移自修补：同一任务内把 4 房新名↔omm_id 映射 patch 进 feishu-calendar-rooms SKILL.md L29，并立法「每次以 +room-find 实时返回为准，勿用缓存名」防再漂移——下次按商场名直订，旧 1-5 号名作废。",
+      "tags": ["会议室第四单", "房间库商场命名", "环境漂移自修补", "skill同任务内自更新", "66秒零试错", "防漂移条款", "feishu-calendar-rooms"],
+      "stats": { "skill": 1, "memory": 1, "evolution": 1, "node": 1 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT count(*) FROM messages WHERE session_id='20261014_111621_6c7d15f8' AND date(timestamp,'unixepoch','+8 hours')='2026-10-21'\"; grep -c 'arch_20261021_01' ~/evolution-dashboard/data.json; grep -c '万象城' ~/.hermes/skills/productivity/feishu-calendar-rooms/SKILL.md",
+      "details": {
+        "skill": [
+          {
+            "title": "房间库商场命名映射+防漂移条款入 skill（同任务内自 patch）",
+            "content": "公司房间库 2026-10-21 起改商场命名：万象城(7)=omm_0feea9f0…、in77(7)=omm_0366ef3d…、银泰城(7)=omm_88acd309…、来福士(80)=omm_f9e3c578…，room_id 与旧 1-5 号对应不变。发现即在下单任务内 patch 进 feishu-calendar-rooms SKILL.md L29，并加「每次以 +room-find 实时返回为准，勿用缓存名」条款——公司侧再改名时通路自愈，不依赖人工同步。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "木棉会议室改名商场体系（已固化 skill，订房任务加载即见）",
+            "content": "稳定环境事实：公司 4 间会议室整体改商场命名（万象城/in77/银泰城/来福士），旧「会议室1-5号」叫法作废；权威映射与 room_id 存 feishu-calendar-rooms SKILL.md L29。持久 memory 不重复存全映射（99% 满载，且属任务域事实非全域事实），以 skill 为唯一权威源。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "订房效率四代：60s→4min→5min→66s，映射失效现场重建",
+            "content": "10-15 首单 60 秒（单人无异常）；10-16 二单 4 分钟（拉人+人名解析 5 次试错）；10-20 三单 5 分钟（49 分钟窗口+时长修正+68 人枚举 saga）；10-21 四单 66 秒零试错——外部改名（映射漂移）在任务内被吸收并自修补 skill。能力从「执行既定映射」升级到「映射失效时现场重建映射」，四单全 rsvp=accept。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "改名发现链：room-find 全新名→判定公司侧改名→一次成",
+            "content": "room-find 17:30–18:30 返回 4 房全部为商场新名（无旧 1-5 号）→判定公司侧改名而非查询故障→万象城空→建会+绑房一次成 rsvp=accept→同任务 patch skill 固化新映射。用户报「万象城」直接命中新名，零澄清往返。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20261020_01",
       "date": "2026-10-20",
       "title": "会议室第三单：49分钟窗口交付HY备货会，英文名映射固化入记忆",
@@ -2230,6 +2269,9 @@
     },
     {
       "content": "会议室第三单（10-20）：HY备货会 49 分钟窗口 5 分钟交付（含建会后改时长 10:30–10:45）。木棉人名映射再+2：Ryan=赵国涛（ou_fab315…）、Peter=沈泽昊（ou_b4fa…），与 echo=毛蒙蒙、沈灵 ou_2014b… 同条。@提及元数据自带 open_id=零成本解析；英文名枚举结构性无效（通讯录全中文），直接请用户 @ 本人。"
+    },
+    {
+      "content": "会议室第四单（10-21）：公司房间库改商场命名——万象城(7)/in77(7)/银泰城(7)/来福士(80)，room_id 不变、旧 1-5 号名作废，权威映射固化 feishu-calendar-rooms SKILL.md L29（每次以 +room-find 实时返回为准）；第四单 66 秒零试错（首单 60s→二单 4min→三单 5min→四单 66s）。"
     }
   ],
   "evolutions": [
@@ -2337,11 +2379,14 @@
     },
     {
       "content": "飞书会议室域第三单（10-20）：人名解析三代演进收官——10-16 中文名群成员枚举命中（4 分钟）→10-20 英文名全员群 68 人枚举零命中，转请用户 @提及 30 秒命中，映射固化入持久记忆后英文名免解析直认；建会后时长增量修正流首用（10:30–10:45），49 分钟窗口 5 分钟交付。"
+    },
+    {
+      "content": "飞书会议室域第四单（10-21）：房间库外部改名（1-5 号→商场名）在任务内自感知自修补——room-find 发现新名体系→66 秒零试错交付 A2 周会（rsvp=accept）→同任务 patch skill 固化 4 房映射+「以实时 room-find 为准」防漂移条款；订房能力从执行既定映射升级为映射失效现场重建。"
     }
   ],
   "stats": {
-    "archives": 37,
-    "points": 90,
-    "skills": 37
+    "archives": 38,
+    "points": 94,
+    "skills": 38
   }
 }
