@@ -1,6 +1,69 @@
 {
   "archives": [
     {
+      "id": "arch_20261102_01",
+      "date": "2026-11-02",
+      "title": "打通飞书VC视频会议生成法并双立法，HT纪要通知与跨商场调度交付",
+      "desc": "11-02 增量（11:00–17:57，177 消息，S2 长命会话当日追加，订房 6 单全 accept）。①HT营销会纪要落地：四路搜索落空（日程附件/5 群消息/云文档缺 drive scope/HEYTEAK 群不在内）后用户贴妙记文档直读，提取共识（多人社交定位/避开 $99 内卷/场景化视觉）+待补充项（各渠道三段式方案/外观测评/小配件）+六节点时间轴（11-05 二暴→11-10 定稿→1 月底大货→3 月上架→4 月二批→6-7 月到港），通知 5/5 参会人送达，顺手订 11-05 二次脑暴会议室1；②VC 生成法打通：用户身份三路全堵（--meeting-owner-id 仅 bot 有效/PATCH 不创建/vc API 404），唯一通路=bot 建会+VC owner 指定用户，链接不在任何 API 响应回显、以 +agenda 正则提取（766275391/685178950 两链实测），异步 20-30s+bot 绑房 decline 修复链固化 feishu-calendar-rooms skill L43-74；③双立法：发送前过草稿确认（11:11「你发的太突然了」）+建会先问要不要视频会议（11:39）；④跨商场调度：resource 接口只回忙闲不吐预订人，万象城周三 13-18 全满→银泰城/嘉里中心空房选项制交付，HT视觉规范改银泰城 18-19 点邀李文正，另临时会议室2 20 分钟叫 echo。",
+      "tags": [
+        "视频会议VC生成",
+        "HT品牌营销",
+        "会议纪要通知",
+        "跨商场调度",
+        "建会先问立法",
+        "发送前确认",
+        "lark-cli",
+        "feishu-calendar-rooms"
+      ],
+      "stats": { "skill": 1, "memory": 2, "evolution": 1, "node": 3 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT count(*) FROM messages WHERE session_id='20261014_111621_6c7d15f8' AND date(timestamp,'unixepoch','+8 hours')='2026-11-02'\"; grep -c 'arch_20261102_01' ~/evolution-dashboard/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "VC 视频会议生成法（bot 通路全链实测）",
+            "content": "用户身份建不出 VC（+create --meeting-owner-id 仅 bot 有效、PATCH conference_data 不创建、/vc/v1/meetings 404），唯一通路=bot 身份在 app calendar 建会+VC owner 指定用户；链接不在 events GET 响应回显（vc 字段恒空 {}），以 +agenda 输出正则 vc.feishu.cn/j/数字 按会议名提取；VC 生成异步等 20-30 秒，仍无则同参数删了重建；bot 绑房 decline 修复链（删旧会→sleep 8-10s→batch_delete 清 resource attendee→重挂→accept）。固化 feishu-calendar-rooms skill「给日程加视频会议」章节。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "建会先问「要不要视频会议」（已固化 skill）",
+            "content": "用户 11-02 11:39 立法：「记住这个流程 之后创建日程的时候记得和我确认要不要视频会议」。固化进 feishu-calendar-rooms skill「建会前必问清单」（用户立法 11-02）：建日程前先问 VC，时长没说默认 1 小时但回执显式标注，代发通知先过草稿。",
+            "icon": "🧠"
+          },
+          {
+            "title": "发送前须过草稿确认（再强化）",
+            "content": "用户 11:11 纠正「以后你发之前要和我确认一下再发 你发的太突然了」——与持久 memory「发送前须锅仔确认草稿再发」同源，本日二次强化：任何对外通知/邀请发送前先给用户过目，当日 HT 纪要通知按此流程草稿确认后发出。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "会议室域第 12-17 单：协同全件套一句话交付",
+            "content": "旧基线=锁房+邀请（11 单流水，最快 53 秒）；新=单日 6 单全 accept 且覆盖 VC 链接生成（bot 通路+agenda 正则取链）+跨商场改期（万象城满→银泰城选项制）+临时速订（20 分钟窗口）；纪要链路从「四路搜索落空」到「文档直读→通知 5/5→回执」全闭环，当日 HT 项目时间轴（11-05 二暴→3 月上架）随通知分发。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "VC 通路排除链",
+            "content": "用户身份三路全堵：+create --meeting-owner-id 仅 bot 有效（user 身份 validation 错）→PATCH conference_data 不创建 VC→/vc/v1/meetings POST 404→bot 建会+VC owner 指定用户一次通；链接提取：events GET vc 字段恒空 {}，+agenda 正则按会议名提取为唯一可靠法（两链 766275391/685178950 均此法取得）。",
+            "icon": "📍"
+          },
+          {
+            "title": "占用明细不可见节点",
+            "content": "万象城周三 11-04 13:00–18:00 全满但 15 点时段被谁订查不到——resource 日历接口只回忙闲时段、不吐预订人（飞书房间隐私设计，仅 admin 后台/客户端房间视图可见）；处置=不纠缠归属，直接探测银泰城会议室4(7人)/嘉里中心会议室5(13人) 空房给三选一选项，用户选银泰城改期 18-19 点交付。",
+            "icon": "📍"
+          },
+          {
+            "title": "纪要搜索落空→文档直读破局",
+            "content": "10-29 讨论会纪要四路搜索全落空：日程附件/描述空、A1/A2/全员/管理群无纪要消息、云文档搜索无结果（OAuth 缺 drive 搜索权限）、「HEYTEAK」HT 品牌群 bot 不在群内进不去→向用户明示搜索边界索要文档，用户贴妙记智能纪要链接直读成功；教训：搜索穷尽后如实报告边界优于硬编。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20261028_01",
       "date": "2026-10-28",
       "title": "HT营销会全链路保障：错日排障订房、群发送达验证与落款立法",
@@ -2591,6 +2654,9 @@
     },
     {
       "content": "会议室域第 11 单·异常处置型（10-28）：相对日期未实测致错日查询（把当天当明天），周三周会日五间全占误报满员+误报 A2 撞车，用户两连质疑后 date 实测纠偏——相对日期先实测再查询；open_id 从 p2p 会话 id 推导必被 99992351 打回，一律私聊实拉（coco=胡琪琪/嘻嘻=陈庆西入 name-map.md）；群发送达实锤=chat list 逐人回查（API ok/解析失败均非证据，5/5 验证）；落款立法「锅仔Hermes」替换「代锅仔发」。"
+    },
+    {
+      "content": "会议室域 11-02 单日六单·VC 生成法打通：用户身份建不出 VC（--meeting-owner-id 仅 bot 有效/PATCH conference_data 不创建/vc API 404），唯一通路=bot 建会+VC owner 指定用户；链接不在任何 API 响应回显，以 +agenda 正则 vc.feishu.cn 按会议名提取（异步 20-30s，无链接删了同参数重建）；建会先问「要不要视频会议」+发送前过草稿（用户当日双立法，固化 feishu-calendar-rooms skill 建会前必问清单）；resource 日历只回忙闲不吐预订人，占用明细仅 admin 后台可见；万象城满员时跨商场探测（银泰城/嘉里中心）选项制交付。"
     }
   ],
   "evolutions": [
@@ -2716,11 +2782,14 @@
     },
     {
       "content": "会议室域 10-28 升级为异常处置型：单会话 17 分钟穿越错日误报→两连质疑纠偏→改期订房→open_id 打回 3 分钟自愈→5 人邀请→群发 5/5 送达回查全链（订房流水第 11 单，11/11 accept）；群发+送达回查管线定型（chat_id 逐人实锤，不信 API ok），选择题花名指认首次用于会务。"
+    },
+    {
+      "content": "会议室域 11-02 单日六单全 accept 升级协同全件套：订房+邀请+VC 链接生成（bot 通路+agenda 正则取链）+跨商场改期（万象城满→银泰城选项制）+临时速订一句话交付；HT 营销会纪要链路四路搜索落空改妙记文档直读，共识+待补充+六节点时间轴通知 5/5 送达；用户双立法（发送前过草稿、建会先问视频会议）当日固化 skill。"
     }
   ],
   "stats": {
-    "archives": 43,
-    "points": 127,
-    "skills": 46
+    "archives": 44,
+    "points": 134,
+    "skills": 47
   }
 }
