@@ -1,6 +1,73 @@
 {
   "archives": [
     {
+      "id": "arch_20261126_01",
+      "date": "2026-11-26",
+      "title": "打通Gemini生图通道17秒出电商主图，中转站5模型逐项实测分真伪",
+      "desc": "11-26 增量（14:07–16:44，feishu S2 长命会话当日追加 58 条）。①万象城「财务提成核算」会 14:10–14:40 落地：查房命中会议室1-万象城(13)→用户确认不要 VC→建纯线下会→房/人双 accept 回查（event 8c07ca83-cfc3-47d1-a66e-e707d66e8701_0）；途中首次查房把日期抓成 11-24，当场重查修正。②生图能力从零打通：智谱 CogView 三端点（open.bigmodel.cn 图片/对话、api.z.ai images）全部 401 身份验证失败；MiniMax 国际版 invalid api key、国内版 key 有效但余额不足——最终落到 .env 第 475 行的 GEMINI_API_KEY，gemini-3.1-flash-image 实测 17.3 秒出 1408×768 / 441KB JPEG，vision_analyze 复核为白底电商主图级（黑网布人体工学椅，头枕-椅背-扶手-坐垫结构完整）。③中转站 sub2api-hangzhou 模型全量实拉：共 5 个，文本 3 可用（deepseek-v4.1-flash 1.0s / gpt-6.2-sol 4.2s / glm-5.3-flash 8.6s），Seedream-5.5-image 与 5.0-flash-image 两个生图路由坏（/images 端点报 requires an image model、chat 路由 502 upstream forbidden）。④.env 15:05 变更审计：新增 FEISHU_ENCRYPT_KEY/FEISHU_HOME_CHANNEL/FEISHU_HOME_CHANNEL_THREAD_ID/FEISHU_VERIFICATION_TOKEN 与 SUB2API_HANGZHOU_API_KEY，Gemini 那条非新增（7-29 的 .env.bak 已有）——溯源结论顶住用户「哪来的 gemini 模型」质疑。",
+      "tags": [
+        "Gemini生图通道",
+        "CogView401",
+        "中转站模型盘点",
+        "Seedream路由坏",
+        "飞书会议室",
+        "VC口径补讲",
+        "env变更审计"
+      ],
+      "stats": { "skill": 1, "memory": 2, "evolution": 2, "node": 3 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT count(*) FROM messages WHERE session_id='20261014_111621_6c7d15f8' AND date(timestamp,'unixepoch','+8 hours')='2026-11-26'\"; grep -c arch_20261126_01 ~/evolution-dashboard/dist/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "Gemini 图片生成通道（CogView/MiniMax 全灭后的唯一可用路径）",
+            "content": "调用链：GEMINI_API_KEY（~/.hermes/.env 第 475 行）→ generativelanguage.googleapis.com 图片模型 → 存 scratch/*.png → 转 jpg → 发飞书 + vision_analyze 自检。触发：用户问「你能够生成图片吗」或直接要图。可选模型 6 个（gemini-2.5-flash-image / 3-pro-image / 3.1-flash-image / 3.1-flash-image-preview / 3.1-flash-lite-image 等），实测 3.1-flash-image 17.3s 出 1408×768。中文提示词可用、英文更稳。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "生图通道定版：Gemini 唯一可用",
+            "content": "要图的标准答案=走 Google Gemini 图片模型（key 在 .env 第 475 行，AIzaSy 前缀，实测有效）。已灭通道：智谱 CogView（open.bigmodel.cn 图片/对话、api.z.ai images 三端点全 401 身份验证失败）、MiniMax 国际版（invalid api key）、MiniMax 国内版（key 有效但余额不足）、中转站 Seedream 双模型（路由坏）。规则：要图直接跟我说，生成后发飞书。",
+            "icon": "🧠"
+          },
+          {
+            "title": "中转站 sub2api-hangzhou 模型清单（实拉非照抄配置）",
+            "content": "config.yaml 615 行 providers.sub2api-hangzhou（https://sub2api.hzmumian.com/v1，default_model deepseek-v4.1-flash，discover_models true）实拉 5 个模型：文本 3 可用（deepseek-v4.1-flash 1.0s=当前主模型最快、gpt-6.2-sol 4.2s 新发现、glm-5.3-flash 8.6s），生图 2 个不可用（seedream-5.5-image / 5.0-flash-image：/images 端点判 requires an image model、chat 路由 502 upstream forbidden）——名字挂着但路由配错，不是模型不存在。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "从「不能生成图片」到 17 秒出白底电商主图",
+            "content": "旧：被问能否生图只能答无此工具。新：CogView 三端点 401→MiniMax 双版失败→翻 .env 找到沉睡的 Gemini key→实测 17.3s 出 1408×768 图→vision_analyze 自检验证（黑网布人体工学椅结构完整、白底），可直接用于 Listing/PPT/海报。全程一次会话内四通道对比，不是猜配置。",
+            "icon": "📈"
+          },
+          {
+            "title": "模型通道盘点从「看配置」升级为「实拉+逐项压测」",
+            "content": "5 个模型逐个 /chat/completions 计时（1.0s / 4.2s / 8.6s）+ 生图模型双端点探测（/images 400 结构错 vs chat 502 upstream），把「中转站还有别的模型吗」变成一张可用/不可用判定表，而非照抄 config.yaml 的模型名。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "万象城会 14:10–14:40：无 VC 纯线下",
+            "content": "首查时间抓错（拟成 11-24 14:10，当场重查修正）→命中会议室1-万象城(13) → 问「财务提成核算这场要 VC 吗」→用户「不需要」→建单场无视频链接→回查房 accept + 郭仔 accept（event 8c07ca83-cfc3-47d1-a66e-e707d66e8701_0）。随后用户追问「什么是无 VC」，补讲 VC=视频会议链接（vc.feishu.cn/j/…）并说明远程参会需重挂链接。",
+            "icon": "📍"
+          },
+          {
+            "title": "Gemini key 溯源链（顶住「哪来的」质疑）",
+            "content": ".env 第 475 行 GEMINI_API_KEY（AIzaSy…）→翻 .env.bak：7-29 备份里就已有该 key→今日 15:05 的 mtime 来自别处（同批新增 FEISHU_* 四条 + SUB2API_HANGZHOU_API_KEY，并生成 .env.lock）→模型清单以 generativelanguage.googleapis.com/v1beta/models 实拉原文为证。结论：老 key，非新配、非编造。",
+            "icon": "📍"
+          },
+          {
+            "title": "中转站 Seedream 双模型：名字在、路由死",
+            "content": "models 列表确有 seedream-5.0-flash-image / seedream-5.5-image，但 /images 端点回「images endpoint requires an image model」自相矛盾、chat 路由 502 upstream forbidden——判为中转站侧路由/上游权限配置坏。用户若要生图仍走 Gemini，不走中转站；需修则找中转站维护方。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20261124_01",
       "date": "2026-11-24",
       "title": "欧洲库存测算会6分钟全链交付，僵尸场摘房摘人破bot删场权限墙",
@@ -3007,6 +3074,9 @@
   ],
   "memories": [
     {
+      "content": "【生图通道定版 11-26】要图一律走 Google Gemini 图片模型（~/.hermes/.env 第 475 行 GEMINI_API_KEY，AIzaSy 前缀，7-29 起就有）：gemini-3.1-flash-image 实测 17.3s/张 1408×768，白底电商主图级可直接用于 Listing/PPT/海报。已灭通道：智谱 CogView（open.bigmodel.cn 图片/对话 + api.z.ai images 三端点全 401）、MiniMax 国际版 invalid key、国内版 key 有效但余额不足、中转站 Seedream-5.5/5.0-image 路由坏（/images 400 + chat 502 upstream forbidden）。"
+    },
+    {
       "content": "【完成率口径 11-13 立法】锅仔未提「利润表数据」时，「完成率」一律=amz-MCP 业绩工具（get_weekly_performance/get_monthly_performance 目标快照口径），不翻 Bitable 利润表；已固化 ~/.hermes/data/amz-mcp.md 档案头（主 memory 满员暂驻，下次会话补进记忆）。配套：a-mcp actual 对部分 SPU 缺报（11-13 实测 88 系），完成率榜须 a-mcp 目标×Bitable 明细双源校正。"
     },
     {
@@ -3159,6 +3229,9 @@
   ],
   "evolutions": [
     {
+      "content": "生图能力从零到可用（11-26）：智谱 CogView 三端点 401→MiniMax 国际 invalid key/国内余额不足→翻 .env 找到沉睡的 Gemini key（7-29 起就在）→gemini-3.1-flash-image 17.3 秒出 1408×768 白底电商主图并经 vision_analyze 自检合格，能直接进 Listing/PPT/海报。同日把中转站 5 模型实拉成可用性判定表（文本 3 可用 1.0/4.2/8.6s、生图 2 个路由坏），「哪来的 key」溯源到 7-29 .env.bak 原始出处。"
+    },
+    {
       "content": "利润测算落地欧洲站（德国）实战：58C02 €59.99 三口径直出（含推广 −€18.52/件、无推广 −€12.52、€69.99 无推广 −€6.27+保本 €80.02），费率还原法从表内绝对费用反推变动费率 47.46%、8% 底线反推与表内分毫不差；EUR/USD 双币种系数体系成型（0.5254 vs 0.685，VAT 价内 19/119）。同日飞书出站中断凭 gateway.log 取证定性「收好发坏」并补发全部四轮未送达答案，知识周报故障后恢复出卡（5 候选+范围更正）。"
     },
     {
@@ -3307,8 +3380,8 @@
     }
   ],
   "stats": {
-    "archives": 51,
-    "points": 191,
-    "skills": 54
+    "archives": 52,
+    "points": 199,
+    "skills": 55
   }
 }
