@@ -1,6 +1,73 @@
 {
   "archives": [
     {
+      "id": "arch_20261127_01",
+      "date": "2026-11-27",
+      "title": "双会连订打通群名→群成员→姓名校准链路，15人宣讲会7分半钟抢房成单",
+      "desc": "11-27 增量（14:02–17:00，feishu S2 长命会话当日追加 35 条）。①「电竞椅备货逻辑落地」14:00–17:00 会：首查「会议室4 14:00-17:00 可订: 无」，换银泰城/会议室4/木棉三路关键词重查命中 会议室4-银泰城(7) omm_59f9b8fd60defc40199b223c29896d7f，建会后 70 秒内回查房 accept + 沈泽昊/郭仔 双 accept（event 05e4c76c-7274-4781-9800-37968469001a_0）；用户 14:02 提需求时已过开始时间 3 分钟，仍按 14:00 建。②「电竞椅欧美渠道下单宣讲会」17:00–17:30：口述名单是「A组A1 A2成员+吴涛 杨雅琪 Peter 张炎 伊慧 echo」——A组群按记忆 id 拉成员报 99992356 invalid open_chat_id，改走 chat-list --page-all 定位 A组 oc_cbeebefcb42ed98f873c14bf65d31a00 得 13 人，A1/A2/A2_2 各 5/5/3 人，全员群 66 人搜点名四人；姓名实拉校准 杨雅琪→杨雅淇、张炎→张琰（花名 Evelyn）、伊慧→陈伊慧、echo→毛蒙蒙、Peter→沈泽昊（已在A组）；用户 16:56 剔除宋嘉峰/邱少磊/李思华，16:57 一次建会只挂 15 人（未重建），房 accept + rsvp 明细回查 10 accept / 5 needs_action，并主动上报异常成员周艳雨（accept 但不在名单、非 A组/A1/A2 成员）请裁决。③同日 Cron delivery 知识周报：本周 0 场已确认会议，未生成候选、未改 Obsidian。",
+      "tags": [
+        "群成员实拉",
+        "姓名校准",
+        "飞书会议室",
+        "15人宣讲会",
+        "invalid open_chat_id",
+        "抢房无VC",
+        "异常参会人上报"
+      ],
+      "stats": { "skill": 1, "memory": 2, "evolution": 2, "node": 3 },
+      "command": "sqlite3 ~/.hermes/state.db \"SELECT count(*) FROM messages WHERE session_id='20261014_111621_6c7d15f8' AND date(timestamp,'unixepoch','+8 hours')='2026-11-27'\"; grep -c arch_20261127_01 ~/evolution-dashboard/dist/data.json",
+      "details": {
+        "skill": [
+          {
+            "title": "群名→chat_id→成员全量实拉链路（大名单会议必经）",
+            "content": "按记忆里的 chat_id 直接 members-list 会报 99992356（not a valid open_chat_id，错误回显只给 id 前缀，极易误判「群不存在」）。正确链路：`lark-cli im +chat-list --page-all --as user` 落盘 群名→chat_id → 逐个 members-list 拉全量 → 解析失败即重拉（输出截断会让该群静默返回 0 命中）。11-27 实测：A组 oc_cbeebefcb42ed98f873c14bf65d31a00 13 人、A1 oc_8ba56a43455cd544c10f87dbd21e3db6 5 人、A2 oc_65b090219ce9d1f85a8a4b31be6ef5e0 5 人、A2_2 oc_a199f85169a8b66d3ab34b09da904d1a 3 人、全员群 66 人。邀请人数 >10 时一律走此链，勿凭记忆拼名单。",
+            "icon": "🔌"
+          }
+        ],
+        "memory": [
+          {
+            "title": "口述姓名→通讯录真名的校准规则",
+            "content": "锅仔口述名单常与飞书真名差一字，邀请前按「同音/近形/单字前缀」在全员群模糊搜校准：杨雅琪→杨雅淇 ou_c8ee4c58af6a2a20aa3ab689e3b13422、张炎→张琰（花名 Evelyn）ou_b523e314581f38bdce9920a13bb504e8、伊慧→陈伊慧 ou_f605f3e616e3ff1533b77fbac65e8fd2、echo→毛蒙蒙、Peter→沈泽昊、Felix→朱烨烽 ou_2d5ba38ffa9bffc9cc7db79d5f8260ba。直搜 0 命中不等于查无此人——换花名/单字前缀再搜；命中即 append 进 ~/.hermes/data/name-map.md。",
+            "icon": "🧠"
+          },
+          {
+            "title": "A组群 ID 与规模（实拉，勿凭记忆）",
+            "content": "A组 oc_cbeebefcb42ed98f873c14bf65d31a00 = 13 人（朱烨烽/郭仔/沈灵/沈泽昊/宋嘉峰/邱少磊/王圣权/张泽明/袁佳龙/林婷/张亚宁/李思华/毛蒙蒙）；另 A1 5 人、A2 5 人、A2_2 3 人。A2 旧记录缺 \"be\" 会报 invalid receive_id，以 name-map.md 实拉值为准；全员群 66 人（11-17 记 68 人，已漂移）。",
+            "icon": "🧠"
+          }
+        ],
+        "evolution": [
+          {
+            "title": "大名单会议从「逐人确认」到 7 分半钟全链闭环",
+            "content": "旧：≤5 人小会还能逐人 confirm 再建。新：16:50:17 收到含花名/错字/群名指代的 17 人口述名单 → 16:52 拉齐四群成员落盘 → 16:57:04 建会挂房 → 16:57:50 房 accept + 15 人 rsvp 明细回查，7 分半钟零返工；第一场小会（14:02 需求→14:03 房与人双 accept）仅 70 秒。",
+            "icon": "📈"
+          },
+          {
+            "title": "回执从「订好了」升级为 rsvp 分类交付 + 名单异常主动上报",
+            "content": "回执按 rsvp_status 拆 10 accept / 5 needs_action 两段列出，并把「周艳雨 accept 但不在你给的名字里、也非 A组/A1/A2 成员」单独上报请裁决——名单异常不再静默通过，房间执行状态与人员回执状态分别可查。",
+            "icon": "📈"
+          }
+        ],
+        "node": [
+          {
+            "title": "会议室4 14:00–17:00（Peter，无 VC）",
+            "content": "首查「会议室4 14:00-17:00 可订: 无」→ 银泰城/会议室4/木棉三路关键词重查命中 会议室4-银泰城(7) omm_59f9b8fd60defc40199b223c29896d7f → 建会 event 05e4c76c-7274-4781-9800-37968469001a_0 → 70 秒内房 accept + 沈泽昊/郭仔 双 accept。回执如实说明「现在 14:03，按你指定的 14:00 建，已过时段不影响，会议直接开」。",
+            "icon": "📍"
+          },
+          {
+            "title": "万象城抢房：VC 未答先建，提问不阻塞交付",
+            "content": "用户未回「要不要 VC」，按无 VC 建以确保抢到 17:00 会议室1-万象城(13)（当时距开会 10 分钟），并明示「需 VC 我立刻重建立刻补链接」。与 11-02 立法（建会前必问 VC）的冲突处置定型：先问，未答则按无 VC 保交付，事后可重建。",
+            "icon": "📍"
+          },
+          {
+            "title": "名单二次校准：剔除 3 人后一次建会即含结果",
+            "content": "首轮交付 17 人（A组13 + 吴涛/杨雅淇/张琰/陈伊慧，echo/Peter 已在组内去重）→ 用户 16:56 要求剔除宋嘉峰、邱少磊、李思华 → 16:57 建会只挂 15 人，未走「先建再删」。回查明细里 Felix=朱烨烽、Evelyn=张琰 按花名显示，反证 open_id 映射正确。",
+            "icon": "📍"
+          }
+        ]
+      }
+    },
+    {
       "id": "arch_20261126_01",
       "date": "2026-11-26",
       "title": "打通Gemini生图通道17秒出电商主图，中转站5模型逐项实测分真伪",
@@ -3074,6 +3141,9 @@
   ],
   "memories": [
     {
+      "content": "【姓名校准 11-27】锅仔口述名单常与飞书真名差一字，邀请前必须模糊搜校准：杨雅琪→杨雅淇、张炎→张琰（花名 Evelyn）、伊慧→陈伊慧、echo→毛蒙蒙、Peter→沈泽昊、Felix→朱烨烽；直搜 0 命中≠查无此人，换花名/单字前缀再搜；命中即 append ~/.hermes/data/name-map.md。群成员拉取必须先 chat-list --page-all 实拉定位 chat_id（凭记忆 id 报 99992356 invalid open_chat_id）。A组=oc_cbeebefcb42ed98f873c14bf65d31a00（13人），全员群 66 人（11-17 记 68 已漂移）。"
+    },
+    {
       "content": "【生图通道定版 11-26】要图一律走 Google Gemini 图片模型（~/.hermes/.env 第 475 行 GEMINI_API_KEY，AIzaSy 前缀，7-29 起就有）：gemini-3.1-flash-image 实测 17.3s/张 1408×768，白底电商主图级可直接用于 Listing/PPT/海报。已灭通道：智谱 CogView（open.bigmodel.cn 图片/对话 + api.z.ai images 三端点全 401）、MiniMax 国际版 invalid key、国内版 key 有效但余额不足、中转站 Seedream-5.5/5.0-image 路由坏（/images 400 + chat 502 upstream forbidden）。"
     },
     {
@@ -3229,6 +3299,9 @@
   ],
   "evolutions": [
     {
+      "content": "大名单会议 11-27 从「逐人确认」升级为全链自动：含花名/错字/群名指代的 17 人口述名单，7 分半钟走完 实拉群成员（chat-list 定位 chat_id，破 99992356）→ 姓名校准（杨雅琪→杨雅淇、张炎→张琰/Evelyn、伊慧→陈伊慧）→ 剔除 3 人后一次建会挂 15 人 → 房 accept + rsvp 10 accept/5 needs_action 分类回执，并主动上报名单外成员周艳雨请裁决；同日小会 70 秒成单（需求→房与人双 accept）。"
+    },
+    {
       "content": "生图能力从零到可用（11-26）：智谱 CogView 三端点 401→MiniMax 国际 invalid key/国内余额不足→翻 .env 找到沉睡的 Gemini key（7-29 起就在）→gemini-3.1-flash-image 17.3 秒出 1408×768 白底电商主图并经 vision_analyze 自检合格，能直接进 Listing/PPT/海报。同日把中转站 5 模型实拉成可用性判定表（文本 3 可用 1.0/4.2/8.6s、生图 2 个路由坏），「哪来的 key」溯源到 7-29 .env.bak 原始出处。"
     },
     {
@@ -3380,8 +3453,8 @@
     }
   ],
   "stats": {
-    "archives": 52,
-    "points": 199,
-    "skills": 55
+    "archives": 53,
+    "points": 207,
+    "skills": 56
   }
 }
